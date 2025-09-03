@@ -8,7 +8,7 @@ on:
         type: string
       org-name:
         type: string
-        default: gsa-tts
+        default: flexion
       repo-name:
         type: string
         default: ${{ github.event.repository.name }}
