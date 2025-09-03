@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { type PatternId, type RepeaterProps } from '@gsa-tts/forms-core';
-import { RepeaterPattern } from '@gsa-tts/forms-core';
+import { type PatternId, type RepeaterProps } from '@flexion/forms-core';
+import { RepeaterPattern } from '@flexion/forms-core';
 
 import {
   CompoundAddPatternButton,
@@ -17,7 +17,7 @@ import { PatternEditComponent } from '../../types.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';
 import { PatternEditForm } from '../common/PatternEditForm.js';
 import { usePatternEditFormContext } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 
 import styles from '../../formEditStyles.module.css';
 import { renderEditPromptComponents } from '../../../manager-common.js';

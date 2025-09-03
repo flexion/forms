@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { Success } from '@gsa-tts/forms-common';
+import { Success } from '@flexion/forms-common';
 
 import { type DocumentFieldMap } from '../index.js';
 import { fillPDF } from '../pdf/index.js';

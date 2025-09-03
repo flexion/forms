@@ -1,4 +1,4 @@
-import { type FormConfig, type FormService } from '@gsa-tts/forms-core';
+import { type FormConfig, type FormService } from '@flexion/forms-core';
 import { type ComponentForPattern } from '../Form/types.js';
 import { type EditComponentForPattern } from './FormEdit/types.js';
 import { UrlForForm, UrlForFormManager } from '../AvailableFormList/index.js';

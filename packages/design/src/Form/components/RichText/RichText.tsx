@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { type RichTextProps } from '@gsa-tts/forms-core';
+import { type RichTextProps } from '@flexion/forms-core';
 import { type PatternComponent } from '../../types.js';
 import styles from './richTextStyles.module.css';
 

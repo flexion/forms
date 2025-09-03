@@ -1,5 +1,5 @@
-import { type ServiceMethod, createService } from '@gsa-tts/forms-common';
-import { type DatabaseContext } from '@gsa-tts/forms-database';
+import { type ServiceMethod, createService } from '@flexion/forms-common';
+import { type DatabaseContext } from '@flexion/forms-database';
 
 import type { FormConfig } from '../pattern.js';
 

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { enLocale as message } from '@gsa-tts/forms-common';
-import { type AttachmentPattern } from '@gsa-tts/forms-core';
+import { enLocale as message } from '@flexion/forms-common';
+import { type AttachmentPattern } from '@flexion/forms-core';
 
 import {
   createPatternEditStoryMeta,

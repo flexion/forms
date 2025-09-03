@@ -1,5 +1,5 @@
 {
-  "name": "@gsa-tts/forms-server-doj",
+  "name": "@flexion/forms-server-doj",
   "version": "0.1.4",
   "description": "Form server instance for DOJ",
   "type": "module",
@@ -14,9 +14,9 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@gsa-tts/forms-database": "workspace:*",
-    "@gsa-tts/forms-infra-core": "workspace:*",
-    "@gsa-tts/forms-server": "workspace:*"
+    "@flexion/forms-database": "workspace:*",
+    "@flexion/forms-infra-core": "workspace:*",
+    "@flexion/forms-server": "workspace:*"
   },
   "devDependencies": {
     "@types/supertest": "^6.0.2",

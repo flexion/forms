@@ -1,6 +1,6 @@
 import type { APIContext } from 'astro';
 
-import { logOut } from '@gsa-tts/forms-auth';
+import { logOut } from '@flexion/forms-auth';
 import { getServerContext } from '../../config/astro.js';
 import * as routes from '../../routes.js';
 

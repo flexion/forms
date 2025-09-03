@@ -7,8 +7,8 @@ import {
 } from 'zustand';
 import { createContext } from 'zustand-utils';
 
-import { type Result, failure } from '@gsa-tts/forms-common';
-import { type FormSession, type Blueprint } from '@gsa-tts/forms-core';
+import { type Result, failure } from '@flexion/forms-common';
+import { type FormSession, type Blueprint } from '@flexion/forms-core';
 
 import { type FormListSlice, createFormListSlice } from './FormList/store.js';
 import { type FormEditSlice, createFormEditSlice } from './FormEdit/store.js';

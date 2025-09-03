@@ -1,5 +1,5 @@
 {
-  "name": "@gsa-tts/forms-infra-core",
+  "name": "@flexion/forms-infra-core",
   "version": "0.1.4",
   "description": "10x Forms Platform core infrastructure management",
   "type": "module",
@@ -15,8 +15,8 @@
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.758.0",
     "@aws-sdk/client-ssm": "^3.624.0",
-    "@gsa-tts/forms-common": "workspace:*",
-    "@gsa-tts/forms-core": "workspace:*",
+    "@flexion/forms-common": "workspace:*",
+    "@flexion/forms-core": "workspace:*",
     "zod": "^3.23.8"
   }
 }

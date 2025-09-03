@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 
-import { type AccordionRowProps } from '@gsa-tts/forms-core';
+import { type AccordionRowProps } from '@flexion/forms-core';
 import { type PatternComponent } from '../../types.js';
 
 const AccordionRow: PatternComponent<AccordionRowProps> = ({

@@ -1,5 +1,5 @@
 {
-  "name": "@gsa-tts/forms-spotlight",
+  "name": "@flexion/forms-spotlight",
   "type": "module",
   "version": "0.1.3",
   "private": true,
@@ -24,9 +24,9 @@
   ],
   "dependencies": {
     "@astrojs/react": "^3.6.1",
-    "@gsa-tts/forms-common": "workspace:*",
-    "@gsa-tts/forms-design": "workspace:*",
-    "@gsa-tts/forms-core": "workspace:*",
+    "@flexion/forms-common": "workspace:*",
+    "@flexion/forms-design": "workspace:*",
+    "@flexion/forms-core": "workspace:*",
     "astro": "^4.16.18",
     "qs": "^6.13.0",
     "react": "^18.3.1",

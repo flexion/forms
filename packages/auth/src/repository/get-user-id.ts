@@ -1,4 +1,4 @@
-import { type DatabaseContext } from '@gsa-tts/forms-database';
+import { type DatabaseContext } from '@flexion/forms-database';
 
 /**
  * Retrieves the unique identifier (ID) of a user based on their email address.

@@ -1,4 +1,4 @@
-import { type Result } from '@gsa-tts/forms-common';
+import { type Result } from '@flexion/forms-common';
 
 import { type PromptAction } from './components.js';
 import {

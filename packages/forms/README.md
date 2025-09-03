@@ -1,4 +1,4 @@
-# @gsa-tts/forms-core
+# @flexion/forms-core
 
 This library includes all of the core business logic of Forms Platform.
 

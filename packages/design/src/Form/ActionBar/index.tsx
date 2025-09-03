@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PromptAction } from '@gsa-tts/forms-core';
+import { PromptAction } from '@flexion/forms-core';
 
 export default function ActionBar({ actions }: { actions: PromptAction[] }) {
   return (

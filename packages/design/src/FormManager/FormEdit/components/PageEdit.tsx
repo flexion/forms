@@ -1,9 +1,9 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { PageProps } from '@gsa-tts/forms-core';
-import { enLocale as message } from '@gsa-tts/forms-common';
-import { PagePattern } from '@gsa-tts/forms-core';
+import { PageProps } from '@flexion/forms-core';
+import { enLocale as message } from '@flexion/forms-common';
+import { PagePattern } from '@flexion/forms-core';
 
 import { useRouteParams } from '../../hooks.js';
 import { PatternEditComponent } from '../types.js';

@@ -1,5 +1,5 @@
 {
-  "name": "@gsa-tts/forms-core",
+  "name": "@flexion/forms-core",
   "version": "0.1.2",
   "description": "10x Forms Platform form handling",
   "type": "module",
@@ -26,8 +26,8 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@gsa-tts/forms-common": "workspace:*",
-    "@gsa-tts/forms-database": "workspace:*",
+    "@flexion/forms-common": "workspace:*",
+    "@flexion/forms-database": "workspace:*",
     "pdf-lib": "^1.17.1",
     "qs": "^6.13.0",
     "set-value": "^4.1.0",

@@ -1,4 +1,4 @@
-# @gsa-tts/forms-cli-app
+# @flexion/forms-cli-app
 
 This package defines the platform's command-line interface.
 

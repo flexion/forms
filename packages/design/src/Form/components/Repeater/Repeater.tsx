@@ -5,7 +5,7 @@ import {
   type PromptComponent,
   FormError,
   FormErrors,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 import { type PatternComponent } from '../../types.js';
 import { renderPromptComponents } from '../../form-common.js';

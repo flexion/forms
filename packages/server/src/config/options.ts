@@ -1,8 +1,8 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
-import { type LoginGovOptions } from '@gsa-tts/forms-auth';
-import { DatabaseContext } from '@gsa-tts/forms-database';
+import { type LoginGovOptions } from '@flexion/forms-auth';
+import { DatabaseContext } from '@flexion/forms-database';
 
 export type ServerOptions = {
   agencyBranding: boolean;
@@ -14,7 +14,7 @@ export type ServerOptions = {
 
 export const createDevServerOptions = async (): Promise<ServerOptions> => {
   const { createFilesystemDatabaseContext } = await import(
-    '@gsa-tts/forms-database/context'
+    '@flexion/forms-database/context'
   );
   const db = await createFilesystemDatabaseContext(
     join(dirname(fileURLToPath(import.meta.url)), '../main.db')
@@ -38,7 +38,7 @@ export const createDevServerOptions = async (): Promise<ServerOptions> => {
 
 export const createTestServerOptions = async (): Promise<ServerOptions> => {
   const { createInMemoryDatabaseContext } = await import(
-    '@gsa-tts/forms-database/context'
+    '@flexion/forms-database/context'
   );
   const db = await createInMemoryDatabaseContext();
   return {

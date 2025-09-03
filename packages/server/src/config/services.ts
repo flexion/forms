@@ -4,7 +4,7 @@ import {
   createFormsRepository,
   defaultFormConfig,
   parsePdf,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 import { type ServerOptions } from './options.js';
 
 export const createServerFormService = (

@@ -143,7 +143,7 @@ export class FormsPipelineStack extends cdk.Stack {
             },
             build: {
               commands: [
-                'cd node_modules/@gsa-tts/forms-infra-aws-cdk',
+                'cd node_modules/@flexion/forms-infra-aws-cdk',
                 'pnpm cdk deploy --ci FormsPlatformStack --parameters "tagOrDigest=${TAG_OR_DIGEST}" --parameters "environment=${ENVIRONMENT}" --parameters "repositoryName=${REPO_NAME}"',
               ],
             },

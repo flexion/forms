@@ -1,5 +1,5 @@
 {
-  "name": "@gsa-tts/forms-infra-aws-cdk",
+  "name": "@flexion/forms-infra-aws-cdk",
   "version": "0.1.12",
   "bin": {
     "aws-cdk": "bin/aws-cdk.js",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@aws-cdk/aws-apprunner-alpha": "2.184.1-alpha.0",
-    "@gsa-tts/forms-infra-core": "workspace:*",
+    "@flexion/forms-infra-core": "workspace:*",
     "aws-cdk": "2.1004.0",
     "aws-cdk-lib": "2.184.1",
     "change-case": "^5.4.4",

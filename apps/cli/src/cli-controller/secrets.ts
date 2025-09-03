@@ -6,7 +6,7 @@ import {
   type DeployEnv,
   commands,
   getSecretsVault,
-} from '@gsa-tts/forms-infra-core';
+} from '@flexion/forms-infra-core';
 import { type Context } from './types.js';
 
 export const addSecretCommands = (ctx: Context, cli: Command) => {

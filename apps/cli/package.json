@@ -1,5 +1,5 @@
 {
-  "name": "@gsa-tts/forms-cli",
+  "name": "@flexion/forms-cli",
   "version": "0.1.4",
   "description": "10x Forms Platform command-line interface",
   "type": "module",
@@ -13,9 +13,9 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@gsa-tts/forms-infra-core": "workspace:*",
-    "@gsa-tts/forms-auth": "workspace:^",
-    "@gsa-tts/forms-database": "workspace:*",
+    "@flexion/forms-infra-core": "workspace:*",
+    "@flexion/forms-auth": "workspace:^",
+    "@flexion/forms-database": "workspace:*",
     "commander": "^11.1.0"
   }
 }

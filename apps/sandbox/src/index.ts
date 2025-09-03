@@ -1,5 +1,5 @@
-import { createPostgresDatabaseContext } from '@gsa-tts/forms-database/context';
-import { getAWSSecretsManagerVault } from '@gsa-tts/forms-infra-core';
+import { createPostgresDatabaseContext } from '@flexion/forms-database/context';
+import { getAWSSecretsManagerVault } from '@flexion/forms-infra-core';
 
 import { createCustomServer } from './server.js';
 

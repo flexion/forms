@@ -14,7 +14,7 @@ import {
   DraggableListProps,
   DraggableListPresentation,
 } from './DraggableList.js';
-import { getPattern } from '@gsa-tts/forms-core';
+import { getPattern } from '@flexion/forms-core';
 
 const meta: Meta<typeof DraggableList> = {
   title: 'patterns/DraggableList',

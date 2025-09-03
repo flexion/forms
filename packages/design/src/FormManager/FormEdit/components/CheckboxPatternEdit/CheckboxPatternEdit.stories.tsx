@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { type CheckboxPattern } from '@gsa-tts/forms-core';
+import { type CheckboxPattern } from '@flexion/forms-core';
 
 import CheckboxPatternEdit from './CheckboxPatternEdit.js';
 import {
@@ -9,7 +9,7 @@ import {
   testUpdateFormFieldOnSubmit,
 } from '../common/story-helper.js';
 import FormEdit from '../../index.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import { expect } from '@storybook/test';
 import { within } from '@testing-library/react';
 

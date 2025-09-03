@@ -3,7 +3,7 @@ import { expect, it } from 'vitest';
 import {
   type DbTestContext,
   describeDatabase,
-} from '@gsa-tts/forms-database/testing';
+} from '@flexion/forms-database/testing';
 
 import { createTestBlueprint } from '../builder/builder.test';
 import { addForm } from './add-form';

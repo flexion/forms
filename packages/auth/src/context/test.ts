@@ -1,7 +1,7 @@
 import { Cookie, Lucia } from 'lucia';
 import { vi } from 'vitest';
 
-import { createInMemoryDatabaseContext } from '@gsa-tts/forms-database/context';
+import { createInMemoryDatabaseContext } from '@flexion/forms-database/context';
 
 import { AuthServiceContext, UserSession } from '../index.js';
 import { createSqliteLuciaAdapter } from '../lucia.js';

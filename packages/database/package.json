@@ -1,5 +1,5 @@
 {
-  "name": "@gsa-tts/forms-database",
+  "name": "@flexion/forms-database",
   "version": "0.1.2",
   "description": "10x Forms Platform database",
   "type": "module",
@@ -31,7 +31,7 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@gsa-tts/forms-common": "workspace:*",
+    "@flexion/forms-common": "workspace:*",
     "@types/pg": "^8.11.6",
     "better-sqlite3": "^11.7.2",
     "knex": "^3.1.0",

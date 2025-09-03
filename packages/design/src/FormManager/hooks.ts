@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import {
   type RouteData,
   getRouteDataFromQueryString,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 export const useRouteParams = (): {
   routeParams: RouteData;

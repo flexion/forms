@@ -16,7 +16,7 @@ pnpm build
 
 ```bash
 #forms-apply-stack -r <region> -e <environment-identifier>
-cd node_modules/@gsa-tts/forms-infra-aws-cdk
+cd node_modules/@flexion/forms-infra-aws-cdk
 pnpm cdk deploy \
   --ci FormsPlatformStack \
   --parameters "tagOrDigest=${TAG_OR_DIGEST}" \

@@ -6,7 +6,7 @@ import {
   type PatternId,
   type PatternMap,
   type PatternValue,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 export type Option = {
   id: string;

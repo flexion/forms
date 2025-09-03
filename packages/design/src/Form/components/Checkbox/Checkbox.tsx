@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type CheckboxProps } from '@gsa-tts/forms-core';
+import { type CheckboxProps } from '@flexion/forms-core';
 
 import { type PatternComponent } from '../../types.js';
 import classNames from 'classnames';

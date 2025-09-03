@@ -1,4 +1,4 @@
-import { success } from '@gsa-tts/forms-common';
+import { success } from '@flexion/forms-common';
 
 import { type RepeaterPattern } from '../..';
 import { type SubmitHandler } from '../../submission';

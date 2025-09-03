@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { type AttachmentProps } from '@gsa-tts/forms-core';
-import { attachmentFileTypeOptions } from '@gsa-tts/forms-core';
+import { type AttachmentProps } from '@flexion/forms-core';
+import { attachmentFileTypeOptions } from '@flexion/forms-core';
 import { type PatternComponent } from '../../types.js';
 
 const Attachment: PatternComponent<AttachmentProps> = props => {

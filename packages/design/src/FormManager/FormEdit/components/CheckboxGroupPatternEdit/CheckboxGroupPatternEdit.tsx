@@ -4,8 +4,8 @@ import React from 'react';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { DraggableList } from '../DraggableList/DraggableList.js';
 
-import { type CheckboxGroupProps } from '@gsa-tts/forms-core';
-import { type CheckboxGroupPattern } from '@gsa-tts/forms-core';
+import { type CheckboxGroupProps } from '@flexion/forms-core';
+import { type CheckboxGroupPattern } from '@flexion/forms-core';
 
 import CheckboxGroup from '../../../../Form/components/CheckboxGroup/CheckboxGroup.js';
 import { PatternEditComponent } from '../../types.js';
@@ -17,7 +17,7 @@ import {
   createPatternOptionsWithContext,
   usePatternEditFormContext,
 } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const CheckboxGroupPatternEdit: PatternEditComponent<CheckboxGroupProps> = ({

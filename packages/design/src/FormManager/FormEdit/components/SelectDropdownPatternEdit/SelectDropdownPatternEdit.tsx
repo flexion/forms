@@ -4,8 +4,8 @@ import React from 'react';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { DraggableList } from '../DraggableList/DraggableList.js';
 
-import { type SelectDropdownProps } from '@gsa-tts/forms-core';
-import { type SelectDropdownPattern } from '@gsa-tts/forms-core';
+import { type SelectDropdownProps } from '@flexion/forms-core';
+import { type SelectDropdownPattern } from '@flexion/forms-core';
 
 import SelectDropdown from '../../../../Form/components/SelectDropdown/SelectDropdown.js';
 import { PatternEditComponent } from '../../types.js';
@@ -17,7 +17,7 @@ import {
   usePatternEditFormContext,
   createPatternOptionsWithContext,
 } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const SelectDropdownPatternEdit: PatternEditComponent<SelectDropdownProps> = ({

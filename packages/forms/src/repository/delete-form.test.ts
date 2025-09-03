@@ -1,10 +1,10 @@
 import { beforeAll, expect, it, vi } from 'vitest';
 
-import type { Result } from '@gsa-tts/forms-common';
+import type { Result } from '@flexion/forms-common';
 import {
   type DbTestContext,
   describeDatabase,
-} from '@gsa-tts/forms-database/testing';
+} from '@flexion/forms-database/testing';
 
 import { createTestBlueprint } from '../builder/builder.test.js';
 import type { Blueprint } from '../types.js';

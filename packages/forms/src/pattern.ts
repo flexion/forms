@@ -1,4 +1,4 @@
-import * as r from '@gsa-tts/forms-common';
+import * as r from '@flexion/forms-common';
 import set from 'set-value';
 
 import { type CreatePrompt } from './components.js';

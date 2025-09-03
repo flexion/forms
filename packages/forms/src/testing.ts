@@ -1,5 +1,5 @@
-import { type DatabaseContext } from '@gsa-tts/forms-database';
-import { createInMemoryDatabaseContext } from '@gsa-tts/forms-database/context';
+import { type DatabaseContext } from '@flexion/forms-database';
+import { createInMemoryDatabaseContext } from '@flexion/forms-database/context';
 
 import type { FormServiceContext } from './context';
 import { type ParsePdf, parsePdf } from './documents';

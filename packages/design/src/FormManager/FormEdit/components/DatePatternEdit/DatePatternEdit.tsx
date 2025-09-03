@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { type DateProps } from '@gsa-tts/forms-core';
-import { type DateOfBirthPattern } from '@gsa-tts/forms-core';
-import { type DatePickerPattern } from '@gsa-tts/forms-core';
+import { type DateProps } from '@flexion/forms-core';
+import { type DateOfBirthPattern } from '@flexion/forms-core';
+import { type DatePickerPattern } from '@flexion/forms-core';
 
 import Date from '../../../../Form/components/Date/Date.js';
 import { PatternEditComponent } from '../../types.js';
@@ -11,7 +11,7 @@ import { PatternEditComponent } from '../../types.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';
 import { PatternEditForm } from '../common/PatternEditForm.js';
 import { usePatternEditFormContext } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const DatePatternEdit: PatternEditComponent<DateProps> = ({

@@ -3,7 +3,7 @@ import React from 'react';
 import {
   type PatternId,
   SubmissionConfirmationProps,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 import SubmissionConfirmation from '../../../Form/components/SubmissionConfirmation/SubmissionConfirmation.js';
 import { PatternEditComponent } from '../types.js';

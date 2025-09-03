@@ -1,5 +1,5 @@
 {
-  "name": "@gsa-tts/forms-auth",
+  "name": "@flexion/forms-auth",
   "version": "0.1.2",
   "description": "10x Forms Platform auth module",
   "type": "module",
@@ -13,8 +13,8 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@gsa-tts/forms-common": "workspace:^",
-    "@gsa-tts/forms-database": "workspace:*",
+    "@flexion/forms-common": "workspace:^",
+    "@flexion/forms-database": "workspace:*",
     "@lucia-auth/adapter-postgresql": "^3.1.2",
     "@lucia-auth/adapter-sqlite": "^3.0.2",
     "arctic": "^1.9.2",

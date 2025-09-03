@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { type PatternComponent } from '../../types.js';
-import { type NameProps } from '@gsa-tts/forms-core';
+import { type NameProps } from '@flexion/forms-core';
 
 const getAriaDescribedBy = (
   errorId: string | null,

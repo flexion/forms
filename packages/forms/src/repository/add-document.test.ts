@@ -3,7 +3,7 @@ import { beforeAll, expect, it, vi } from 'vitest';
 import {
   type DbTestContext,
   describeDatabase,
-} from '@gsa-tts/forms-database/testing';
+} from '@flexion/forms-database/testing';
 import { addDocument } from './add-document.js';
 import type { ParsedPdf } from '../documents/pdf/parsing-api.js';
 import type { DocumentFieldMap } from '../documents/types.js';

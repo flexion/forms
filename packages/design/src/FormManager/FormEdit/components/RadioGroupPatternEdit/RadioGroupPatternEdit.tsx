@@ -3,8 +3,8 @@ import React from 'react';
 
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { DraggableList } from '../DraggableList/DraggableList.js';
-import { type RadioGroupProps } from '@gsa-tts/forms-core';
-import { type RadioGroupPattern } from '@gsa-tts/forms-core';
+import { type RadioGroupProps } from '@flexion/forms-core';
+import { type RadioGroupPattern } from '@flexion/forms-core';
 
 import RadioGroup from '../../../../Form/components/RadioGroup/RadioGroup.js';
 import { PatternEditComponent } from '../../types.js';
@@ -16,7 +16,7 @@ import {
   createPatternOptionsWithContext,
   usePatternEditFormContext,
 } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const RadioGroupPatternEdit: PatternEditComponent<RadioGroupProps> = ({

@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 import { expect } from '../fixtures/import-file.fixture.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 
 export class FormCreatePage {
   private readonly page: Page;

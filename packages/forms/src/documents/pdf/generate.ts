@@ -5,7 +5,7 @@ import {
   type PDFForm,
 } from 'pdf-lib';
 
-import { Result } from '@gsa-tts/forms-common';
+import { Result } from '@flexion/forms-common';
 import { type FormOutput } from '../../index.js';
 import { type PDFFieldType } from './index.js';
 

@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { type RadioGroupPattern } from '@gsa-tts/forms-core';
+import { type RadioGroupPattern } from '@flexion/forms-core';
 
 import { createPatternEditStoryMeta } from '../common/story-helper.js';
 import FormEdit from '../../index.js';
 import CheckboxPatternEdit from '../CheckboxPatternEdit/CheckboxPatternEdit.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import { expect, userEvent } from '@storybook/test';
 import { within } from '@testing-library/react';
 

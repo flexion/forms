@@ -8,7 +8,7 @@ import type {
   DateProps,
   EmailInputProps,
   FieldsetProps,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 import { expect, within } from '@storybook/test';
 
 const defaultArgs = {

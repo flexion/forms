@@ -3,7 +3,7 @@ import { BetterSqlite3Adapter } from '@lucia-auth/adapter-sqlite';
 import { type Database as Sqlite3Database } from 'better-sqlite3';
 import { Lucia } from 'lucia';
 
-import { type Database } from '@gsa-tts/forms-database';
+import { type Database } from '@flexion/forms-database';
 
 /**
  * Factory function to create a SQLite Lucia adapter.

@@ -1,7 +1,7 @@
 import { OAuth2RequestError } from 'arctic';
 import { randomUUID } from 'crypto';
 
-import * as r from '@gsa-tts/forms-common';
+import * as r from '@flexion/forms-common';
 import { type AuthServiceContext } from './index.js';
 
 type LoginGovUser = {

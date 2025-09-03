@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import { type Failure, type Success } from '@gsa-tts/forms-common';
+import { type Failure, type Success } from '@flexion/forms-common';
 
 import { fillPDF } from '../index.js';
 import { loadSamplePDF } from './sample-data.js';

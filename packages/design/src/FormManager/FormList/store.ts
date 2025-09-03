@@ -1,8 +1,8 @@
 import { type StateCreator } from 'zustand';
 
-import { BlueprintBuilder, uint8ArrayToBase64 } from '@gsa-tts/forms-core';
+import { BlueprintBuilder, uint8ArrayToBase64 } from '@flexion/forms-core';
 import { type FormManagerContext } from '../types.js';
-import { type Result, failure } from '@gsa-tts/forms-common';
+import { type Result, failure } from '@flexion/forms-common';
 
 type StoreContext = {
   context: FormManagerContext;

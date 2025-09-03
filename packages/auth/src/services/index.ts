@@ -1,6 +1,6 @@
 import { Cookie, Lucia } from 'lucia';
 
-import { createService } from '@gsa-tts/forms-common';
+import { createService } from '@flexion/forms-common';
 
 import {
   type UserSession,

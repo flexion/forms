@@ -1,5 +1,5 @@
 {
-  "name": "@gsa-tts/forms-infra-cdktf",
+  "name": "@flexion/forms-infra-cdktf",
   "version": "0.1.12",
   "description": "10x Forms Platform Terraform CDK",
   "main": "src/index.js",
@@ -21,7 +21,7 @@
     "test": "echo 'no tests'"
   },
   "dependencies": {
-    "@gsa-tts/forms-infra-aws-cdk": "workspace:*",
+    "@flexion/forms-infra-aws-cdk": "workspace:*",
     "@aws-sdk/client-ssm": "^3.750.0",
     "cdktf": "^0.20.11",
     "cdktf-cli": "^0.20.11",

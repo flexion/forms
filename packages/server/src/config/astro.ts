@@ -4,8 +4,8 @@ import {
   type AuthRepository,
   type LoginGovOptions,
   createAuthRepository,
-} from '@gsa-tts/forms-auth';
-import { defaultFormConfig } from '@gsa-tts/forms-core';
+} from '@flexion/forms-auth';
+import { defaultFormConfig } from '@flexion/forms-core';
 
 import { type AppContext } from './context.js';
 import { type ServerOptions, createDevServerOptions } from './options.js';
@@ -65,7 +65,7 @@ const createDefaultAuthContext = async ({
   loginGovOptions: LoginGovOptions;
   isUserAuthorized: (email: string) => Promise<boolean>;
 }) => {
-  const { LoginGov, BaseAuthContext } = await import('@gsa-tts/forms-auth');
+  const { LoginGov, BaseAuthContext } = await import('@flexion/forms-auth');
   return new BaseAuthContext(
     authRepository,
     new LoginGov({

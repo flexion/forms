@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { mergeSession } from '@gsa-tts/forms-core';
+import { mergeSession } from '@flexion/forms-core';
 
 import Form from '../../Form/Form.js';
 import { useRouteParams } from '../hooks.js';

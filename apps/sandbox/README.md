@@ -1,3 +1,3 @@
-# @gsa-tts/forms-sandbox
+# @flexion/forms-sandbox
 
 Sandbox application to evaluate platform functionality.

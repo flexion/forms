@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-import * as r from '@gsa-tts/forms-common';
+import * as r from '@flexion/forms-common';
 
 import { type FormError, type FormErrors, type Pattern } from '../index.js';
 

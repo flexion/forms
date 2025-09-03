@@ -1,3 +1,3 @@
 #!/bin/sh
 
-pnpm --filter @gsa-tts/forms-cli cli $@
+pnpm --filter @flexion/forms-cli cli $@

@@ -1,5 +1,5 @@
 import { test as base, expect } from './import-file.fixture';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 
 export type AddPackageDownloadFixture = {
   formUrl: string;

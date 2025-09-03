@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { type PhoneNumberProps } from '@gsa-tts/forms-core';
-import { type PhoneNumberPattern } from '@gsa-tts/forms-core';
+import { type PhoneNumberProps } from '@flexion/forms-core';
+import { type PhoneNumberPattern } from '@flexion/forms-core';
 
 import PhoneNumber from '../../../../Form/components/PhoneNumber/PhoneNumber.js';
 import { PatternEditComponent } from '../../types.js';
@@ -10,7 +10,7 @@ import { PatternEditComponent } from '../../types.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';
 import { PatternEditForm } from '../common/PatternEditForm.js';
 import { usePatternEditFormContext } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const PhoneNumberPatternEdit: PatternEditComponent<PhoneNumberProps> = ({
