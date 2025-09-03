@@ -1,13 +1,12 @@
-# 10x Forms Platform
+# Flexion Forms Platform
 
-> **Notice:**
-> As of early May 2025, Forms Platform development is paused pending administrative prioritization.
+Sponsored by [Flexion](https://flexion.us), this project is a continuation of the defunct [10x Forms Platform](https://github.com/GSA-TTS/forms).
 
-Forms Platform is the product of extensive research and development completed by [10x](https://10x.gsa.gov/), a federal venture studio housed within the [General Services Administration](https://www.gsa.gov/)'s [Technology Transformation Services](https://tts.gsa.gov/).
+Forms Platform is the product of extensive research and development completed by [10x](https://10x.gsa.gov/), a federal venture studio housed within the [General Services Administration](https://www.gsa.gov/)'s [Technology Transformation Services](https://tts.gsa.gov/). As of early May 2025, GSA has ceased funding of Forms Platform.
 
-Forms Platform aims to solve a persistent challenge faced by federal agencies: delivery of compliant and user-friendly forms, delivered cost-effectively, seamlessly integrated with diverse agency workflows, and accessible to non-technical program office staff. Deployed broadly, Forms Platform would serve as a common interface to federal government services, tailored to public sector needs.
+Forms Platform aims to solve a persistent challenge faced by public organizations: delivery of compliant and user-friendly forms, delivered cost-effectively, seamlessly integrated with diverse workflows, and accessible to non-technical program office staff. Deployed broadly, Forms Platform would serve as a common interface to government services, tailored to the needs of the public sector.
 
-If you would like to connect with the team or are interested in Forms Platform for your agency, please contact us at [10x-forms-platform@gsa.gov](mailto:10x-forms-platform@gsa.gov).
+If you would like to connect with the team or are interested in Forms Platform for your organization, please contact us at [dnaab@flexion.us](mailto:dnaab@flexion.us).
 
 ## Overview
 
