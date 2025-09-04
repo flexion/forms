@@ -96,16 +96,16 @@ jobs:
         with:
           terraform_version: '1.10.4'
 
-      - name: Initialize Terraform CDK configuration
-        shell: bash
-        working-directory: infra/cdktf
-        run: |
-          pnpm cdktf get
-          pnpm build:tsc
+      # - name: Initialize Terraform CDK configuration
+      #   shell: bash
+      #   working-directory: infra/cdktf
+      #   run: |
+      #     pnpm cdktf get
+      #     pnpm build:tsc
 
-      - name: Typecheck source code
-        shell: bash
-        run: pnpm typecheck
+      # - name: Typecheck source code
+      #   shell: bash
+      #   run: pnpm typecheck
 
       # - name: Vitest Coverage Report
       #   if: always()

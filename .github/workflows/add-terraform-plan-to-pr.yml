@@ -1,14 +1,15 @@
 name: Post Terraform plan to PR comment
 
 on:
-  pull_request:
-    branches:
-      - demo
-      - main
-    types:
-      - opened
-      - synchronize
-      - reopened
+  workflow_dispatch:
+  # pull_request:
+  #   branches:
+  #     - demo
+  #     - main
+  #   types:
+  #     - opened
+  #     - synchronize
+  #     - reopened
 
 jobs:
   add-terraform-plan-to-demo-pr:
