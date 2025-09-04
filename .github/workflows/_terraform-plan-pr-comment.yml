@@ -72,7 +72,7 @@ jobs:
 
       - name: Build Terraform configuration
         shell: bash
-        run: pnpm turbo run --filter @flexion/forms-infra-cdktf build
+        run: NODE_OPTIONS=--max-old-space-size=6144 pnpm turbo run --filter @flexion/forms-infra-cdktf build
 
       - name: Get Terraform stack name
         id: get_stack_name
