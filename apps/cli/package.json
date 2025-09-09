@@ -1,10 +1,13 @@
 {
   "name": "@flexion/forms-cli",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "10x Forms Platform command-line interface",
   "type": "module",
   "license": "CC0",
   "main": "src/index.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "tsup src/* --format esm",
     "clean": "rimraf dist tsconfig.tsbuildinfo coverage",

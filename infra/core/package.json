@@ -1,11 +1,14 @@
 {
   "name": "@flexion/forms-infra-core",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "10x Forms Platform core infrastructure management",
   "type": "module",
   "license": "CC0",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "tsc",
     "clean": "rimraf dist tsconfig.tsbuildinfo coverage",

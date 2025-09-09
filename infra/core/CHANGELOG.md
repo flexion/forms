@@ -1,5 +1,13 @@
 # @gsa-tts/forms-infra-core
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [bbd065d]
+  - @flexion/forms-common@0.1.3
+  - @flexion/forms-core@0.1.3
+
 ## 0.1.4
 
 ### Patch Changes

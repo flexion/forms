@@ -1,11 +1,14 @@
 {
   "name": "@flexion/forms-sandbox",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Form server sandbox for evaluating functionality.",
   "type": "module",
   "license": "CC0",
   "main": "src/index.ts",
   "private": true,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "tsup src/* --format esm",
     "clean": "rimraf dist tsconfig.tsbuildinfo coverage",

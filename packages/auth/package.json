@@ -1,11 +1,14 @@
 {
   "name": "@flexion/forms-auth",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "10x Forms Platform auth module",
   "type": "module",
   "license": "CC0",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "tsc",
     "clean": "rimraf dist tsconfig.tsbuildinfo coverage",

@@ -1,12 +1,15 @@
 {
   "name": "@flexion/forms-server",
   "type": "module",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "dist/handler.js",
   "types": "handler.ts",
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "astro": "astro",
     "build": "astro check && astro build && pnpm build:handler",
