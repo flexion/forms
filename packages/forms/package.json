@@ -1,6 +1,6 @@
 {
   "name": "@flexion/forms-core",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "10x Forms Platform form handling",
   "type": "module",
   "license": "CC0",

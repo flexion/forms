@@ -1,6 +1,6 @@
 {
   "name": "@flexion/forms-infra-aws-cdk",
-  "version": "0.1.13",
+  "version": "0.2.0",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
