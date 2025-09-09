@@ -1,5 +1,18 @@
 # @gsa-tts/forms-cli
 
+## 0.2.0
+
+### Minor Changes
+
+- 0a171f1: Initial Flexion Forms release
+
+### Patch Changes
+
+- Updated dependencies [0a171f1]
+  - @flexion/forms-infra-core@0.2.0
+  - @flexion/forms-auth@0.2.0
+  - @flexion/forms-database@0.2.0
+
 ## 0.1.5
 
 ### Patch Changes

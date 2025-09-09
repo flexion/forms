@@ -1,5 +1,17 @@
 # @gsa-tts/forms-infra-core
 
+## 0.2.0
+
+### Minor Changes
+
+- 0a171f1: Initial Flexion Forms release
+
+### Patch Changes
+
+- Updated dependencies [0a171f1]
+  - @flexion/forms-common@0.2.0
+  - @flexion/forms-core@0.2.0
+
 ## 0.1.5
 
 ### Patch Changes

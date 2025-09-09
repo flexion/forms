@@ -1,5 +1,16 @@
 # @gsa-tts/forms-infra-cdktf
 
+## 0.2.0
+
+### Minor Changes
+
+- 0a171f1: Initial Flexion Forms release
+
+### Patch Changes
+
+- Updated dependencies [0a171f1]
+  - @flexion/forms-infra-aws-cdk@0.2.0
+
 ## 0.1.13
 
 ### Patch Changes
