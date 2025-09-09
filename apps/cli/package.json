@@ -5,6 +5,9 @@
   "type": "module",
   "license": "CC0",
   "main": "src/index.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "tsup src/* --format esm",
     "clean": "rimraf dist tsconfig.tsbuildinfo coverage",
