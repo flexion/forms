@@ -27,7 +27,9 @@
     "test:watch": "pnpm onchange './**/*.{tsx,ts}' -- pnpm test:url"
   },
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "static/**/*",
+    "sass/**/*"
   ],
   "size-limit": [
     {
