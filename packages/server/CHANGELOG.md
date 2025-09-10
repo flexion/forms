@@ -1,5 +1,12 @@
 # @gsa-tts/forms-server
 
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @flexion/forms-design@0.2.2
+
 ## 0.2.1
 
 ### Patch Changes

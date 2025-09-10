@@ -1,6 +1,6 @@
 {
   "name": "@flexion/forms-server-doj",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Form server instance for DOJ",
   "type": "module",
   "license": "CC0",

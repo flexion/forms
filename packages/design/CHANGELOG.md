@@ -1,5 +1,11 @@
 # @gsa-tts/forms-design
 
+## 0.2.2
+
+### Patch Changes
+
+- Include static assets and sass source in package
+
 ## 0.2.1
 
 ### Patch Changes
