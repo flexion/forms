@@ -1,7 +1,7 @@
 {
   "name": "@flexion/forms-spotlight",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "private": true,
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

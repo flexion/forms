@@ -1,7 +1,8 @@
 {
   "name": "@flexion/forms-design",
-  "version": "0.2.0",
-  "main": "src/index.ts",
+  "version": "0.2.2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -26,7 +27,9 @@
     "test:watch": "pnpm onchange './**/*.{tsx,ts}' -- pnpm test:url"
   },
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "static/**/*",
+    "sass/**/*"
   ],
   "size-limit": [
     {
