@@ -1,5 +1,11 @@
 # @gsa-tts/forms-server-doj
 
+## 0.2.3
+
+### Patch Changes
+
+- @flexion/forms-server@0.2.3
+
 ## 0.2.2
 
 ### Patch Changes

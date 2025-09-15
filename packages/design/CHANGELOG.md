@@ -1,5 +1,12 @@
 # @gsa-tts/forms-design
 
+## 0.2.3
+
+### Patch Changes
+
+- 82bb94d: Make form link in form list optional
+- f3bc441: More aggressive refresh of forms list on AvailableFormList
+
 ## 0.2.2
 
 ### Patch Changes
