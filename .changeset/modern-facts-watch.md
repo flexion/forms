@@ -2,4 +2,4 @@
 '@flexion/forms-design': patch
 ---
 
-More agressive refresh of forms list on AvailableFormList
+More aggressive refresh of forms list on AvailableFormList
