@@ -1,5 +1,13 @@
 # @gsa-tts/forms-spotlight
 
+## 0.2.3
+
+### Patch Changes
+
+- Updated dependencies [82bb94d]
+- Updated dependencies [f3bc441]
+  - @flexion/forms-design@0.2.3
+
 ## 0.2.2
 
 ### Patch Changes
