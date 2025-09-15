@@ -10,7 +10,7 @@ type FormDetails = {
   title: string;
   description: string;
 };
-export type UrlForForm = (id: string) => string;
+export type UrlForForm = (id: string) => string | null;
 export type UrlForFormManager = UrlForForm;
 
 export default function AvailableFormList({
@@ -110,33 +110,51 @@ const FormList = ({
               </th>
               <td data-label="Description">{form.description}</td>
               <td data-label="Actions">
-                <div className="grid-row grid-gap-md">
-                  <a
-                    href={urlForForm(form.id)}
-                    title={form.title}
-                    className="grid-col-auto"
-                  >
-                    Go to form
-                  </a>
-                  <a
-                    href={`${urlForFormManager(form.id)}/create`}
-                    className="grid-col-auto"
-                  >
-                    Edit
-                  </a>
-                  <a
-                    href={`${urlForFormManager(form.id)}/delete`}
-                    className="grid-col-auto"
-                  >
-                    Delete
-                  </a>
-                </div>
+                <FormActions
+                  form={form}
+                  urlForForm={urlForForm}
+                  urlForFormManager={urlForFormManager}
+                />
               </td>
             </tr>
           ))
         )}
       </tbody>
     </table>
+  );
+};
+
+const FormActions = ({
+  form,
+  urlForForm,
+  urlForFormManager,
+}: {
+  form: FormDetails;
+  urlForForm: UrlForForm;
+  urlForFormManager: UrlForFormManager;
+}) => {
+  const formUrl = urlForForm(form.id);
+
+  return (
+    <div className="grid-row grid-gap-md">
+      {formUrl && (
+        <a href={formUrl} title={form.title} className="grid-col-auto">
+          Go to form
+        </a>
+      )}
+      <a
+        href={`${urlForFormManager(form.id)}/create`}
+        className="grid-col-auto"
+      >
+        Edit
+      </a>
+      <a
+        href={`${urlForFormManager(form.id)}/delete`}
+        className="grid-col-auto"
+      >
+        Delete
+      </a>
+    </div>
   );
 };
 
