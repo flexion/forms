@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { type FormService } from '@flexion/forms-core';
 
@@ -23,13 +23,20 @@ export default function AvailableFormList({
   urlForFormManager: UrlForFormManager;
 }) {
   const [forms, setForms] = useState<FormDetails[]>([]);
-  useEffect(() => {
+  const location = useLocation();
+
+  const loadForms = React.useCallback(() => {
     formService.getFormList().then(result => {
       if (result.success) {
         setForms(result.data);
       }
     });
-  }, []);
+  }, [formService]);
+
+  useEffect(() => {
+    loadForms();
+  }, [location.pathname, location.hash, location.key, loadForms]);
+
   return (
     <>
       <section className="padding-y-3 desktop:margin-top-10 border-base-lighter border-y">
