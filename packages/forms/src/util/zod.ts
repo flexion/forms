@@ -59,7 +59,7 @@ export const convertZodErrorToFormErrors = (
   zodError: z.ZodError
 ): FormErrors => {
   const formErrors: FormErrors = {};
-  zodError.errors.forEach(error => {
+  zodError.issues.forEach((error: z.ZodIssue) => {
     const path = error.path.join('.');
     if (error.code === 'too_small' && error.minimum === 1) {
       formErrors[path] = {
@@ -82,6 +82,8 @@ export const convertZodErrorToFormErrors = (
 const convertZodErrorToFormError = (zodError: z.ZodError): FormError => {
   return {
     type: 'custom',
-    message: zodError.errors.map(error => error.message).join(', '),
+    message: zodError.issues
+      .map((error: z.ZodIssue) => error.message)
+      .join(', '),
   };
 };

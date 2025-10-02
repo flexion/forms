@@ -29,16 +29,16 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@aws-sdk/client-bedrock-runtime": "^3.901.0",
+    "@ai-sdk/amazon-bedrock": "^3.0.30",
     "@flexion/forms-common": "workspace:*",
     "@flexion/forms-database": "workspace:*",
+    "ai": "^5.0.59",
     "pdf-lib": "^1.17.1",
     "qs": "^6.13.0",
     "set-value": "^4.1.0",
-    "zod": "^3.23.8"
+    "zod": "^4.1.11"
   },
   "devDependencies": {
-    "@types/qs": "^6.9.15",
-    "zod-to-json-schema": "^3.24.6"
+    "@types/qs": "^6.9.15"
   }
 }

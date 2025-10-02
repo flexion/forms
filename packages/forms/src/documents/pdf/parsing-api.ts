@@ -1,5 +1,3 @@
-import * as z from 'zod';
-
 import { type FieldsetPattern } from '../../patterns/fieldset/config.js';
 import { type InputPattern } from '../../patterns/input/config.js';
 import { PagePattern } from '../../patterns/page/config.js';
@@ -21,74 +19,7 @@ import {
 import { FormErrors } from '../../error.js';
 import { defaultFormConfig } from '../../patterns/index.js';
 import { parseWithBedrock } from './bedrock-parser.js';
-
-const FormSummary = z.object({
-  component_type: z.literal('form_summary'),
-  title: z.string(),
-  description: z.string(),
-});
-
-const TxInput = z.object({
-  component_type: z.literal('text_input'),
-  id: z.string(),
-  label: z.string(),
-  default_value: z.string(),
-  required: z.boolean(),
-  page: z.union([z.number(), z.string()]),
-});
-
-const Checkbox = z.object({
-  component_type: z.literal('checkbox'),
-  id: z.string(),
-  label: z.string(),
-  default_checked: z.boolean(),
-  page: z.union([z.number(), z.string()]),
-});
-
-const RadioGroupOption = z.object({
-  id: z.string(),
-  label: z.string(),
-  name: z.string(),
-  default_checked: z.boolean(),
-  page: z.union([z.number(), z.string()]),
-});
-
-const RadioGroup = z.object({
-  id: z.string(),
-  component_type: z.literal('radio_group'),
-  legend: z.string(),
-  options: RadioGroupOption.array(),
-  page: z.union([z.number(), z.string()]),
-});
-
-const Paragraph = z.object({
-  component_type: z.literal('paragraph'),
-  text: z.string(),
-  page: z.union([z.number(), z.string()]),
-});
-
-const RichText = z.object({
-  component_type: z.literal('rich_text'),
-  text: z.string(),
-  page: z.union([z.number(), z.string()]),
-});
-
-const Fieldset = z.object({
-  component_type: z.literal('fieldset'),
-  legend: z.string(),
-  fields: z.union([TxInput, Checkbox]).array(),
-  page: z.union([z.number(), z.string()]),
-});
-
-export const ExtractedObject = z.object({
-  raw_text: z.string(),
-  form_summary: FormSummary,
-  elements: z
-    .union([TxInput, Checkbox, RadioGroup, Paragraph, Fieldset, RichText])
-    .array(),
-});
-
-export type ExtractedObject = z.infer<typeof ExtractedObject>;
+import { ExtractedObject } from './parser-schema.js';
 
 export type ParsedPdf = {
   patterns: PatternMap;

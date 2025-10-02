@@ -20,6 +20,6 @@
     "@aws-sdk/client-ssm": "^3.624.0",
     "@flexion/forms-common": "workspace:*",
     "@flexion/forms-core": "workspace:*",
-    "zod": "^3.23.8"
+    "zod": "^4.1.11"
   }
 }
