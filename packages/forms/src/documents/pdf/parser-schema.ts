@@ -11,7 +11,6 @@ const TxInput = z.object({
   label: z.string().describe('User-friendly field label'),
   default_value: z.string().optional().describe('Default value if any'),
   required: z.boolean().default(false).describe('Whether field is required'),
-  page: z.number().describe('Page number in guided interview (0-indexed)'),
 });
 
 const Checkbox = z.object({
@@ -22,7 +21,6 @@ const Checkbox = z.object({
     .boolean()
     .default(false)
     .describe('Whether checked by default'),
-  page: z.number().describe('Page number in guided interview (0-indexed)'),
 });
 
 const RadioGroupOption = z.object({
@@ -33,7 +31,6 @@ const RadioGroupOption = z.object({
     .boolean()
     .default(false)
     .describe('Whether selected by default'),
-  page: z.number().describe('Page number in guided interview (0-indexed)'),
 });
 
 const RadioGroup = z.object({
@@ -41,19 +38,16 @@ const RadioGroup = z.object({
   id: z.string().describe('Group identifier'),
   legend: z.string().describe('Legend/label for the radio group'),
   options: z.array(RadioGroupOption).describe('Radio button options'),
-  page: z.number().describe('Page number in guided interview (0-indexed)'),
 });
 
 const Paragraph = z.object({
   component_type: z.literal('paragraph'),
   text: z.string().describe('Plain text content for instructions or context'),
-  page: z.number().describe('Page number in guided interview (0-indexed)'),
 });
 
 const RichText = z.object({
   component_type: z.literal('rich_text'),
   text: z.string().describe('Rich text content (markdown supported)'),
-  page: z.number().describe('Page number in guided interview (0-indexed)'),
 });
 
 const FieldsetField = z.discriminatedUnion('component_type', [
@@ -65,7 +59,6 @@ const Fieldset = z.object({
   component_type: z.literal('fieldset'),
   legend: z.string().describe('Legend for the grouped fields'),
   fields: z.array(FieldsetField).describe('Fields within this fieldset'),
-  page: z.number().describe('Page number in guided interview (0-indexed)'),
 });
 
 const Element = z.discriminatedUnion('component_type', [
@@ -77,11 +70,20 @@ const Element = z.discriminatedUnion('component_type', [
   Fieldset,
 ]);
 
-export const ExtractedObject = z.object({
-  form_summary: FormSummary.describe('High-level form summary'),
+const Page = z.object({
+  title: z
+    .string()
+    .describe('Short, descriptive page title for navigation (plain language)'),
   elements: z
     .array(Element)
-    .describe('Ordered list of form elements across all pages'),
+    .describe('Elements on this page in display order'),
+});
+
+export const ExtractedObject = z.object({
+  form_summary: FormSummary.describe('High-level form summary'),
+  pages: z
+    .array(Page)
+    .describe('Pages in the guided interview, in order'),
 });
 
 export type ExtractedObject = z.infer<typeof ExtractedObject>;

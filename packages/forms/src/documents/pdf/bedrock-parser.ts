@@ -40,35 +40,37 @@ IMPORTANT: Focus on producing the structured output efficiently. Keep descriptio
 
 Guided Interview Design Principles:
 
-1. PROGRESSIVE DISCLOSURE
-   - Break long forms into multiple pages (aim for 5-8 fields per page)
-   - Group related information together
+1. PAGE STRUCTURE
+   - Organize content into logical pages (aim for 5-8 fields per page)
+   - Give each page a SHORT, DESCRIPTIVE title in plain language
+   - Page titles should be suitable for navigation (e.g., "Personal Information", "Contact Details", "Employment History")
+   - Page 0: Introduction with form summary and high-level instructions
+   - Pages 1-N: Logical sections of the form
+   - Final page: Declarations, signatures, submission info
+
+2. PROGRESSIVE DISCLOSURE
+   - Break long forms into multiple pages
+   - Group related information together within pages
    - Order pages logically (personal info → specific details → review)
 
-2. CLEAR CONTEXT
+3. CLEAR CONTEXT
    - Use 'paragraph' or 'rich_text' elements to provide instructions
    - Place context BEFORE the related fields
    - Use fieldset legends to label grouped fields
 
-3. USER-FRIENDLY LABELS
+4. USER-FRIENDLY LABELS
    - Convert technical field names to plain language
    - "Fst Name 1" → "First Name"
    - Add helpful hints where appropriate
 
-4. LOGICAL GROUPING
+5. LOGICAL GROUPING
    - Use fieldsets for related fields (e.g., name parts, address components)
    - Group by topic, not just by PDF page
 
-5. FIELD ID PRESERVATION
+6. FIELD ID PRESERVATION
    - CRITICAL: Use exact field IDs from the metadata
    - The 'id' field must match the PDF field name exactly
-   - Only the 'label' should be user-friendly
-
-6. PAGE ORGANIZATION
-   - Page 0: Introduction, form summary, high-level instructions
-   - Page 1-N: Logical sections of the form
-   - Final page: Declarations, signatures, submission info
-   - Give each page a clear title`;
+   - Only the 'label' should be user-friendly`;
 
 // User prompt template
 const buildPrompt = (fieldMetadata: FieldMetadata[]): string => {

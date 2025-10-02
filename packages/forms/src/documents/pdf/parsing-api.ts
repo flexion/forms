@@ -76,8 +76,6 @@ export const fetchPdfApiResponse: FetchPdfApiResponse = async (
 
 export const processApiResponse = async (json: any): Promise<ParsedPdf> => {
   const extracted: ExtractedObject = ExtractedObject.parse(json.parsed_pdf);
-  const rootSequence: PatternId[] = [];
-  const pagePatterns: Record<PatternId, PatternId[]> = {};
   const parsedPdf: ParsedPdf = {
     patterns: {},
     errors: [],
@@ -88,7 +86,7 @@ export const processApiResponse = async (json: any): Promise<ParsedPdf> => {
       extracted.form_summary.description || 'Default Form Description',
   };
 
-  const summary = processPatternData(
+  processPatternData(
     defaultFormConfig,
     parsedPdf,
     'form-summary',
@@ -98,203 +96,196 @@ export const processApiResponse = async (json: any): Promise<ParsedPdf> => {
         extracted.form_summary.description || 'Default Form Description',
     }
   );
-  if (summary) {
-    rootSequence.push(summary.id);
-  }
 
-  for (const element of extracted.elements) {
-    const fieldsetPatterns: PatternId[] = [];
-    // Add paragraph elements
-    if (element.component_type === 'paragraph') {
-      const paragraph = processPatternData<ParagraphPattern>(
-        defaultFormConfig,
-        parsedPdf,
-        'paragraph',
-        {
-          text: element.text,
-        }
-      );
-      if (paragraph) {
-        pagePatterns[element.page] = (pagePatterns[element.page] || []).concat(
-          paragraph.id
+  // Process each page
+  const pageIds: PatternId[] = [];
+  for (let pageIdx = 0; pageIdx < extracted.pages.length; pageIdx++) {
+    const page = extracted.pages[pageIdx];
+    const pageElementIds: PatternId[] = [];
+
+    // Process elements within the page
+    for (const element of page.elements) {
+      const fieldsetPatterns: PatternId[] = [];
+
+      // Add paragraph elements
+      if (element.component_type === 'paragraph') {
+        const paragraph = processPatternData<ParagraphPattern>(
+          defaultFormConfig,
+          parsedPdf,
+          'paragraph',
+          {
+            text: element.text,
+          }
         );
-      }
-      continue;
-    }
-
-    if (element.component_type === 'rich_text') {
-      const richText = processPatternData<RichTextPattern>(
-        defaultFormConfig,
-        parsedPdf,
-        'rich-text',
-        {
-          text: element.text,
+        if (paragraph) {
+          pageElementIds.push(paragraph.id);
         }
-      );
-      if (richText) {
-        pagePatterns[element.page] = (pagePatterns[element.page] || []).concat(
-          richText.id
-        );
+        continue;
       }
-      continue;
-    }
 
-    if (element.component_type === 'checkbox') {
-      const checkboxPattern = processPatternData<CheckboxPattern>(
-        defaultFormConfig,
-        parsedPdf,
-        'checkbox',
-        {
-          label: element.label,
-          defaultChecked: element.default_checked,
+      if (element.component_type === 'rich_text') {
+        const richText = processPatternData<RichTextPattern>(
+          defaultFormConfig,
+          parsedPdf,
+          'rich-text',
+          {
+            text: element.text,
+          }
+        );
+        if (richText) {
+          pageElementIds.push(richText.id);
         }
-      );
-      if (checkboxPattern) {
-        pagePatterns[element.page] = (pagePatterns[element.page] || []).concat(
-          checkboxPattern.id
-        );
-        parsedPdf.outputs[checkboxPattern.id] = {
-          type: 'CheckBox',
-          name: element.id,
-          label: element.label,
-          value: false,
-          required: true,
-        };
+        continue;
       }
-      continue;
-    }
 
-    if (element.component_type === 'radio_group') {
-      const radioGroupPattern = processPatternData<RadioGroupPattern>(
-        defaultFormConfig,
-        parsedPdf,
-        'radio-group',
-        {
-          label: element.legend,
-          hint: '',
-          options: element.options.map(option => ({
-            id: option.id,
-            label: option.label,
-            name: option.name,
-            defaultChecked: option.default_checked,
-          })),
-          required: false,
+      if (element.component_type === 'checkbox') {
+        const checkboxPattern = processPatternData<CheckboxPattern>(
+          defaultFormConfig,
+          parsedPdf,
+          'checkbox',
+          {
+            label: element.label,
+            defaultChecked: element.default_checked,
+          }
+        );
+        if (checkboxPattern) {
+          pageElementIds.push(checkboxPattern.id);
+          parsedPdf.outputs[checkboxPattern.id] = {
+            type: 'CheckBox',
+            name: element.id,
+            label: element.label,
+            value: false,
+            required: true,
+          };
         }
-      );
-      if (radioGroupPattern) {
-        pagePatterns[element.page] = (pagePatterns[element.page] || []).concat(
-          radioGroupPattern.id
-        );
-        parsedPdf.outputs[radioGroupPattern.id] = {
-          type: 'RadioGroup',
-          name: element.id,
-          label: element.legend,
-          options: element.options.map(option => ({
-            id: option.id,
-            label: option.label,
-            name: option.name,
-            defaultChecked: option.default_checked,
-          })),
-          value: '',
-          required: true,
-        };
+        continue;
       }
-      continue;
-    }
 
-    if (element.component_type === 'fieldset') {
-      for (const input of element.fields) {
-        if (input.component_type === 'text_input') {
-          const inputPattern = processPatternData<InputPattern>(
-            defaultFormConfig,
-            parsedPdf,
-            'input',
-            {
-              label: input.label,
-              required: false,
-              initial: '',
+      if (element.component_type === 'radio_group') {
+        const radioGroupPattern = processPatternData<RadioGroupPattern>(
+          defaultFormConfig,
+          parsedPdf,
+          'radio-group',
+          {
+            label: element.legend,
+            hint: '',
+            options: element.options.map(option => ({
+              id: option.id,
+              label: option.label,
+              name: option.name,
+              defaultChecked: option.default_checked,
+            })),
+            required: false,
+          }
+        );
+        if (radioGroupPattern) {
+          pageElementIds.push(radioGroupPattern.id);
+          parsedPdf.outputs[radioGroupPattern.id] = {
+            type: 'RadioGroup',
+            name: element.id,
+            label: element.legend,
+            options: element.options.map(option => ({
+              id: option.id,
+              label: option.label,
+              name: option.name,
+              defaultChecked: option.default_checked,
+            })),
+            value: '',
+            required: true,
+          };
+        }
+        continue;
+      }
+
+      if (element.component_type === 'fieldset') {
+        for (const input of element.fields) {
+          if (input.component_type === 'text_input') {
+            const inputPattern = processPatternData<InputPattern>(
+              defaultFormConfig,
+              parsedPdf,
+              'input',
+              {
+                label: input.label,
+                required: false,
+                initial: '',
+              }
+            );
+            if (inputPattern) {
+              fieldsetPatterns.push(inputPattern.id);
+              parsedPdf.outputs[inputPattern.id] = {
+                type: 'TextField',
+                name: input.id,
+                label: input.label,
+                value: '',
+                maxLength: 1024,
+                required: input.required,
+              };
             }
-          );
-          if (inputPattern) {
-            fieldsetPatterns.push(inputPattern.id);
-            parsedPdf.outputs[inputPattern.id] = {
-              type: 'TextField',
-              name: input.id,
-              label: input.label,
-              value: '',
-              maxLength: 1024,
-              required: input.required,
-            };
+          }
+          if (input.component_type === 'checkbox') {
+            const checkboxPattern = processPatternData<CheckboxPattern>(
+              defaultFormConfig,
+              parsedPdf,
+              'checkbox',
+              {
+                label: input.label,
+                defaultChecked: false,
+              }
+            );
+            if (checkboxPattern) {
+              fieldsetPatterns.push(checkboxPattern.id);
+              parsedPdf.outputs[checkboxPattern.id] = {
+                type: 'CheckBox',
+                name: input.id,
+                label: input.label,
+                value: false,
+                required: true,
+              };
+            }
           }
         }
-        if (input.component_type === 'checkbox') {
-          const checkboxPattern = processPatternData<CheckboxPattern>(
-            defaultFormConfig,
-            parsedPdf,
-            'checkbox',
-            {
-              label: input.label,
-              defaultChecked: false,
-            }
-          );
-          if (checkboxPattern) {
-            fieldsetPatterns.push(checkboxPattern.id);
-            parsedPdf.outputs[checkboxPattern.id] = {
-              type: 'CheckBox',
-              name: input.id,
-              label: input.label,
-              value: false,
-              required: true,
-            };
+      }
+
+      // Add fieldset to page elements
+      if (element.component_type === 'fieldset' && fieldsetPatterns.length > 0) {
+        const fieldset = processPatternData<FieldsetPattern>(
+          defaultFormConfig,
+          parsedPdf,
+          'fieldset',
+          {
+            legend: element.legend,
+            patterns: fieldsetPatterns,
           }
+        );
+        if (fieldset) {
+          pageElementIds.push(fieldset.id);
         }
       }
     }
 
-    // Add fieldset to parsedPdf.patterns and rootSequence
-    if (element.component_type === 'fieldset' && fieldsetPatterns.length > 0) {
-      const fieldset = processPatternData<FieldsetPattern>(
-        defaultFormConfig,
-        parsedPdf,
-        'fieldset',
-        {
-          legend: element.legend,
-          patterns: fieldsetPatterns,
-        }
-      );
-      if (fieldset) {
-        pagePatterns[element.page] = (pagePatterns[element.page] || []).concat(
-          fieldset.id
-        );
-      }
+    // Create page pattern with title from schema
+    const pagePattern = processPatternData<PagePattern>(
+      defaultFormConfig,
+      parsedPdf,
+      'page',
+      {
+        title: page.title,
+        patterns: pageElementIds,
+      },
+      undefined
+    );
+    if (pagePattern) {
+      pageIds.push(pagePattern.id);
     }
   }
 
-  // Create a pattern for the single, first page.
-  const pages: PatternId[] = Object.entries(pagePatterns)
-    .map(([page, patterns], idx) => {
-      const pagePattern = processPatternData<PagePattern>(
-        defaultFormConfig,
-        parsedPdf,
-        'page',
-        {
-          title: `${page}`,
-          patterns,
-        },
-        undefined,
-        idx
-      );
-      return pagePattern?.id;
-    })
-    .filter(page => page !== undefined) as PatternId[];
-
-  // Assign the page to the root page set.
+  // Assign the pages to the root page set
   const rootPattern = processPatternData<PageSetPattern>(
     defaultFormConfig,
     parsedPdf,
     'page-set',
     {
-      pages,
+      pages: pageIds,
     },
     'root'
   );
@@ -309,8 +300,7 @@ const processPatternData = <T extends Pattern>(
   parsedPdf: ParsedPdf,
   patternType: T['type'],
   patternData: T['data'],
-  patternId?: PatternId,
-  page?: number
+  patternId?: PatternId
 ) => {
   const result = createPattern<T>(config, patternType, patternData, patternId);
   if (!result.success) {
