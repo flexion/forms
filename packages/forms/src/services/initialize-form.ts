@@ -63,6 +63,7 @@ export const initializeForm: InitializeForm = async (ctx, opts) => {
 
   const parseResult = optionSchema.safeParse(opts);
   if (!parseResult.success) {
+    console.error('Invalid options:', parseResult.error);
     return failure({
       status: 400,
       message: 'Invalid options',

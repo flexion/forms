@@ -29,6 +29,7 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.901.0",
     "@flexion/forms-common": "workspace:*",
     "@flexion/forms-database": "workspace:*",
     "pdf-lib": "^1.17.1",
@@ -37,6 +38,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/qs": "^6.9.15"
+    "@types/qs": "^6.9.15",
+    "zod-to-json-schema": "^3.24.6"
   }
 }

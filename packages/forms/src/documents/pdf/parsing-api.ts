@@ -20,6 +20,7 @@ import {
 } from '../../pattern.js';
 import { FormErrors } from '../../error.js';
 import { defaultFormConfig } from '../../patterns/index.js';
+import { parseWithBedrock } from './bedrock-parser.js';
 
 const FormSummary = z.object({
   component_type: z.literal('form_summary'),
@@ -79,7 +80,7 @@ const Fieldset = z.object({
   page: z.union([z.number(), z.string()]),
 });
 
-const ExtractedObject = z.object({
+export const ExtractedObject = z.object({
   raw_text: z.string(),
   form_summary: FormSummary,
   elements: z
@@ -87,7 +88,7 @@ const ExtractedObject = z.object({
     .array(),
 });
 
-type ExtractedObject = z.infer<typeof ExtractedObject>;
+export type ExtractedObject = z.infer<typeof ExtractedObject>;
 
 export type ParsedPdf = {
   patterns: PatternMap;
@@ -109,22 +110,37 @@ export type FetchPdfApiResponse = (
 
 export const fetchPdfApiResponse: FetchPdfApiResponse = async (
   rawData: Uint8Array,
-  url: string = 'https://10x-atj-doc-automation-staging.app.cloud.gov/api/v2/parse' // 'http://localhost:5000/api/v2/parse'
+  url?: string
 ) => {
-  const base64 = await uint8ArrayToBase64(rawData);
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      pdf: base64,
-    }),
-  });
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
+  // If URL is provided, use external service (backward compatibility)
+  if (url) {
+    const base64 = await uint8ArrayToBase64(rawData);
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        pdf: base64,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return await response.json();
   }
-  return await response.json();
+
+  // Default: use Bedrock
+  const parseResult = await parseWithBedrock(rawData);
+  if (!parseResult.success) {
+    throw new Error(`Bedrock parsing failed: ${parseResult.error.message}`);
+  }
+
+  return {
+    message: 'PDF parsed successfully',
+    parsed_pdf: parseResult.data,
+    cache_id: 'bedrock-parsed',
+  };
 };
 
 export const processApiResponse = async (json: any): Promise<ParsedPdf> => {

@@ -5,6 +5,8 @@ import { Success } from '@flexion/forms-common';
 import { type DocumentFieldMap } from '../index.js';
 import { fillPDF } from '../pdf/index.js';
 import { getDocumentFieldData } from '../pdf/extract.js';
+import { fetchPdfApiResponse, processApiResponse } from '../pdf/parsing-api.js';
+import { PageSetPattern } from '../../patterns/page-set/config.js';
 
 import { loadSamplePDF } from './sample-data.js';
 
@@ -79,6 +81,41 @@ describe('DOJ Pardon Attorney Office - Marijuana pardon application form', () =>
       value: '12345',
     });
   });
+
+  // Only run if AWS credentials available
+  const skipIfNoCredentials = process.env.AWS_ACCESS_KEY_ID ? test : test.skip;
+
+  skipIfNoCredentials(
+    'generates guided interview from PDF via Bedrock',
+    async () => {
+      const pdfBytes = await loadSamplePDF(
+        'doj-pardon-marijuana/demo-application_for_certificate_of_pardon_for_simple_marijuana_possession.pdf'
+      );
+
+      const apiResponse = await fetchPdfApiResponse(pdfBytes);
+      const parsedPdf = await processApiResponse(apiResponse);
+
+      // Should create valid pattern structure
+      expect(parsedPdf.root).toBe('root');
+      expect(parsedPdf.patterns['root']).toBeDefined();
+      expect(parsedPdf.errors.length).toBe(0);
+
+      // Should organize into pages
+      const rootPattern = parsedPdf.patterns['root'] as PageSetPattern;
+      expect(rootPattern.data.pages.length).toBeGreaterThan(0);
+
+      // Should maintain field mappings
+      const fieldNames = Object.values(parsedPdf.outputs).map(
+        output => output.name
+      );
+      expect(fieldNames.length).toBeGreaterThan(0);
+
+      // Should have a title and description
+      expect(parsedPdf.title).toBeTruthy();
+      expect(parsedPdf.description).toBeTruthy();
+    },
+    30000
+  ); // Longer timeout for LLM call
 });
 
 const getFieldByName = (fields: DocumentFieldMap, name: string) => {
