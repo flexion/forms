@@ -85,6 +85,7 @@ const buildPrompt = (fieldMetadata: FieldMetadata[]): string => {
 Your task: Create a guided interview structure following the schema.
 
 CRITICAL REQUIREMENTS:
+- Include EVERY field from the metadata - do not omit any fields
 - Use the EXACT field IDs from the metadata. Do not modify, clean, or simplify them.
 - For radio groups: The group 'id' must match the RadioGroup field name exactly (e.g., "Ethnicity.undefined")
 - For radio options: Use numeric indices (e.g., "Ethnicity.0", "Ethnicity.1", not "Ethnicity.yes")
@@ -96,6 +97,88 @@ Field Metadata:
 ${JSON.stringify(fieldMetadata, null, 2)}
 
 Please analyze the PDF and field metadata to create a well-organized guided interview structure that follows the design principles outlined in the system prompt.`;
+};
+
+/**
+ * Extracts all field IDs from the parsed output by traversing the nested structure
+ */
+const extractFieldIds = (output: BedrockExtractedObject): Set<string> => {
+  const ids = new Set<string>();
+
+  const processElement = (element: (typeof output.pages)[0]['elements'][0]): void => {
+    switch (element.component_type) {
+      case 'text_input':
+      case 'checkbox':
+        ids.add(element.id);
+        break;
+      case 'checkbox_group':
+        element.options.forEach(opt => ids.add(opt.id));
+        break;
+      case 'radio_group':
+        ids.add(element.id);
+        break;
+      case 'fieldset':
+        element.fields.forEach(field => ids.add(field.id));
+        break;
+      // paragraph and rich_text have no field IDs
+    }
+  };
+
+  output.pages.forEach(page => {
+    page.elements.forEach(processElement);
+  });
+
+  return ids;
+};
+
+/**
+ * Finds fields from metadata that are missing in the parser output
+ */
+const findMissingFields = (
+  metadata: FieldMetadata[],
+  output: BedrockExtractedObject
+): FieldMetadata[] => {
+  const outputIds = extractFieldIds(output);
+  return metadata.filter(field => !outputIds.has(field.id));
+};
+
+/**
+ * Adds missing fields to a fallback page in the output to ensure completeness
+ */
+const addMissingFieldsToOutput = (
+  output: BedrockExtractedObject,
+  missingFields: FieldMetadata[]
+): void => {
+  if (missingFields.length === 0) return;
+
+  // Find or create "Additional Information" page
+  let additionalPage = output.pages.find(p => p.title === 'Additional Information');
+
+  if (!additionalPage) {
+    additionalPage = {
+      title: 'Additional Information',
+      elements: [],
+    };
+    output.pages.push(additionalPage);
+  }
+
+  // Add context paragraph if this is a newly created page
+  if (additionalPage.elements.length === 0) {
+    additionalPage.elements.push({
+      component_type: 'paragraph',
+      text: 'The following fields were not categorized in the form structure:',
+    });
+  }
+
+  // Add each missing field as a text input (safest default assumption)
+  missingFields.forEach(field => {
+    additionalPage!.elements.push({
+      component_type: 'text_input',
+      id: field.id,
+      label: field.label || field.id,
+      required: false,
+    });
+  });
 };
 
 /**
@@ -142,6 +225,15 @@ export class BedrockParser implements PdfParser {
           },
         ],
       });
+
+      // Validate that all fields from metadata are present in the output
+      const missingFields = findMissingFields(metadata, result.object);
+      if (missingFields.length > 0) {
+        console.warn(
+          `Parser omitted ${missingFields.length} field(s): ${missingFields.map(f => f.id).join(', ')}`
+        );
+        addMissingFieldsToOutput(result.object, missingFields);
+      }
 
       return success(result.object);
     } catch (error) {
