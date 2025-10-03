@@ -4,11 +4,11 @@ import { defaultFormConfig } from '../../patterns';
 import { addDocument } from '../document';
 import { type Blueprint } from '../..';
 import { loadSamplePDF } from './sample-data';
-import { FakePdfParser } from '../pdf/infrastructure/parsers/fake-parser.js';
-import type { ExtractedObject } from '../pdf/domain/types.js';
+import { FakePdfParser } from '../pdf/adapters/fake-parser.js';
+import type { BedrockExtractedObject } from '../pdf/parsers/bedrock/schema.js';
 
 // Simple mock for testing
-const MOCK_EXTRACTED: ExtractedObject = {
+const MOCK_EXTRACTED: BedrockExtractedObject = {
   form_summary: {
     title: 'Test Form',
     description: 'Test form for unit tests',
@@ -77,4 +77,3 @@ export const getMockFormData = (form: Blueprint): PatternValueMap => {
     return acc;
   }, {} as PatternValueMap);
 };
-

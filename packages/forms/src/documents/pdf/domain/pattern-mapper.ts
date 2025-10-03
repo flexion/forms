@@ -1,12 +1,6 @@
 import { success, failure, type Result } from '@flexion/forms-common';
-import { type FieldsetPattern } from '../../../patterns/fieldset/config.js';
-import { type InputPattern } from '../../../patterns/input/config.js';
 import { PagePattern } from '../../../patterns/page/config.js';
 import { PageSetPattern } from '../../../patterns/page-set/config.js';
-import { type ParagraphPattern } from '../../../patterns/paragraph.js';
-import { type CheckboxPattern } from '../../../patterns/checkbox.js';
-import { type RadioGroupPattern } from '../../../patterns/radio-group.js';
-import { RichTextPattern } from '../../../patterns/rich-text.js';
 import { type DocumentFieldMap } from '../../types.js';
 import {
   createPattern,
@@ -16,7 +10,18 @@ import {
   PatternMap,
 } from '../../../pattern.js';
 import { FormErrors } from '../../../error.js';
-import type { ExtractedObject, ParseError } from './types.js';
+import type { ParseError } from './types.js';
+import type { BedrockExtractedObject } from '../parsers/bedrock/schema.js';
+import {
+  mapTextInput,
+  mapCheckbox,
+  mapCheckboxGroup,
+  mapRadioGroup,
+  mapParagraph,
+  mapRichText,
+  mapFieldset,
+  type MappingContext,
+} from '../parsers/bedrock/mapper.js';
 
 /**
  * Result type for parsed PDF with patterns
@@ -35,16 +40,16 @@ export type ParsedPdf = {
 };
 
 /**
- * Maps an ExtractedObject (from LLM/parser) to internal pattern representation.
+ * Maps a BedrockExtractedObject to internal pattern representation.
  * This is a pure domain function with no external dependencies.
  *
  * @param config - Form configuration (pattern definitions)
- * @param extracted - Parsed form structure from LLM
+ * @param extracted - Parsed form structure from Bedrock LLM
  * @returns Result containing ParsedPdf or error
  */
 export const mapExtractedObjectToPatterns = (
   config: FormConfig,
-  extracted: ExtractedObject
+  extracted: BedrockExtractedObject
 ): Result<ParsedPdf, ParseError> => {
   try {
     const parsedPdf: ParsedPdf = {
@@ -57,6 +62,13 @@ export const mapExtractedObjectToPatterns = (
         extracted.form_summary.description || 'Default Form Description',
     };
 
+    // Create mapping context with helper functions
+    const context: MappingContext = {
+      config,
+      processPattern: (type, data, id) =>
+        processPatternData(config, parsedPdf, type, data, id),
+    };
+
     // Process form summary
     processPatternData(config, parsedPdf, 'form-summary', {
       title: extracted.form_summary.title || 'Default Form Title',
@@ -66,212 +78,92 @@ export const mapExtractedObjectToPatterns = (
 
     // Process each page
     const pageIds: PatternId[] = [];
-    for (let pageIdx = 0; pageIdx < extracted.pages.length; pageIdx++) {
-      const page = extracted.pages[pageIdx];
+    for (const page of extracted.pages) {
       const pageElementIds: PatternId[] = [];
 
       // Process elements within the page
       for (const element of page.elements) {
-        const fieldsetPatterns: PatternId[] = [];
+        let result;
 
-        // Add paragraph elements
-        if (element.component_type === 'paragraph') {
-          const paragraph = processPatternData<ParagraphPattern>(
-            config,
-            parsedPdf,
-            'paragraph',
-            {
-              text: element.text,
+        // Map each element type using extracted functions
+        switch (element.component_type) {
+          case 'paragraph':
+            result = mapParagraph(element, context);
+            if (result.pattern) {
+              pageElementIds.push(result.pattern.id);
             }
-          );
-          if (paragraph) {
-            pageElementIds.push(paragraph.id);
-          }
-          continue;
-        }
+            break;
 
-        if (element.component_type === 'rich_text') {
-          const richText = processPatternData<RichTextPattern>(
-            config,
-            parsedPdf,
-            'rich-text',
-            {
-              text: element.text,
+          case 'rich_text':
+            result = mapRichText(element, context);
+            if (result.pattern) {
+              pageElementIds.push(result.pattern.id);
             }
-          );
-          if (richText) {
-            pageElementIds.push(richText.id);
-          }
-          continue;
-        }
+            break;
 
-        if (element.component_type === 'checkbox') {
-          const checkboxPattern = processPatternData<CheckboxPattern>(
-            config,
-            parsedPdf,
-            'checkbox',
-            {
-              label: element.label,
-              defaultChecked: element.default_checked,
-            }
-          );
-          if (checkboxPattern) {
-            pageElementIds.push(checkboxPattern.id);
-            parsedPdf.outputs[checkboxPattern.id] = {
-              type: 'CheckBox',
-              name: element.id,
-              label: element.label,
-              value: false,
-              required: true,
-            };
-          }
-          continue;
-        }
-
-        if (element.component_type === 'checkbox_group') {
-          // Process each checkbox in the group
-          const checkboxPatternIds: PatternId[] = [];
-          for (const option of element.options) {
-            const checkboxPattern = processPatternData<CheckboxPattern>(
-              config,
-              parsedPdf,
-              'checkbox',
-              {
-                label: option.label,
-                defaultChecked: option.default_checked,
+          case 'checkbox':
+            result = mapCheckbox(element, context);
+            if (result.pattern) {
+              pageElementIds.push(result.pattern.id);
+              if (result.output) {
+                parsedPdf.outputs[result.output[0]] = result.output[1];
               }
-            );
-            if (checkboxPattern) {
-              checkboxPatternIds.push(checkboxPattern.id);
-              parsedPdf.outputs[checkboxPattern.id] = {
-                type: 'CheckBox',
-                name: option.id,
-                label: option.label,
-                value: false,
-                required: true,
-              };
             }
-          }
-          // Wrap checkboxes in a fieldset
-          if (checkboxPatternIds.length > 0) {
-            const fieldset = processPatternData<FieldsetPattern>(
-              config,
-              parsedPdf,
-              'fieldset',
-              {
-                legend: element.legend,
-                patterns: checkboxPatternIds,
-              }
-            );
-            if (fieldset) {
-              pageElementIds.push(fieldset.id);
-            }
-          }
-          continue;
-        }
+            break;
 
-        if (element.component_type === 'radio_group') {
-          const radioGroupPattern = processPatternData<RadioGroupPattern>(
-            config,
-            parsedPdf,
-            'radio-group',
-            {
-              label: element.legend,
-              hint: '',
-              options: element.options.map(option => ({
-                id: option.id,
-                label: option.label,
-                name: option.name,
-                defaultChecked: option.default_checked,
-              })),
-              required: false,
-            }
-          );
-          if (radioGroupPattern) {
-            pageElementIds.push(radioGroupPattern.id);
-            parsedPdf.outputs[radioGroupPattern.id] = {
-              type: 'RadioGroup',
-              name: element.id,
-              label: element.legend,
-              options: element.options.map(option => ({
-                id: option.id,
-                label: option.label,
-                name: option.name,
-                defaultChecked: option.default_checked,
-              })),
-              value: '',
-              required: true,
-            };
-          }
-          continue;
-        }
-
-        if (element.component_type === 'fieldset') {
-          for (const input of element.fields) {
-            if (input.component_type === 'text_input') {
-              const inputPattern = processPatternData<InputPattern>(
-                config,
-                parsedPdf,
-                'input',
-                {
-                  label: input.label,
-                  required: false,
-                  initial: '',
+          case 'checkbox_group':
+            // Checkbox group returns a fieldset, but outputs are handled separately
+            result = mapCheckboxGroup(element, context);
+            if (result.pattern) {
+              pageElementIds.push(result.pattern.id);
+              // Map outputs for each checkbox in the group
+              for (const option of element.options) {
+                const checkboxResult = mapCheckbox(
+                  {
+                    component_type: 'checkbox',
+                    id: option.id,
+                    label: option.label,
+                    default_checked: option.default_checked,
+                  },
+                  context
+                );
+                if (checkboxResult.output) {
+                  parsedPdf.outputs[checkboxResult.output[0]] =
+                    checkboxResult.output[1];
                 }
-              );
-              if (inputPattern) {
-                fieldsetPatterns.push(inputPattern.id);
-                parsedPdf.outputs[inputPattern.id] = {
-                  type: 'TextField',
-                  name: input.id,
-                  label: input.label,
-                  value: '',
-                  maxLength: 1024,
-                  required: input.required,
-                };
               }
             }
-            if (input.component_type === 'checkbox') {
-              const checkboxPattern = processPatternData<CheckboxPattern>(
-                config,
-                parsedPdf,
-                'checkbox',
-                {
-                  label: input.label,
-                  defaultChecked: false,
-                }
-              );
-              if (checkboxPattern) {
-                fieldsetPatterns.push(checkboxPattern.id);
-                parsedPdf.outputs[checkboxPattern.id] = {
-                  type: 'CheckBox',
-                  name: input.id,
-                  label: input.label,
-                  value: false,
-                  required: true,
-                };
-              }
-            }
-          }
-        }
+            break;
 
-        // Add fieldset to page elements
-        if (
-          element.component_type === 'fieldset' &&
-          fieldsetPatterns.length > 0
-        ) {
-          const fieldset = processPatternData<FieldsetPattern>(
-            config,
-            parsedPdf,
-            'fieldset',
-            {
-              legend: element.legend,
-              patterns: fieldsetPatterns,
+          case 'radio_group':
+            result = mapRadioGroup(element, context);
+            if (result.pattern) {
+              pageElementIds.push(result.pattern.id);
+              if (result.output) {
+                parsedPdf.outputs[result.output[0]] = result.output[1];
+              }
             }
-          );
-          if (fieldset) {
-            pageElementIds.push(fieldset.id);
-          }
+            break;
+
+          case 'fieldset':
+            result = mapFieldset(element, context);
+            if (result.pattern) {
+              pageElementIds.push(result.pattern.id);
+              // Map outputs for each field in the fieldset
+              for (const field of element.fields) {
+                let fieldResult;
+                if (field.component_type === 'text_input') {
+                  fieldResult = mapTextInput(field, context);
+                } else if (field.component_type === 'checkbox') {
+                  fieldResult = mapCheckbox(field, context);
+                }
+                if (fieldResult?.output) {
+                  parsedPdf.outputs[fieldResult.output[0]] =
+                    fieldResult.output[1];
+                }
+              }
+            }
+            break;
         }
       }
 

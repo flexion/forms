@@ -1,29 +1,26 @@
-import { getDocumentFieldData } from './extract.js';
-import {
-  type ParsedPdf,
-  parsePdf as parsePdfNew,
-  fetchPdfApiResponse,
-  processApiResponse,
-} from './parsing-api.js';
-import type { DocumentFieldMap } from '../types.js';
+// Primary PDF parsing API
+export { parsePdf } from './parsing-api.js';
+export type { ParsePdf } from './parsing-api.js';
 
-// Re-export new clean architecture API
-export { parsePdf as parsePdfToPatterns } from './parsing-api.js';
-export { createBedrockParser } from './infrastructure/parsers/bedrock-parser.js';
-export { createExternalParser } from './infrastructure/parsers/external-parser.js';
-export { FakePdfParser, createSimpleFakeParser } from './infrastructure/parsers/fake-parser.js';
-export type { PdfParser } from './application/parser-interface.js';
-export type { PdfParsingContext } from './application/context.js';
+// Re-export types and utilities
 export type { ParsedPdf } from './domain/pattern-mapper.js';
-export type {
-  ExtractedObject,
-  FieldMetadata,
-  ParseError,
-} from './domain/types.js';
+export type { FieldMetadata, ParseError } from './domain/types.js';
+export type { BedrockExtractedObject } from './parsers/bedrock/schema.js';
+export type { PdfParser } from './services/parser-interface.js';
+export type { PdfParsingContext } from './services/context.js';
 
+// Parser implementations
+export { createBedrockParser } from './adapters/bedrock-parser.js';
+export {
+  FakePdfParser,
+  createSimpleFakeParser,
+} from './adapters/fake-parser.js';
+
+// PDF generation
 export * from './generate.js';
 export { generateDummyPDF } from './generate-dummy.js';
 
+// Legacy types
 export type PDFDocument = {
   type: 'pdf';
   fields: PDFField[];
@@ -43,14 +40,3 @@ export type PDFFieldType =
   | 'RadioGroup'
   | 'Paragraph'
   | 'RichText';
-
-// Legacy API - kept for backward compatibility
-export type ParsePdf = (
-  pdf: Uint8Array
-) => Promise<{ parsedPdf: ParsedPdf; fields: DocumentFieldMap }>;
-
-export const parsePdf: ParsePdf = async (pdfBytes: Uint8Array) => {
-  const fields = await getDocumentFieldData(pdfBytes);
-  const parsedPdf = await parsePdfNew(pdfBytes);
-  return { parsedPdf, fields };
-};

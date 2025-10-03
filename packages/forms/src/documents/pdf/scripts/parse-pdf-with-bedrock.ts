@@ -12,7 +12,7 @@
  */
 
 import { readFile, writeFile } from 'fs/promises';
-import { createBedrockParser } from '../infrastructure/parsers/bedrock-parser.js';
+import { createBedrockParser } from '../adapters/bedrock-parser.js';
 import { extractFieldMetadata } from '../domain/field-extractor.js';
 
 async function main() {
@@ -43,7 +43,10 @@ async function main() {
   const startTime = Date.now();
 
   const parser = createBedrockParser();
-  const result = await parser.parse(new Uint8Array(pdfBytes), metadataResult.data);
+  const result = await parser.parse(
+    new Uint8Array(pdfBytes),
+    metadataResult.data
+  );
 
   const duration = Date.now() - startTime;
   console.log(`Bedrock invocation completed in ${duration}ms`);

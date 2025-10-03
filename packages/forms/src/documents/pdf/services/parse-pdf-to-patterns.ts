@@ -22,21 +22,18 @@ export const parsePdfToPatterns = async (
   context: PdfParsingContext,
   pdfBytes: Uint8Array
 ): Promise<Result<ParsedPdf, ParseError>> => {
-  // Step 1: Extract field metadata (domain logic)
+  // Step 1: Extract field metadata
   const metadataResult = await extractFieldMetadata(pdfBytes);
   if (!metadataResult.success) {
     return metadataResult;
   }
 
-  // Step 2: Parse PDF using injected parser (infrastructure)
-  const parseResult = await context.parser.parse(
-    pdfBytes,
-    metadataResult.data
-  );
+  // Step 2: Parse PDF using injected parser
+  const parseResult = await context.parser.parse(pdfBytes, metadataResult.data);
   if (!parseResult.success) {
     return parseResult;
   }
 
-  // Step 3: Map to patterns (domain logic)
+  // Step 3: Map to patterns
   return mapExtractedObjectToPatterns(context.formConfig, parseResult.data);
 };

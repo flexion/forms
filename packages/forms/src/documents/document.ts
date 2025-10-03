@@ -13,9 +13,9 @@ import { getDocumentFieldData } from './pdf/extract.js';
 
 import { type PDFDocument } from './pdf/index.js';
 import { type ParsedPdf } from './pdf/domain/pattern-mapper.js';
-import { type PdfParser } from './pdf/application/parser-interface.js';
-import { parsePdfToPatterns } from './pdf/application/pdf-parsing-service.js';
-import { createBedrockParser } from './pdf/infrastructure/parsers/bedrock-parser.js';
+import { type PdfParser } from './pdf/services/parser-interface.js';
+import { parsePdfToPatterns } from './pdf/services/parse-pdf-to-patterns.js';
+import { createBedrockParser } from './pdf/adapters/bedrock-parser.js';
 
 import { type DocumentFieldMap } from './types.js';
 

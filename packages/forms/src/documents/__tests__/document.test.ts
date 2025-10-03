@@ -8,7 +8,7 @@ import { type PagePattern } from '../../patterns/page/config.js';
 
 import { addDocument } from '../document.js';
 import { loadSamplePDF } from './sample-data.js';
-import { createSimpleFakeParser } from '../pdf/infrastructure/parsers/fake-parser.js';
+import { createSimpleFakeParser } from '../pdf/adapters/fake-parser.js';
 
 describe('addDocument document processing', () => {
   it('creates expected blueprint', async () => {

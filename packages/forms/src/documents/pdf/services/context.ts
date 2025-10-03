@@ -6,7 +6,7 @@ import type { PdfParser } from './parser-interface.js';
  * Injected as the first parameter to parsing service functions.
  */
 export type PdfParsingContext = {
-  /** Parser implementation (Bedrock, external service, fake, etc.) */
+  /** Parser implementation (Bedrock, fake, etc.) */
   parser: PdfParser;
   /** Form configuration with pattern definitions */
   formConfig: FormConfig;

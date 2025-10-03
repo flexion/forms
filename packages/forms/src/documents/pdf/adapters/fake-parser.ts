@@ -1,26 +1,23 @@
 import { success, type Result } from '@flexion/forms-common';
-import type { PdfParser } from '../../application/parser-interface.js';
-import type {
-  ExtractedObject,
-  FieldMetadata,
-  ParseError,
-} from '../../domain/types.js';
+import type { PdfParser } from '../services/parser-interface.js';
+import type { FieldMetadata, ParseError } from '../domain/types.js';
+import type { BedrockExtractedObject } from '../parsers/bedrock/schema.js';
 
 /**
  * Fake PDF parser for testing.
  * Returns a pre-configured response without making any external calls.
  */
 export class FakePdfParser implements PdfParser {
-  private readonly mockResponse: ExtractedObject;
+  private readonly mockResponse: BedrockExtractedObject;
 
-  constructor(mockResponse: ExtractedObject) {
+  constructor(mockResponse: BedrockExtractedObject) {
     this.mockResponse = mockResponse;
   }
 
   async parse(
     _pdfBytes: Uint8Array,
     _metadata: FieldMetadata[]
-  ): Promise<Result<ExtractedObject, ParseError>> {
+  ): Promise<Result<BedrockExtractedObject, ParseError>> {
     // Simulate async operation
     return Promise.resolve(success(this.mockResponse));
   }

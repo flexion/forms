@@ -1,13 +1,9 @@
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
 import { generateObject } from 'ai';
-import { success, failure } from '@flexion/forms-common';
-import type { PdfParser } from '../../application/parser-interface.js';
-import {
-  ExtractedObject,
-  type FieldMetadata,
-  type ParseResult,
-  type ParseError,
-} from '../../domain/types.js';
+import { success, failure, type Result } from '@flexion/forms-common';
+import type { PdfParser } from '../services/parser-interface.js';
+import type { FieldMetadata, ParseError } from '../domain/types.js';
+import { BedrockExtractedObject } from '../parsers/bedrock/schema.js';
 
 /**
  * Configuration options for BedrockParser
@@ -117,14 +113,14 @@ export class BedrockParser implements PdfParser {
   async parse(
     pdfBytes: Uint8Array,
     metadata: FieldMetadata[]
-  ): Promise<ParseResult> {
+  ): Promise<Result<BedrockExtractedObject, ParseError>> {
     try {
       const bedrock = createAmazonBedrock({ region: this.region });
       const prompt = buildPrompt(metadata);
 
       const result = await generateObject({
         model: bedrock(this.modelId),
-        schema: ExtractedObject,
+        schema: BedrockExtractedObject,
         schemaName: 'GuidedInterviewForm',
         schemaDescription:
           'A structured guided interview form with multiple pages and organized elements',
@@ -167,8 +163,7 @@ export const createBedrockParser = (
   config?: Partial<BedrockParserConfig>
 ): BedrockParser => {
   return new BedrockParser({
-    modelId:
-      config?.modelId || 'us.anthropic.claude-sonnet-4-5-20250929-v1:0',
+    modelId: config?.modelId || 'us.anthropic.claude-sonnet-4-5-20250929-v1:0',
     region: config?.region || 'us-east-1',
   });
 };

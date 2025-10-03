@@ -3,9 +3,8 @@ import { describe, expect, test } from 'vitest';
 import { Success } from '@flexion/forms-common';
 
 import { type DocumentFieldMap } from '../index.js';
-import { fillPDF } from '../pdf/index.js';
+import { fillPDF, parsePdf } from '../pdf/index.js';
 import { getDocumentFieldData } from '../pdf/extract.js';
-import { fetchPdfApiResponse, processApiResponse } from '../pdf/parsing-api.js';
 import { PageSetPattern } from '../../patterns/page-set/config.js';
 
 import { loadSamplePDF } from './sample-data.js';
@@ -92,8 +91,8 @@ describe('DOJ Pardon Attorney Office - Marijuana pardon application form', () =>
         'doj-pardon-marijuana/demo-application_for_certificate_of_pardon_for_simple_marijuana_possession.pdf'
       );
 
-      const apiResponse = await fetchPdfApiResponse(pdfBytes);
-      const parsedPdf = await processApiResponse(apiResponse);
+      const result = await parsePdf(pdfBytes);
+      const { parsedPdf, fields } = result;
 
       // Should create valid pattern structure
       expect(parsedPdf.root).toBe('root');
@@ -113,6 +112,9 @@ describe('DOJ Pardon Attorney Office - Marijuana pardon application form', () =>
       // Should have a title and description
       expect(parsedPdf.title).toBeTruthy();
       expect(parsedPdf.description).toBeTruthy();
+
+      // Should also extract raw field data
+      expect(Object.keys(fields).length).toBeGreaterThan(0);
     },
     30000
   ); // Longer timeout for LLM call
