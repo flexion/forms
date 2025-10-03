@@ -54,7 +54,9 @@ Guided Interview Design Principles:
    - Order pages logically (personal info → specific details → review)
 
 3. CLEAR CONTEXT
-   - Use 'paragraph' or 'rich_text' elements to provide instructions
+   - Use 'paragraph' for simple plain text instructions
+   - Use 'rich_text' for formatted content (headings, lists, emphasis)
+   - IMPORTANT: rich_text must use HTML format (h2, h3, p, ul, li, strong, etc.)
    - Place context BEFORE the related fields
    - Use fieldset legends to label grouped fields
 

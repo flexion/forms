@@ -47,7 +47,7 @@ const Paragraph = z.object({
 
 const RichText = z.object({
   component_type: z.literal('rich_text'),
-  text: z.string().describe('Rich text content (markdown supported)'),
+  text: z.string().describe('Rich text content in HTML format (use semantic HTML tags like h2, h3, p, ul, li, strong, etc.)'),
 });
 
 const FieldsetField = z.discriminatedUnion('component_type', [
