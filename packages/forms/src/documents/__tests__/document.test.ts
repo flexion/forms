@@ -8,6 +8,7 @@ import { type PagePattern } from '../../patterns/page/config.js';
 
 import { addDocument } from '../document.js';
 import { loadSamplePDF } from './sample-data.js';
+import { createSimpleFakeParser } from '../pdf/infrastructure/parsers/fake-parser.js';
 
 describe('addDocument document processing', () => {
   it('creates expected blueprint', async () => {
@@ -22,10 +23,7 @@ describe('addDocument document processing', () => {
         data: new Uint8Array(pdfBytes),
       },
       {
-        fetchPdfApiResponse: async () => {
-          const { mockResponse } = await import('../pdf/mock-response.js');
-          return mockResponse;
-        },
+        parser: createSimpleFakeParser(),
       }
     );
     const rootPattern = getPattern<PageSetPattern>(

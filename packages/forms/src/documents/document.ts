@@ -8,15 +8,14 @@ import { type Pattern } from '../pattern.js';
 import { type InputPattern } from '../patterns/input/config.js';
 import { type SequencePattern } from '../patterns/sequence.js';
 import { type Blueprint } from '../types.js';
+import { defaultFormConfig } from '../patterns/index.js';
 import { getDocumentFieldData } from './pdf/extract.js';
 
 import { type PDFDocument } from './pdf/index.js';
-import {
-  type FetchPdfApiResponse,
-  type ParsedPdf,
-  fetchPdfApiResponse,
-  processApiResponse,
-} from './pdf/parsing-api.js';
+import { type ParsedPdf } from './pdf/domain/pattern-mapper.js';
+import { type PdfParser } from './pdf/application/parser-interface.js';
+import { parsePdfToPatterns } from './pdf/application/pdf-parsing-service.js';
+import { createBedrockParser } from './pdf/infrastructure/parsers/bedrock-parser.js';
 
 import { type DocumentFieldMap } from './types.js';
 
@@ -55,14 +54,23 @@ export const addDocument = async (
     data: Uint8Array;
   },
   context: {
-    fetchPdfApiResponse: FetchPdfApiResponse;
-  } = { fetchPdfApiResponse }
+    parser?: PdfParser;
+  } = {}
 ) => {
   const fields = await getDocumentFieldData(fileDetails.data);
-  const json = await context.fetchPdfApiResponse(fileDetails.data);
-  const parsedPdf = await processApiResponse(json);
 
-  if (parsedPdf) {
+  // Use provided parser or default to Bedrock
+  const parser = context.parser || createBedrockParser();
+
+  // Parse PDF to patterns using clean architecture
+  const result = await parsePdfToPatterns(
+    { parser, formConfig: defaultFormConfig },
+    fileDetails.data
+  );
+
+  if (result.success) {
+    const parsedPdf = result.data;
+
     form = updateFormSummary(form, {
       title: parsedPdf.title || fileDetails.name,
       description: parsedPdf.description,
@@ -84,6 +92,7 @@ export const addDocument = async (
       errors: parsedPdf.errors,
     };
   } else {
+    // Fallback: parsing failed, use simple field extraction
     const formWithFields = addDocumentFieldsToForm(form, fields);
     const updatedForm = addFormOutput(formWithFields, {
       id: 'document-1', // TODO: generate a unique ID

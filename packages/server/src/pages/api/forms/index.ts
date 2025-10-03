@@ -17,6 +17,7 @@ export const POST: APIRoute = async context => {
   const ctx = await getServerContext(context);
   //const result = await ctx.formService.addForm(form);
   const result = await ctx.formService.initializeForm(input);
+  console.log(result.success ? 'Form initialized' : result.error);
   return new Response(JSON.stringify(result), {
     headers: {
       'Content-Type': 'application/json',
