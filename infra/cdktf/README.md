@@ -16,11 +16,51 @@ To perform a deployment, ensure the current environment is configured with crede
 pnpm deploy
 ```
 
+## Deployment environments
+
+This project supports multiple deployment targets:
+- `main`: Production deployment to Cloud.gov
+- `demo`: Demo deployment to Cloud.gov
+- `sandbox-aws`: Sandbox deployment to AWS (App Runner + RDS)
+
 ## Cloud services
 
 ### AWS
 
-The Terraform state is maintained in an AWS S3 bucket. Also, some experimental integrations have at times been deployed to AWS. In order to apply the Terraform, you must have appropriate AWS credentials in your current environment.
+The Terraform state is maintained in an AWS S3 bucket. The `sandbox-aws` environment deploys to AWS using:
+- **App Runner** for the containerized application
+- **RDS PostgreSQL** for the database
+- **VPC** with public subnets
+- **Secrets Manager** for database credentials
+- **ECR** for container images
+
+To deploy to AWS, you must have appropriate AWS credentials configured:
+
+```bash
+export AWS_ACCESS_KEY_ID=<your-access-key>
+export AWS_SECRET_ACCESS_KEY=<your-secret-key>
+export AWS_DEFAULT_REGION=us-east-2
+```
+
+#### Deploying sandbox-aws
+
+Before deploying, ensure the Docker image is built and pushed to ECR:
+
+```bash
+# Build the sandbox app Docker image
+docker build --build-arg APP_DIR=sandbox -t sandbox:latest -f Dockerfile .
+
+# Tag and push to ECR (replace <account-id> with your AWS account ID)
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-2.amazonaws.com
+docker tag sandbox:latest <account-id>.dkr.ecr.us-east-2.amazonaws.com/tts-10x-forms-sandbox-aws-sandbox:latest
+docker push <account-id>.dkr.ecr.us-east-2.amazonaws.com/tts-10x-forms-sandbox-aws-sandbox:latest
+```
+
+Then deploy the infrastructure:
+
+```bash
+pnpm deploy:sandbox-aws
+```
 
 ### Cloud.gov
 

@@ -11,6 +11,9 @@ switch (deployEnv) {
   case 'demo':
     import('./spaces/demo');
     break;
+  case 'sandbox-aws':
+    import('./spaces/sandbox-aws');
+    break;
   default:
     throw new Error(`Please specify a valid environment (got: "${deployEnv}")`);
 }
