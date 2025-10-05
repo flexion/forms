@@ -4,6 +4,7 @@ import { parsePdfToPatterns } from './parse-pdf-to-patterns.js';
 import { FakePdfParser } from '../adapters/fake-parser.js';
 import type { ExtractedForm } from '../domain/schema.js';
 import { success } from '@flexion/forms-common';
+import { createNoopLlmContext } from '../../../llm/services/context.js';
 
 // Mock the field extractor to avoid needing a real PDF
 vi.mock('../domain/field-extractor.js', () => ({
@@ -97,6 +98,7 @@ describe('parsePdfToPatterns', () => {
 
     // Create context with fake parser
     const context = {
+      llm: createNoopLlmContext(),
       parser: fakeParser,
       formConfig: defaultFormConfig,
     };
@@ -145,6 +147,7 @@ describe('parsePdfToPatterns', () => {
     };
 
     const context = {
+      llm: createNoopLlmContext(),
       parser: errorParser,
       formConfig: defaultFormConfig,
     };

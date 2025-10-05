@@ -1,7 +1,5 @@
-import { defaultFormConfig } from '../../patterns/index.js';
 import { parsePdfToPatterns } from './services/parse-pdf-to-patterns.js';
 import type { PdfParsingContext } from './services/context.js';
-import { createBedrockParser } from './adapters/bedrock-parser.js';
 import type { ParsedPdf } from './domain/pattern-mapper.js';
 import { getDocumentFieldData } from './extract.js';
 import type { DocumentFieldMap } from '../types.js';
@@ -14,6 +12,7 @@ export type { ParsedPdf };
  * Returns both the parsed pattern structure and raw field data.
  */
 export type ParsePdf = (
+  context: PdfParsingContext,
   pdf: Uint8Array
 ) => Promise<{ parsedPdf: ParsedPdf; fields: DocumentFieldMap }>;
 
@@ -21,25 +20,20 @@ export type ParsePdf = (
  * Parses a PDF into patterns and extracts field data.
  * This is the primary API for PDF parsing.
  *
+ * @param context - PDF parsing context with LLM services, parser, and form config
  * @param pdfBytes - Raw PDF bytes
  * @returns Object containing:
  *   - parsedPdf: Pattern structure for building form UI
  *   - fields: Raw PDF field data for filling PDF with user responses
  */
-export const parsePdf: ParsePdf = async (pdfBytes: Uint8Array) => {
+export const parsePdf: ParsePdf = async (
+  context: PdfParsingContext,
+  pdfBytes: Uint8Array
+) => {
   // Extract raw field data (needed for filling PDF later)
   const fields = await getDocumentFieldData(pdfBytes);
 
-  // Create parser using Bedrock
-  const parser = createBedrockParser();
-
-  // Create context with parser and form config
-  const context: PdfParsingContext = {
-    parser,
-    formConfig: defaultFormConfig,
-  };
-
-  // Parse PDF to patterns
+  // Parse PDF to patterns using injected context
   const result = await parsePdfToPatterns(context, pdfBytes);
 
   if (!result.success) {

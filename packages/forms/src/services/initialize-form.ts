@@ -3,7 +3,7 @@ import * as z from 'zod';
 import { type Result, failure, success } from '@flexion/forms-common';
 
 import { BlueprintBuilder } from '../builder/index.js';
-import { type FormServiceContext } from '../context/index.js';
+import { type InternalFormServiceContext } from '../context/index.js';
 import type { FormSummary } from '../types.js';
 import { base64ToUint8Array } from '../util/base64.js';
 
@@ -17,7 +17,7 @@ type InitializeFormResult = {
 };
 
 export type InitializeForm = (
-  ctx: FormServiceContext,
+  ctx: InternalFormServiceContext,
   opts:
     | unknown
     | {

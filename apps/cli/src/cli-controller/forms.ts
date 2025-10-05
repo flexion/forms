@@ -3,7 +3,7 @@ import { Command } from 'commander';
 
 import { commands } from '@flexion/forms-infra-core';
 import { type Context } from './types.js';
-import { createFormService, createFormsRepository, defaultFormConfig, parsePdf } from '@flexion/forms-core';
+import { createFormService, createFormsRepository, defaultFormConfig, createTestPdfParser, parsePdf as parsePdfCore } from '@flexion/forms-core';
 import { createFilesystemDatabaseContext } from '@flexion/forms-database/context';
 
 export const addFormCommands = (ctx: Context, cli: Command) => {
@@ -17,7 +17,7 @@ export const addFormCommands = (ctx: Context, cli: Command) => {
         repository,
         isUserLoggedIn: () => true,
         config: defaultFormConfig,
-        parsePdf,
+        parser: createTestPdfParser(), // Use test parser with filesystem cache for CLI
       });
     });
 
@@ -26,7 +26,10 @@ export const addFormCommands = (ctx: Context, cli: Command) => {
     .description('Intialize a new form by importing a PDF file')
     .argument('<string>', 'Source PDF file for form.')
     .action(async inputFile => {
-      const maybeForm = await parsePdf(inputFile);
+      // For standalone import-pdf command, use test parser with caching
+      const parser = createTestPdfParser();
+      const pdfBytes = await fs.readFile(inputFile);
+      const maybeForm = await parsePdfCore({ parser, formConfig: defaultFormConfig }, pdfBytes);
       if (maybeForm === undefined) {
         console.error('Error parsing PDF file:', inputFile);
         return;

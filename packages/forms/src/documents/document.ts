@@ -15,7 +15,6 @@ import { type PDFDocument } from './pdf/index.js';
 import { type ParsedPdf } from './pdf/domain/pattern-mapper.js';
 import { type PdfParser } from './pdf/services/parser-interface.js';
 import { parsePdfToPatterns } from './pdf/services/parse-pdf-to-patterns.js';
-import { createBedrockParser } from './pdf/adapters/bedrock-parser.js';
 
 import { type DocumentFieldMap } from './types.js';
 
@@ -59,12 +58,28 @@ export const addDocument = async (
 ) => {
   const fields = await getDocumentFieldData(fileDetails.data);
 
-  // Use provided parser or default to Bedrock
-  const parser = context.parser || createBedrockParser();
+  // Skip parsing if no parser provided (fallback to simple field extraction)
+  if (!context.parser) {
+    const formWithFields = addDocumentFieldsToForm(form, fields);
+    const updatedForm = addFormOutput(formWithFields, {
+      id: 'document-1', // TODO: generate a unique ID
+      path: fileDetails.name,
+      fields,
+      formFields: Object.fromEntries(
+        Object.keys(fields).map(field => {
+          return [field, fields[field].name];
+        })
+      ),
+    });
+    return {
+      newFields: fields,
+      updatedForm,
+    };
+  }
 
-  // Parse PDF to patterns using clean architecture
+  // Parse PDF to patterns using injected parser
   const result = await parsePdfToPatterns(
-    { parser, formConfig: defaultFormConfig },
+    { parser: context.parser, formConfig: defaultFormConfig },
     fileDetails.data
   );
 

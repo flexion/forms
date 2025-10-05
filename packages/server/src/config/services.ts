@@ -3,7 +3,7 @@ import {
   createFormService,
   createFormsRepository,
   defaultFormConfig,
-  parsePdf,
+  createProductionPdfParser,
 } from '@flexion/forms-core';
 import { type ServerOptions } from './options.js';
 
@@ -18,6 +18,6 @@ export const createServerFormService = (
     }),
     config: defaultFormConfig,
     isUserLoggedIn: ctx.isUserLoggedIn,
-    parsePdf,
+    parser: createProductionPdfParser(options.db),
   });
 };

@@ -14,6 +14,7 @@
 import { readFile, writeFile } from 'fs/promises';
 import { createBedrockParser } from '../adapters/bedrock-parser.js';
 import { extractFieldMetadata } from '../domain/field-extractor.js';
+import { createTestLlmContext } from '../../../llm/services/context.js';
 
 async function main() {
   const args = process.argv.slice(2);
@@ -42,7 +43,9 @@ async function main() {
   console.log('Invoking Bedrock...');
   const startTime = Date.now();
 
-  const parser = createBedrockParser();
+  // Use test LLM context with filesystem caching
+  const llmContext = createTestLlmContext('__fixtures__/ai-cache');
+  const parser = createBedrockParser(llmContext);
   const result = await parser.parse(
     new Uint8Array(pdfBytes),
     metadataResult.data

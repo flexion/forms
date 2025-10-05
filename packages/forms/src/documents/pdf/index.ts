@@ -16,6 +16,13 @@ export {
   createSimpleFakeParser,
 } from './adapters/fake-parser.js';
 
+// Parser factory functions
+export {
+  createProductionPdfParser,
+  createTestPdfParser,
+  createNoopPdfParser,
+} from './context.js';
+
 // PDF generation
 export * from './generate.js';
 export { generateDummyPDF } from './generate-dummy.js';

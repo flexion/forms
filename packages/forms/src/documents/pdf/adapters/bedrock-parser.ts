@@ -1,17 +1,14 @@
-import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
-import { generateObject } from 'ai';
 import { success, failure, type Result } from '@flexion/forms-common';
 import type { PdfParser } from '../services/parser-interface.js';
 import type { FieldMetadata, ParseError } from '../domain/types.js';
 import { ExtractedFormSchema, type ExtractedForm } from '../domain/schema.js';
+import type { LlmContext } from '../../../llm/services/context.js';
+import { generateObjectCached } from '../../../llm/services/generate-object.js';
+import {
+  createBedrockModel,
+  type BedrockConfig,
+} from '../../../llm/providers/bedrock.js';
 
-/**
- * Configuration options for BedrockParser
- */
-export type BedrockParserConfig = {
-  modelId: string;
-  region: string;
-};
 
 /**
  * System prompt for the LLM
@@ -186,15 +183,16 @@ const addMissingFieldsToOutput = (
 };
 
 /**
- * PDF parser implementation using AWS Bedrock (Claude via AI SDK)
+ * PDF parser using AWS Bedrock (Claude) via AI SDK.
+ * Uses LLM context for automatic caching and provider management.
  */
 export class BedrockParser implements PdfParser {
-  private readonly modelId: string;
-  private readonly region: string;
+  private readonly model: ReturnType<typeof createBedrockModel>;
+  private readonly llmContext: LlmContext;
 
-  constructor(config: BedrockParserConfig) {
-    this.modelId = config.modelId;
-    this.region = config.region;
+  constructor(llmContext: LlmContext, config: Partial<BedrockConfig> = {}) {
+    this.llmContext = llmContext;
+    this.model = createBedrockModel(config);
   }
 
   async parse(
@@ -202,11 +200,11 @@ export class BedrockParser implements PdfParser {
     metadata: FieldMetadata[]
   ): Promise<Result<ExtractedForm, ParseError>> {
     try {
-      const bedrock = createAmazonBedrock({ region: this.region });
       const prompt = buildPrompt(metadata);
 
-      const result = await generateObject({
-        model: bedrock(this.modelId),
+      // Use cached generateObject from llm services
+      const result = await generateObjectCached(this.llmContext, {
+        model: this.model,
         schema: ExtractedFormSchema,
         schemaName: 'GuidedInterviewForm',
         schemaDescription:
@@ -230,16 +228,19 @@ export class BedrockParser implements PdfParser {
         ],
       });
 
+      // Extract and type the parsed object (schema ensures correct type)
+      const parsedForm = result.object as ExtractedForm;
+
       // Validate that all fields from metadata are present in the output
-      const missingFields = findMissingFields(metadata, result.object);
+      const missingFields = findMissingFields(metadata, parsedForm);
       if (missingFields.length > 0) {
         console.warn(
           `Parser omitted ${missingFields.length} field(s): ${missingFields.map(f => f.id).join(', ')}`
         );
-        addMissingFieldsToOutput(result.object, missingFields);
+        addMissingFieldsToOutput(parsedForm, missingFields);
       }
 
-      return success(result.object);
+      return success(parsedForm);
     } catch (error) {
       console.error('Bedrock API error:', error);
       const parseError: ParseError = {
@@ -253,13 +254,12 @@ export class BedrockParser implements PdfParser {
 }
 
 /**
- * Factory function to create BedrockParser with default configuration
+ * Factory function to create BedrockParser with default configuration.
+ * @deprecated Use `new BedrockParser(llmContext)` directly instead.
  */
 export const createBedrockParser = (
-  config?: Partial<BedrockParserConfig>
+  llmContext: LlmContext,
+  config?: Partial<BedrockConfig>
 ): BedrockParser => {
-  return new BedrockParser({
-    modelId: config?.modelId || 'us.anthropic.claude-sonnet-4-5-20250929-v1:0',
-    region: config?.region || 'us-east-1',
-  });
+  return new BedrockParser(llmContext, config);
 };

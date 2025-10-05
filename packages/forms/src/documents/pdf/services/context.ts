@@ -3,7 +3,7 @@ import type { PdfParser } from './parser-interface.js';
 
 /**
  * Context for PDF parsing operations.
- * Injected as the first parameter to parsing service functions.
+ * Parser implementations encapsulate their own LLM context internally.
  */
 export type PdfParsingContext = {
   /** Parser implementation (Bedrock, fake, etc.) */
