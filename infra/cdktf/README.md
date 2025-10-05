@@ -18,16 +18,21 @@ pnpm deploy
 
 ## Deployment environments
 
-This project supports multiple deployment targets:
-- `main`: Production deployment to Cloud.gov
-- `demo`: Demo deployment to Cloud.gov
-- `sandbox-aws`: Sandbox deployment to AWS (App Runner + RDS)
+This project supports multiple deployment targets organized by platform:
+
+### Cloud.gov
+- `cloud-gov-main`: Production deployment to Cloud.gov
+- `cloud-gov-demo`: Demo deployment to Cloud.gov
+
+### AWS
+- `aws-main`: Production deployment to AWS (App Runner + RDS)
+- `aws-demo`: Demo deployment to AWS (App Runner + RDS)
 
 ## Cloud services
 
 ### AWS
 
-The Terraform state is maintained in an AWS S3 bucket. The `sandbox-aws` environment deploys to AWS using:
+The Terraform state is maintained in an AWS S3 bucket. AWS deployments use:
 - **App Runner** for the containerized application
 - **RDS PostgreSQL** for the database
 - **VPC** with public subnets
@@ -42,7 +47,7 @@ export AWS_SECRET_ACCESS_KEY=<your-secret-key>
 export AWS_DEFAULT_REGION=us-east-2
 ```
 
-#### Deploying sandbox-aws
+#### Deploying to AWS
 
 Before deploying, ensure the Docker image is built and pushed to ECR:
 
@@ -50,16 +55,22 @@ Before deploying, ensure the Docker image is built and pushed to ECR:
 # Build the sandbox app Docker image
 docker build --build-arg APP_DIR=sandbox -t sandbox:latest -f Dockerfile .
 
-# Tag and push to ECR (replace <account-id> with your AWS account ID)
+# Tag and push to ECR (replace <account-id> and <env> with your values)
+# For demo: flexion-forms-demo
+# For main: flexion-forms-main
 aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-2.amazonaws.com
-docker tag sandbox:latest <account-id>.dkr.ecr.us-east-2.amazonaws.com/tts-10x-forms-sandbox-aws-sandbox:latest
-docker push <account-id>.dkr.ecr.us-east-2.amazonaws.com/tts-10x-forms-sandbox-aws-sandbox:latest
+docker tag sandbox:latest <account-id>.dkr.ecr.us-east-2.amazonaws.com/flexion-forms-<env>:latest
+docker push <account-id>.dkr.ecr.us-east-2.amazonaws.com/flexion-forms-<env>:latest
 ```
 
 Then deploy the infrastructure:
 
 ```bash
-pnpm deploy:sandbox-aws
+# Deploy to demo
+pnpm deploy:aws-demo
+
+# Deploy to main/production
+pnpm deploy:aws-main
 ```
 
 ### Cloud.gov

@@ -5,14 +5,17 @@ const app = new App();
 const deployEnv = process.env.DEPLOY_ENV;
 
 switch (deployEnv) {
-  case 'main':
-    import('./spaces/main');
+  case 'cloud-gov-main':
+    import('./spaces/cloud-gov/main');
     break;
-  case 'demo':
-    import('./spaces/demo');
+  case 'cloud-gov-demo':
+    import('./spaces/cloud-gov/demo');
     break;
-  case 'sandbox-aws':
-    import('./spaces/sandbox-aws');
+  case 'aws-main':
+    import('./spaces/aws/main');
+    break;
+  case 'aws-demo':
+    import('./spaces/aws/demo');
     break;
   default:
     throw new Error(`Please specify a valid environment (got: "${deployEnv}")`);
