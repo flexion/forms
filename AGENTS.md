@@ -1,6 +1,17 @@
 # Repository Guidelines
 
-This guide helps contributors work effectively in the 10x Forms Platform monorepo.
+This guide helps AI agents and contributors work effectively in the Forms Platform monorepo.
+
+## Documentation Index
+
+For comprehensive documentation, see [DOCS.md](./DOCS.md).
+
+**Quick links:**
+- [Quick Reference](./documents/quick-reference.md) - Common commands and workflows
+- [Patterns and Conventions](./documents/patterns-and-conventions.md) - Coding standards
+- [Architecture Overview](./documents/architecture.md) - System design
+- [Terminology](./documents/terminology.md) - Domain language
+- [ADRs](./documents/adr/) - Architectural decisions
 
 ## Project Structure & Module Organization
 
@@ -41,6 +52,17 @@ Tip: Tests that hit the database require Docker or Podman. Install Playwright br
 
 - Commits: follow Conventional Commits (e.g., `feat:`, `fix:`, `refactor:`). Include scope and ticket/issue (`TCKT-123`, `#123`) when relevant.
 - PRs: clear description, linked issues, screenshots for UI, tests updated, docs updated, and passing CI. One logical change per PR.
+
+## Documentation Maintenance
+
+When making code changes, update relevant documentation in the same PR:
+- Update package READMEs when public APIs change
+- Create ADR for significant architectural decisions (use next number in sequence)
+- Update [DOCS.md](./DOCS.md) when adding new documentation files
+- Keep [Quick Reference](./documents/quick-reference.md) current with command changes
+- Update [Patterns and Conventions](./documents/patterns-and-conventions.md) for new patterns
+
+See [ADR 0018: Documentation Strategy](./documents/adr/0018-documentation-strategy.md) for complete guidelines.
 
 ## Security & Configuration Tips
 
