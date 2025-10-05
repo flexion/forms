@@ -1,7 +1,8 @@
-import { type ServiceMethod, createService } from '@flexion/forms-common';
+import { createService } from '@flexion/forms-common';
 import { type DatabaseContext } from '@flexion/forms-database';
 
 import type { FormConfig } from '../pattern.js';
+import type { FormRepository } from './types.js';
 
 import { type AddDocument, addDocument } from './add-document.js';
 import { type AddForm, addForm } from './add-form.js';
@@ -16,17 +17,7 @@ import {
   upsertFormSession,
 } from './upsert-form-session.js';
 
-export interface FormRepository {
-  addDocument: ServiceMethod<AddDocument>;
-  addForm: ServiceMethod<AddForm>;
-  deleteForm: ServiceMethod<DeleteForm>;
-  getDocument: ServiceMethod<GetDocument>;
-  getForm: ServiceMethod<GetForm>;
-  getFormSession: ServiceMethod<GetFormSession>;
-  getFormList: ServiceMethod<GetFormList>;
-  saveForm: ServiceMethod<SaveForm>;
-  upsertFormSession: ServiceMethod<UpsertFormSession>;
-}
+export type { FormRepository };
 
 export type FormRepositoryContext = {
   db: DatabaseContext;

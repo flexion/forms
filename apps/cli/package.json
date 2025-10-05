@@ -19,6 +19,7 @@
     "@flexion/forms-infra-core": "workspace:*",
     "@flexion/forms-auth": "workspace:^",
     "@flexion/forms-database": "workspace:*",
+    "@flexion/forms-core": "workspace:*",
     "commander": "^11.1.0"
   }
 }

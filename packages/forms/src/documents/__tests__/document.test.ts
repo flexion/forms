@@ -8,6 +8,7 @@ import { type PagePattern } from '../../patterns/page/config.js';
 
 import { addDocument } from '../document.js';
 import { loadSamplePDF } from './sample-data.js';
+import { createSimpleFakeParser } from '../pdf/adapters/fake-parser.js';
 
 describe('addDocument document processing', () => {
   it('creates expected blueprint', async () => {
@@ -22,10 +23,7 @@ describe('addDocument document processing', () => {
         data: new Uint8Array(pdfBytes),
       },
       {
-        fetchPdfApiResponse: async () => {
-          const { mockResponse } = await import('../pdf/mock-response.js');
-          return mockResponse;
-        },
+        parser: createSimpleFakeParser(),
       }
     );
     const rootPattern = getPattern<PageSetPattern>(
@@ -35,7 +33,7 @@ describe('addDocument document processing', () => {
 
     console.error(JSON.stringify(errors, null, 2)); // Fix these
     expect(rootPattern).toEqual(expect.objectContaining({ type: 'page-set' }));
-    expect(rootPattern.data.pages.length).toEqual(4);
+    expect(rootPattern.data.pages.length).toEqual(1);
     for (let page = 0; page < rootPattern.data.pages.length; page++) {
       const pagePattern = getPattern<PagePattern>(
         updatedForm,

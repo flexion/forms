@@ -1,8 +1,9 @@
 import { Command } from 'commander';
 
-import type { Context } from './types.js';
-import { addSecretCommands } from './secrets.js';
 import { addE2eCommands } from './e2e.js';
+import { addFormCommands } from './forms.js';
+import { addSecretCommands } from './secrets.js';
+import type { Context } from './types.js';
 
 export const CliController = (ctx: Context) => {
   const cli = new Command().description(
@@ -16,6 +17,7 @@ export const CliController = (ctx: Context) => {
       ctx.console.log('Hello!');
     });
 
+  addFormCommands(ctx, cli);
   addSecretCommands(ctx, cli);
   addE2eCommands(ctx, cli);
 
