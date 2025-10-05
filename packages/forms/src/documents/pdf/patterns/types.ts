@@ -30,7 +30,7 @@ export type MappingResult<P extends Pattern> = {
  */
 export interface PatternFieldHandler<
   P extends Pattern = Pattern,
-  BedrockComponent = any
+  BedrockComponent = any,
 > {
   /** Pattern type identifier */
   patternType: P['type'];
@@ -39,10 +39,7 @@ export interface PatternFieldHandler<
    * Parse a Bedrock component into a Pattern and optional PDF field mapping.
    * This is called during PDF ingestion to build the form structure.
    */
-  parse(
-    component: BedrockComponent,
-    context: MappingContext
-  ): MappingResult<P>;
+  parse(component: BedrockComponent, context: MappingContext): MappingResult<P>;
 
   /**
    * Fill a PDF form field with a user response value.

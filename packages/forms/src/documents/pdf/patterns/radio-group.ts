@@ -1,6 +1,6 @@
 import { PDFForm, PDFName, createPDFAcroFields } from 'pdf-lib';
 import type { RadioGroupPattern } from '../../../patterns/radio-group.js';
-import type { RadioGroupComponent } from '../parsers/bedrock/schema.js';
+import type { RadioGroupComponent } from '../domain/schema.js';
 import type {
   PatternFieldHandler,
   MappingContext,

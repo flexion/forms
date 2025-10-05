@@ -20,7 +20,11 @@ export { richTextPatternHandler } from './rich-text.js';
 export { fieldsetPatternHandler } from './fieldset.js';
 
 // Export types
-export type { PatternFieldHandler, MappingContext, MappingResult } from './types.js';
+export type {
+  PatternFieldHandler,
+  MappingContext,
+  MappingResult,
+} from './types.js';
 
 /**
  * Registry of all pattern field handlers.
@@ -41,7 +45,9 @@ export const patternHandlerRegistry = {
 export const getPatternHandler = <P extends Pattern>(
   patternType: P['type']
 ): PatternFieldHandler<P> | undefined => {
-  return patternHandlerRegistry[patternType as keyof typeof patternHandlerRegistry] as PatternFieldHandler<P> | undefined;
+  return patternHandlerRegistry[
+    patternType as keyof typeof patternHandlerRegistry
+  ] as PatternFieldHandler<P> | undefined;
 };
 
 /**
@@ -57,7 +63,10 @@ const fieldTypeFillHandlers = {
   Attachment: undefined, // Special case - uses dropdown logic
   Paragraph: undefined, // Display-only, no fill
   RichText: undefined, // Display-only, no fill
-} as const satisfies Record<PDFFieldType, ((form: PDFForm, name: string, value: any) => void) | undefined>;
+} as const satisfies Record<
+  PDFFieldType,
+  ((form: PDFForm, name: string, value: any) => void) | undefined
+>;
 
 /**
  * Fill a PDF field with a value based on its type.

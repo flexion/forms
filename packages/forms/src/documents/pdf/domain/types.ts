@@ -4,7 +4,7 @@ import { type Result } from '@flexion/forms-common';
  * Domain Types for PDF Parsing
  *
  * These are generic types used across all PDF parsing implementations.
- * Parser-specific schemas (like BedrockExtractedObject) live in their own modules.
+ * Parser-specific schemas live in their own modules.
  */
 
 // ============================================================================

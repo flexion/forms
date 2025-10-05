@@ -5,7 +5,7 @@ export type { ParsePdf } from './parsing-api.js';
 // Re-export types and utilities
 export type { ParsedPdf } from './domain/pattern-mapper.js';
 export type { FieldMetadata, ParseError } from './domain/types.js';
-export type { BedrockExtractedObject } from './parsers/bedrock/schema.js';
+export type { ExtractedForm } from './domain/schema.js';
 export type { PdfParser } from './services/parser-interface.js';
 export type { PdfParsingContext } from './services/context.js';
 

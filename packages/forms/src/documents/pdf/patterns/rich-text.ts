@@ -1,5 +1,5 @@
 import type { RichTextPattern } from '../../../patterns/rich-text.js';
-import type { RichTextComponent } from '../parsers/bedrock/schema.js';
+import type { RichTextComponent } from '../domain/schema.js';
 import type {
   PatternFieldHandler,
   MappingContext,

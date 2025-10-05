@@ -1,6 +1,6 @@
 import type { PDFForm } from 'pdf-lib';
 import type { CheckboxPattern } from '../../../patterns/checkbox.js';
-import type { CheckboxComponent } from '../parsers/bedrock/schema.js';
+import type { CheckboxComponent } from '../domain/schema.js';
 import type {
   PatternFieldHandler,
   MappingContext,

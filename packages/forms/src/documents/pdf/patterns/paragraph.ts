@@ -1,5 +1,5 @@
 import type { ParagraphPattern } from '../../../patterns/paragraph.js';
-import type { ParagraphComponent } from '../parsers/bedrock/schema.js';
+import type { ParagraphComponent } from '../domain/schema.js';
 import type {
   PatternFieldHandler,
   MappingContext,

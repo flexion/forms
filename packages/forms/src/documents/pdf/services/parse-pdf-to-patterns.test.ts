@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { defaultFormConfig } from '../../../patterns/index.js';
 import { parsePdfToPatterns } from './parse-pdf-to-patterns.js';
 import { FakePdfParser } from '../adapters/fake-parser.js';
-import type { BedrockExtractedObject } from '../parsers/bedrock/schema.js';
+import type { ExtractedForm } from '../domain/schema.js';
 import { success } from '@flexion/forms-common';
 
 // Mock the field extractor to avoid needing a real PDF
@@ -39,7 +39,7 @@ vi.mock('../domain/field-extractor.js', () => ({
 describe('parsePdfToPatterns', () => {
   it('should parse PDF using injected fake parser', async () => {
     // Arrange: Create a simple test form structure
-    const mockExtracted: BedrockExtractedObject = {
+    const mockExtracted: ExtractedForm = {
       form_summary: {
         title: 'Test Application Form',
         description: 'A simple test form for unit testing',

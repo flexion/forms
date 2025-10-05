@@ -1,6 +1,6 @@
 import type { PatternId } from '../../../pattern.js';
 import type { FieldsetPattern } from '../../../patterns/fieldset/config.js';
-import type { FieldsetComponent } from '../parsers/bedrock/schema.js';
+import type { FieldsetComponent } from '../domain/schema.js';
 import type { DocumentFieldValue } from '../../types.js';
 import type {
   PatternFieldHandler,

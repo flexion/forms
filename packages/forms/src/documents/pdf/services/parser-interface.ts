@@ -1,11 +1,10 @@
 import type { Result } from '@flexion/forms-common';
 import type { FieldMetadata, ParseError } from '../domain/types.js';
-import type { BedrockExtractedObject } from '../parsers/bedrock/schema.js';
+import type { ExtractedForm } from '../domain/schema.js';
 
 /**
  * Interface for PDF parsers.
- * Currently uses BedrockExtractedObject as the output format.
- * Future: Could be made generic to support different parser output schemas.
+ * All parsers must output the ExtractedForm schema format, regardless of the underlying LLM.
  */
 export interface PdfParser {
   /**
@@ -18,5 +17,5 @@ export interface PdfParser {
   parse(
     pdfBytes: Uint8Array,
     metadata: FieldMetadata[]
-  ): Promise<Result<BedrockExtractedObject, ParseError>>;
+  ): Promise<Result<ExtractedForm, ParseError>>;
 }

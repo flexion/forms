@@ -3,7 +3,7 @@ import { generateObject } from 'ai';
 import { success, failure, type Result } from '@flexion/forms-common';
 import type { PdfParser } from '../services/parser-interface.js';
 import type { FieldMetadata, ParseError } from '../domain/types.js';
-import { BedrockExtractedObject } from '../parsers/bedrock/schema.js';
+import { ExtractedFormSchema, type ExtractedForm } from '../domain/schema.js';
 
 /**
  * Configuration options for BedrockParser
@@ -102,10 +102,12 @@ Please analyze the PDF and field metadata to create a well-organized guided inte
 /**
  * Extracts all field IDs from the parsed output by traversing the nested structure
  */
-const extractFieldIds = (output: BedrockExtractedObject): Set<string> => {
+const extractFieldIds = (output: ExtractedForm): Set<string> => {
   const ids = new Set<string>();
 
-  const processElement = (element: (typeof output.pages)[0]['elements'][0]): void => {
+  const processElement = (
+    element: (typeof output.pages)[0]['elements'][0]
+  ): void => {
     switch (element.component_type) {
       case 'text_input':
       case 'checkbox':
@@ -136,7 +138,7 @@ const extractFieldIds = (output: BedrockExtractedObject): Set<string> => {
  */
 const findMissingFields = (
   metadata: FieldMetadata[],
-  output: BedrockExtractedObject
+  output: ExtractedForm
 ): FieldMetadata[] => {
   const outputIds = extractFieldIds(output);
   return metadata.filter(field => !outputIds.has(field.id));
@@ -146,13 +148,15 @@ const findMissingFields = (
  * Adds missing fields to a fallback page in the output to ensure completeness
  */
 const addMissingFieldsToOutput = (
-  output: BedrockExtractedObject,
+  output: ExtractedForm,
   missingFields: FieldMetadata[]
 ): void => {
   if (missingFields.length === 0) return;
 
   // Find or create "Additional Information" page
-  let additionalPage = output.pages.find(p => p.title === 'Additional Information');
+  let additionalPage = output.pages.find(
+    p => p.title === 'Additional Information'
+  );
 
   if (!additionalPage) {
     additionalPage = {
@@ -196,14 +200,14 @@ export class BedrockParser implements PdfParser {
   async parse(
     pdfBytes: Uint8Array,
     metadata: FieldMetadata[]
-  ): Promise<Result<BedrockExtractedObject, ParseError>> {
+  ): Promise<Result<ExtractedForm, ParseError>> {
     try {
       const bedrock = createAmazonBedrock({ region: this.region });
       const prompt = buildPrompt(metadata);
 
       const result = await generateObject({
         model: bedrock(this.modelId),
-        schema: BedrockExtractedObject,
+        schema: ExtractedFormSchema,
         schemaName: 'GuidedInterviewForm',
         schemaDescription:
           'A structured guided interview form with multiple pages and organized elements',

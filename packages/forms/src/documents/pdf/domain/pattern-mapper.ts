@@ -11,7 +11,7 @@ import {
 } from '../../../pattern.js';
 import { FormErrors } from '../../../error.js';
 import type { ParseError } from './types.js';
-import type { BedrockExtractedObject } from '../parsers/bedrock/schema.js';
+import type { ExtractedForm } from './schema.js';
 import type { MappingContext } from '../patterns/types.js';
 import {
   inputPatternHandler,
@@ -40,16 +40,16 @@ export type ParsedPdf = {
 };
 
 /**
- * Maps a BedrockExtractedObject to internal pattern representation.
+ * Maps an ExtractedForm to internal pattern representation.
  * This is a pure domain function with no external dependencies.
  *
  * @param config - Form configuration (pattern definitions)
- * @param extracted - Parsed form structure from Bedrock LLM
+ * @param extracted - Parsed form structure from LLM parser
  * @returns Result containing ParsedPdf or error
  */
 export const mapExtractedObjectToPatterns = (
   config: FormConfig,
-  extracted: BedrockExtractedObject
+  extracted: ExtractedForm
 ): Result<ParsedPdf, ParseError> => {
   try {
     const parsedPdf: ParsedPdf = {

@@ -1,6 +1,6 @@
 import type { PDFForm } from 'pdf-lib';
 import type { InputPattern } from '../../../patterns/input/config.js';
-import type { TxInputComponent } from '../parsers/bedrock/schema.js';
+import type { TxInputComponent } from '../domain/schema.js';
 import type {
   PatternFieldHandler,
   MappingContext,

@@ -5,10 +5,10 @@ import { addDocument } from '../document';
 import { type Blueprint } from '../..';
 import { loadSamplePDF } from './sample-data';
 import { FakePdfParser } from '../pdf/adapters/fake-parser.js';
-import type { BedrockExtractedObject } from '../pdf/parsers/bedrock/schema.js';
+import type { ExtractedForm } from '../pdf/domain/schema.js';
 
 // Simple mock for testing
-const MOCK_EXTRACTED: BedrockExtractedObject = {
+const MOCK_EXTRACTED: ExtractedForm = {
   form_summary: {
     title: 'Test Form',
     description: 'Test form for unit tests',
