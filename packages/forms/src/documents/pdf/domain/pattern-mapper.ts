@@ -12,16 +12,16 @@ import {
 import { FormErrors } from '../../../error.js';
 import type { ParseError } from './types.js';
 import type { BedrockExtractedObject } from '../parsers/bedrock/schema.js';
+import type { MappingContext } from '../patterns/types.js';
 import {
-  mapTextInput,
-  mapCheckbox,
-  mapCheckboxGroup,
-  mapRadioGroup,
-  mapParagraph,
-  mapRichText,
-  mapFieldset,
-  type MappingContext,
-} from '../parsers/bedrock/mapper.js';
+  inputPatternHandler,
+  checkboxPatternHandler,
+  checkboxGroupPatternHandler,
+  radioGroupPatternHandler,
+  paragraphPatternHandler,
+  richTextPatternHandler,
+  fieldsetPatternHandler,
+} from '../patterns/index.js';
 
 /**
  * Result type for parsed PDF with patterns
@@ -85,24 +85,34 @@ export const mapExtractedObjectToPatterns = (
       for (const element of page.elements) {
         let result;
 
-        // Map each element type using extracted functions
+        // Map each element type using pattern handlers
         switch (element.component_type) {
           case 'paragraph':
-            result = mapParagraph(element, context);
+            result = paragraphPatternHandler.parse(element, context);
             if (result.pattern) {
               pageElementIds.push(result.pattern.id);
             }
             break;
 
           case 'rich_text':
-            result = mapRichText(element, context);
+            result = richTextPatternHandler.parse(element, context);
             if (result.pattern) {
               pageElementIds.push(result.pattern.id);
             }
             break;
 
+          case 'text_input':
+            result = inputPatternHandler.parse(element, context);
+            if (result.pattern) {
+              pageElementIds.push(result.pattern.id);
+              if (result.output) {
+                parsedPdf.outputs[result.output[0]] = result.output[1];
+              }
+            }
+            break;
+
           case 'checkbox':
-            result = mapCheckbox(element, context);
+            result = checkboxPatternHandler.parse(element, context);
             if (result.pattern) {
               pageElementIds.push(result.pattern.id);
               if (result.output) {
@@ -113,12 +123,12 @@ export const mapExtractedObjectToPatterns = (
 
           case 'checkbox_group':
             // Checkbox group returns a fieldset, but outputs are handled separately
-            result = mapCheckboxGroup(element, context);
+            result = checkboxGroupPatternHandler.parse(element, context);
             if (result.pattern) {
               pageElementIds.push(result.pattern.id);
               // Map outputs for each checkbox in the group
               for (const option of element.options) {
-                const checkboxResult = mapCheckbox(
+                const checkboxResult = checkboxPatternHandler.parse(
                   {
                     component_type: 'checkbox',
                     id: option.id,
@@ -136,7 +146,7 @@ export const mapExtractedObjectToPatterns = (
             break;
 
           case 'radio_group':
-            result = mapRadioGroup(element, context);
+            result = radioGroupPatternHandler.parse(element, context);
             if (result.pattern) {
               pageElementIds.push(result.pattern.id);
               if (result.output) {
@@ -146,16 +156,16 @@ export const mapExtractedObjectToPatterns = (
             break;
 
           case 'fieldset':
-            result = mapFieldset(element, context);
+            result = fieldsetPatternHandler.parse(element, context);
             if (result.pattern) {
               pageElementIds.push(result.pattern.id);
               // Map outputs for each field in the fieldset
               for (const field of element.fields) {
                 let fieldResult;
                 if (field.component_type === 'text_input') {
-                  fieldResult = mapTextInput(field, context);
+                  fieldResult = inputPatternHandler.parse(field, context);
                 } else if (field.component_type === 'checkbox') {
-                  fieldResult = mapCheckbox(field, context);
+                  fieldResult = checkboxPatternHandler.parse(field, context);
                 }
                 if (fieldResult?.output) {
                   parsedPdf.outputs[fieldResult.output[0]] =

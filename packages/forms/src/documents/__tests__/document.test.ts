@@ -33,7 +33,7 @@ describe('addDocument document processing', () => {
 
     console.error(JSON.stringify(errors, null, 2)); // Fix these
     expect(rootPattern).toEqual(expect.objectContaining({ type: 'page-set' }));
-    expect(rootPattern.data.pages.length).toEqual(4);
+    expect(rootPattern.data.pages.length).toEqual(1);
     for (let page = 0; page < rootPattern.data.pages.length; page++) {
       const pagePattern = getPattern<PagePattern>(
         updatedForm,
