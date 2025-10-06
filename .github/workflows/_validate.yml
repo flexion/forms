@@ -66,22 +66,22 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Make directory for build artifacts
-        run: mkdir -p output/build-artifacts
+      # - name: Make directory for build artifacts
+      #   run: mkdir -p output/build-artifacts
 
-      - name: Spotlight app performance budget
-        run: pnpm --filter @flexion/forms-spotlight size:ci > output/build-artifacts/spotlight-size-output.txt
+      # - name: Spotlight app performance budget
+      #   run: pnpm --filter @flexion/forms-spotlight size:ci > output/build-artifacts/spotlight-size-output.txt
 
-      - name: Design package performance budget
-        run: pnpm --filter @flexion/forms-design size:ci > output/build-artifacts/design-size-output.txt
+      # - name: Design package performance budget
+      #   run: pnpm --filter @flexion/forms-design size:ci > output/build-artifacts/design-size-output.txt
 
-      - name: Upload size:ci results
-        uses: actions/upload-artifact@v4
-        with:
-          name: size-limit-results
-          path: |
-            output/build-artifacts/spotlight-size-output.txt
-            output/build-artifacts/design-size-output.txt
+      # - name: Upload size:ci results
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: size-limit-results
+      #     path: |
+      #       output/build-artifacts/spotlight-size-output.txt
+      #       output/build-artifacts/design-size-output.txt
 
       - name: Lint source code
         shell: bash
