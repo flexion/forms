@@ -25,8 +25,8 @@ This project supports multiple deployment targets organized by platform:
 - `cloud-gov-demo`: Demo deployment to Cloud.gov
 
 ### AWS
-- `aws-main`: Production deployment to AWS (App Runner + RDS)
-- `aws-demo`: Demo deployment to AWS (App Runner + RDS)
+- `flexion-sandbox-main`: Production deployment to AWS (App Runner + RDS)
+- `flexion-sandbox-demo`: Demo deployment to AWS (App Runner + RDS)
 
 ## Cloud services
 

@@ -1,9 +1,12 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { Command } from 'commander';
 
 import { commands, getSecretsVault } from '@flexion/forms-infra-core';
 import { type Context } from './types.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const addSecretCommands = (ctx: Context, cli: Command) => {
   const cmd = cli
@@ -84,7 +87,7 @@ export const addSecretCommands = (ctx: Context, cli: Command) => {
     .argument('<app-key>', 'application key (e.g., server-doj, server-kansas)')
     .action(async (rootKey: string, appKey: string) => {
       const vault = await getSecretsVault(ctx.file);
-      const secretsDir = path.resolve(__dirname, '../../../infra/secrets');
+      const secretsDir = path.resolve(__dirname, '../../../infra/core');
       const loginResult = await commands.setLoginGovSecrets(
         { vault, secretsDir },
         rootKey,

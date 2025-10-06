@@ -18,7 +18,7 @@ describe('set-login-gov-secrets command', () => {
   it('sets app secrets when uninitialized', async () => {
     const context = {
       vault: getTestVault({}),
-      secretsDir: path.resolve(__dirname, '../../../../infra/secrets'),
+      secretsDir: path.resolve(__dirname, '../../../../infra/core'),
       generateLoginGovKey: async () => ({
         publicKey: 'mock public key',
         privateKey: 'mock private key',
@@ -43,7 +43,7 @@ describe('set-login-gov-secrets command', () => {
   it('leaves initialized secrets as-is', async () => {
     const context = {
       vault: getTestVault({}),
-      secretsDir: path.resolve(__dirname, '../../../../infra/secrets'),
+      secretsDir: path.resolve(__dirname, '../../../../infra/core'),
     };
     const appKey = randomUUID();
 

@@ -6,25 +6,36 @@ import { createCustomServer } from './server.js';
 const port = process.env.PORT || 4321;
 
 const getAppRunnerSecrets = async () => {
-  const dbSecretArn = process.env.DB_SECRET;
+  const dbSecretEnv = process.env.DB_SECRET;
   const dbHost = process.env.DB_HOST;
   const dbPort = process.env.DB_PORT;
   const dbName = process.env.DB_NAME;
 
-  if (!dbSecretArn || !dbHost || !dbPort || !dbName) {
+  if (!dbSecretEnv || !dbHost || !dbPort || !dbName) {
     console.error(
       'Missing required environment variables: DB_SECRET, DB_HOST, DB_PORT, DB_NAME'
     );
     return;
   }
 
-  // Fetch the secret from AWS Secrets Manager using the ARN
-  const vault = getAWSSecretsManagerVault();
-  const dbSecretStr = await vault.getSecret(dbSecretArn);
+  let dbSecretStr: string;
 
-  if (!dbSecretStr) {
-    console.error('Failed to retrieve secret from Secrets Manager');
-    return;
+  // Check if DB_SECRET is already JSON (injected by App Runner) or an ARN
+  if (dbSecretEnv.startsWith('{')) {
+    // Already JSON - App Runner injected the secret value directly
+    console.log('Using secret value from environment variable');
+    dbSecretStr = dbSecretEnv;
+  } else {
+    // It's an ARN - fetch from Secrets Manager
+    console.log('Fetching secret from Secrets Manager using ARN');
+    const vault = getAWSSecretsManagerVault();
+    const fetchedSecret = await vault.getSecret(dbSecretEnv);
+
+    if (!fetchedSecret) {
+      console.error('Failed to retrieve secret from Secrets Manager');
+      return;
+    }
+    dbSecretStr = fetchedSecret;
   }
 
   const dbSecret = JSON.parse(dbSecretStr);
@@ -35,8 +46,12 @@ const getAppRunnerSecrets = async () => {
     return;
   }
 
+  // URL-encode credentials to handle special characters
+  const encodedUsername = encodeURIComponent(dbSecret.username);
+  const encodedPassword = encodeURIComponent(dbSecret.password);
+
   return {
-    dbUri: `postgresql://${dbSecret.username}:${dbSecret.password}@${dbHost}:${dbPort}/${dbName}`,
+    dbUri: `postgresql://${encodedUsername}:${encodedPassword}@${dbHost}:${dbPort}/${dbName}`,
   };
 };
 

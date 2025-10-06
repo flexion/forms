@@ -11,10 +11,10 @@ switch (deployEnv) {
   case 'cloud-gov-demo':
     import('./spaces/cloud-gov/demo');
     break;
-  case 'aws-main':
+  case 'flexion-sandbox-main':
     import('./spaces/aws/main');
     break;
-  case 'aws-demo':
+  case 'flexion-sandbox-demo':
     import('./spaces/aws/demo');
     break;
   default:
