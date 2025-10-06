@@ -16,6 +16,7 @@ import { EcrRepository } from '../../../.gen/providers/aws/ecr-repository';
 import { ApprunnerVpcConnector } from '../../../.gen/providers/aws/apprunner-vpc-connector';
 import { ApprunnerService } from '../../../.gen/providers/aws/apprunner-service';
 import { IamRole } from '../../../.gen/providers/aws/iam-role';
+import { IamRolePolicy } from '../../../.gen/providers/aws/iam-role-policy';
 import { IamRolePolicyAttachment } from '../../../.gen/providers/aws/iam-role-policy-attachment';
 import { DataAwsAvailabilityZones } from '../../../.gen/providers/aws/data-aws-availability-zones';
 
@@ -23,14 +24,13 @@ import { getDatabaseSecretKey } from '@flexion/forms-infra-core';
 
 interface SandboxStackConfig {
   environment: string;
-  gitRef: string;
 }
 
 export class SandboxStack extends Construct {
   constructor(scope: Construct, id: string, config: SandboxStackConfig) {
     super(scope, id);
 
-    const { environment, gitRef } = config;
+    const { environment } = config;
 
     // Get availability zones
     const azs = new DataAwsAvailabilityZones(this, `${id}-azs`, {
@@ -106,16 +106,6 @@ export class SandboxStack extends Construct {
     });
 
     // Security Groups
-    const rdsSecurityGroup = new SecurityGroup(this, `${id}-rds-sg`, {
-      name: `${id}-rds-sg`,
-      description: 'Allow postgres access from App Runner',
-      vpcId: vpc.id,
-      tags: {
-        Name: `${id}-rds-sg`,
-        Environment: environment,
-      },
-    });
-
     const appRunnerSecurityGroup = new SecurityGroup(
       this,
       `${id}-apprunner-sg`,
@@ -139,16 +129,27 @@ export class SandboxStack extends Construct {
       }
     );
 
-    // Allow App Runner to access RDS
-    rdsSecurityGroup.addOverride('ingress', [
-      {
-        from_port: 5432,
-        to_port: 5432,
-        protocol: 'tcp',
-        security_groups: [appRunnerSecurityGroup.id],
-        description: 'Allow postgres access from App Runner',
+    const rdsSecurityGroup = new SecurityGroup(this, `${id}-rds-sg`, {
+      name: `${id}-rds-sg`,
+      description: 'Allow postgres access from App Runner',
+      vpcId: vpc.id,
+      ingress: [
+        {
+          fromPort: 5432,
+          toPort: 5432,
+          protocol: 'tcp',
+          securityGroups: [appRunnerSecurityGroup.id],
+          cidrBlocks: [],
+          ipv6CidrBlocks: [],
+          prefixListIds: [],
+          description: 'Allow postgres access from App Runner',
+        },
+      ],
+      tags: {
+        Name: `${id}-rds-sg`,
+        Environment: environment,
       },
-    ]);
+    });
 
     // Generate random password for database
     const dbUsername = 'postgres';
@@ -205,8 +206,8 @@ export class SandboxStack extends Construct {
     });
 
     // ECR Repository
-    const ecrRepo = new EcrRepository(this, `${id}-ecr-sandbox`, {
-      name: `${id}-sandbox`,
+    const ecrRepo = new EcrRepository(this, `${id}-ecr`, {
+      name: `${id}`,
       imageTagMutability: 'MUTABLE',
       imageScanningConfiguration: {
         scanOnPush: true,
@@ -250,6 +251,25 @@ export class SandboxStack extends Construct {
           'arn:aws:iam::aws:policy/SecretsManagerReadWrite',
       }
     );
+
+    // Attach inline policy for Bedrock model invocation
+    new IamRolePolicy(this, `${id}-apprunner-bedrock-policy`, {
+      name: `${id}-bedrock-invoke`,
+      role: appRunnerInstanceRole.name,
+      policy: Fn.jsonencode({
+        Version: '2012-10-17',
+        Statement: [
+          {
+            Effect: 'Allow',
+            Action: [
+              'bedrock:InvokeModel',
+              'bedrock:InvokeModelWithResponseStream',
+            ],
+            Resource: '*',
+          },
+        ],
+      }),
+    });
 
     // IAM Role for App Runner access to ECR
     const appRunnerAccessRole = new IamRole(
@@ -303,14 +323,14 @@ export class SandboxStack extends Construct {
 
     // App Runner Service
     new ApprunnerService(this, `${id}-apprunner-service`, {
-      serviceName: `${environment}-sandbox`,
+      serviceName: `${id}`,
       sourceConfiguration: {
         autoDeploymentsEnabled: true,
         authenticationConfiguration: {
           accessRoleArn: appRunnerAccessRole.arn,
         },
         imageRepository: {
-          imageIdentifier: `${ecrRepo.repositoryUrl}:${gitRef}`,
+          imageIdentifier: `${ecrRepo.repositoryUrl}:latest`,
           imageRepositoryType: 'ECR',
           imageConfiguration: {
             port: '4321',

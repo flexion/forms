@@ -44,34 +44,73 @@ To deploy to AWS, you must have appropriate AWS credentials configured:
 ```bash
 export AWS_ACCESS_KEY_ID=<your-access-key>
 export AWS_SECRET_ACCESS_KEY=<your-secret-key>
-export AWS_DEFAULT_REGION=us-east-2
+export AWS_DEFAULT_REGION=us-east-1
 ```
 
 #### Deploying to AWS
 
-Before deploying, ensure the Docker image is built and pushed to ECR:
+**Deployment Order:**
+
+1. **First: Deploy infrastructure** (creates ECR repositories, VPC, RDS, App Runner service)
+2. **Second: Push Docker image** to ECR
+3. **Auto-deploy: App Runner** detects new image and redeploys automatically
+
+##### Initial Infrastructure Deployment
 
 ```bash
+# Deploy infrastructure for demo environment
+pnpm deploy:aws-demo
+
+# Deploy infrastructure for main/production environment
+pnpm deploy:aws-main
+```
+
+This creates:
+- ECR repository (`flexion-forms-sandbox-demo` or `flexion-forms-sandbox-main`)
+- VPC with subnets and security groups
+- RDS PostgreSQL database
+- App Runner service (will fail to start until image is pushed)
+
+##### Manual Image Push
+
+After infrastructure is deployed, push your first image:
+
+```bash
+# Get your AWS account ID
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+
 # Build the sandbox app Docker image
 docker build --build-arg APP_DIR=sandbox -t sandbox:latest -f Dockerfile .
 
-# Tag and push to ECR (replace <account-id> and <env> with your values)
-# For demo: flexion-forms-demo
-# For main: flexion-forms-main
-aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-2.amazonaws.com
-docker tag sandbox:latest <account-id>.dkr.ecr.us-east-2.amazonaws.com/flexion-forms-<env>:latest
-docker push <account-id>.dkr.ecr.us-east-2.amazonaws.com/flexion-forms-<env>:latest
+# Authenticate to ECR
+aws ecr get-login-password --region us-east-1 | \
+  docker login --username AWS --password-stdin \
+  ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+
+# For demo environment:
+docker tag sandbox:latest ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/flexion-forms-sandbox-demo:latest
+docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/flexion-forms-sandbox-demo:latest
+
+# For main/production environment:
+docker tag sandbox:latest ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/flexion-forms-sandbox-main:latest
+docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/flexion-forms-sandbox-main:latest
 ```
 
-Then deploy the infrastructure:
+##### Automated Deployment via GitHub Actions
 
-```bash
-# Deploy to demo
-pnpm deploy:aws-demo
+Once the initial infrastructure and image are in place, GitHub Actions automatically builds and pushes new images on every commit to `main` or `demo` branches.
 
-# Deploy to main/production
-pnpm deploy:aws-main
-```
+**Prerequisites:**
+Configure these secrets in GitHub repository settings:
+- `AWS_ACCOUNT_ID`
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+
+**Workflow:**
+- Push to `main` branch → Builds image → Pushes to `flexion-forms-sandbox-main` ECR → App Runner auto-deploys
+- Push to `demo` branch → Builds image → Pushes to `flexion-forms-sandbox-demo` ECR → App Runner auto-deploys
+
+See `.github/workflows/deploy.yml` for workflow configuration.
 
 ### Cloud.gov
 
