@@ -2,11 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { Command } from 'commander';
 
-import {
-  type DeployEnv,
-  commands,
-  getSecretsVault,
-} from '@flexion/forms-infra-core';
+import { commands, getSecretsVault } from '@flexion/forms-infra-core';
 import { type Context } from './types.js';
 
 export const addSecretCommands = (ctx: Context, cli: Command) => {
@@ -79,17 +75,20 @@ export const addSecretCommands = (ctx: Context, cli: Command) => {
     .command('set-login-gov-keys')
     .description(
       'generate and save login.gov keypair; if it already exists, it is not ' +
-      'updated (future work might include adding key rotation)',
+        'updated (future work might include adding key rotation)'
     )
-    .argument('<deploy-env>', 'deployment environment (dev, demo)')
-    .argument('<app-key>', 'application key')
-    .action(async (env: DeployEnv, appKey: string) => {
+    .argument(
+      '<root-key>',
+      'root key for secrets (e.g., flexion-forms-demo, tts-10x-forms-dev)'
+    )
+    .argument('<app-key>', 'application key (e.g., server-doj, server-kansas)')
+    .action(async (rootKey: string, appKey: string) => {
       const vault = await getSecretsVault(ctx.file);
       const secretsDir = path.resolve(__dirname, '../../../infra/secrets');
       const loginResult = await commands.setLoginGovSecrets(
         { vault, secretsDir },
-        env,
-        appKey,
+        rootKey,
+        appKey
       );
       if (loginResult.preexisting) {
         console.log('Keypair already exists.');

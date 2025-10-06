@@ -1,15 +1,13 @@
-export const getSecretKeys = (env: string) => [
-  `/tts-10x-forms-${env}/cloudfoundry/password`,
-  `/tts-10x-forms-${env}/cloudfoundry/username`,
-  `/tts-10x-forms-${env}/server-doj/leidos-intranet-quorum/password`,
-  `/tts-10x-forms-${env}/server-doj/leidos-intranet-quorum/username`,
-  `/tts-10x-forms-${env}/server-doj/login.gov/private-key`,
-  `/tts-10x-forms-${env}/server-doj/login.gov/public-key`,
-  `/tts-10x-forms-${env}/server-kansas/login.gov/private-key`,
-  `/tts-10x-forms-${env}/server-kansas/login.gov/public-key`,
+export const getSecretKeys = (rootKey: string) => [
+  `/${rootKey}/cloudfoundry/password`,
+  `/${rootKey}/cloudfoundry/username`,
+  `/${rootKey}/server-doj/leidos-intranet-quorum/password`,
+  `/${rootKey}/server-doj/leidos-intranet-quorum/username`,
+  `/${rootKey}/server-doj/login.gov/private-key`,
+  `/${rootKey}/server-doj/login.gov/public-key`,
+  `/${rootKey}/server-kansas/login.gov/private-key`,
+  `/${rootKey}/server-kansas/login.gov/public-key`,
+  `/${rootKey}/database`,
 ];
 
-const secretPrefix = (env: string) => `/tts-10x-forms-${env}`;
-
-export const getDatabaseSecretKey = (env: string) =>
-  `${secretPrefix(env)}/database`;
+export const getDatabaseSecretKey = (rootKey: string) => `/${rootKey}/database`;

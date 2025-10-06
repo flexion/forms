@@ -13,10 +13,14 @@ export const computeObjectCacheKey = async (
   const keyComponents = {
     model: extractModelId(params.model),
     system: 'system' in params ? params.system : undefined,
-    messages: 'messages' in params ? await hashMessages(params.messages ?? []) : undefined,
+    messages:
+      'messages' in params
+        ? await hashMessages(params.messages ?? [])
+        : undefined,
     schema: 'schema' in params ? await hashSchema(params.schema) : undefined,
     schemaName: 'schemaName' in params ? params.schemaName : undefined,
-    schemaDescription: 'schemaDescription' in params ? params.schemaDescription : undefined,
+    schemaDescription:
+      'schemaDescription' in params ? params.schemaDescription : undefined,
     temperature: 'temperature' in params ? params.temperature : undefined,
     topP: 'topP' in params ? params.topP : undefined,
     maxTokens: 'maxTokens' in params ? params.maxTokens : undefined,
