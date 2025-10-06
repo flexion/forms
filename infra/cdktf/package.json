@@ -21,8 +21,8 @@
     "clean:gen": "rimraf .gen",
     "deploy:cloud-gov-main": "DEPLOY_ENV=cloud-gov-main cdktf deploy",
     "deploy:cloud-gov-demo": "DEPLOY_ENV=cloud-gov-demo cdktf deploy",
-    "deploy:aws-main": "DEPLOY_ENV=aws-main cdktf deploy",
-    "deploy:aws-demo": "DEPLOY_ENV=aws-demo cdktf deploy",
+    "deploy:flexion-sandbox-main": "DEPLOY_ENV=aws-main cdktf deploy",
+    "deploy:flexion-sandbox-demo": "DEPLOY_ENV=aws-demo cdktf deploy",
     "deploy:main:local": "DEPLOY_GIT_REF=main DEPLOY_ENV=cloud-gov-main cdktf deploy",
     "dev": "tsc -w",
     "test": "echo 'no tests'"
