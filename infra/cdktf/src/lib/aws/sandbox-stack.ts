@@ -7,6 +7,8 @@ import { InternetGateway } from '../../../.gen/providers/aws/internet-gateway';
 import { RouteTable } from '../../../.gen/providers/aws/route-table';
 import { RouteTableAssociation } from '../../../.gen/providers/aws/route-table-association';
 import { Route } from '../../../.gen/providers/aws/route';
+import { Eip } from '../../../.gen/providers/aws/eip';
+import { NatGateway } from '../../../.gen/providers/aws/nat-gateway';
 import { SecurityGroup } from '../../../.gen/providers/aws/security-group';
 import { DbSubnetGroup } from '../../../.gen/providers/aws/db-subnet-group';
 import { DbInstance } from '../../../.gen/providers/aws/db-instance';
@@ -76,6 +78,29 @@ export class SandboxStack extends Construct {
       },
     });
 
+    // Private Subnets (for App Runner VPC connector with NAT Gateway access)
+    const privateSubnet1 = new Subnet(this, `${id}-private-subnet-1`, {
+      vpcId: vpc.id,
+      cidrBlock: '10.0.11.0/24',
+      availabilityZone: Fn.element(azs.names, 0),
+      mapPublicIpOnLaunch: false,
+      tags: {
+        Name: `${id}-private-subnet-1`,
+        Environment: environment,
+      },
+    });
+
+    const privateSubnet2 = new Subnet(this, `${id}-private-subnet-2`, {
+      vpcId: vpc.id,
+      cidrBlock: '10.0.12.0/24',
+      availabilityZone: Fn.element(azs.names, 1),
+      mapPublicIpOnLaunch: false,
+      tags: {
+        Name: `${id}-private-subnet-2`,
+        Environment: environment,
+      },
+    });
+
     // Route table for public subnets
     const publicRouteTable = new RouteTable(this, `${id}-public-rt`, {
       vpcId: vpc.id,
@@ -99,6 +124,81 @@ export class SandboxStack extends Construct {
     new RouteTableAssociation(this, `${id}-public-rta-2`, {
       subnetId: publicSubnet2.id,
       routeTableId: publicRouteTable.id,
+    });
+
+    // Elastic IPs for NAT Gateways
+    const eip1 = new Eip(this, `${id}-eip-1`, {
+      domain: 'vpc',
+      tags: {
+        Name: `${id}-eip-1`,
+        Environment: environment,
+      },
+    });
+
+    const eip2 = new Eip(this, `${id}-eip-2`, {
+      domain: 'vpc',
+      tags: {
+        Name: `${id}-eip-2`,
+        Environment: environment,
+      },
+    });
+
+    // NAT Gateways in public subnets
+    const natGateway1 = new NatGateway(this, `${id}-nat-1`, {
+      allocationId: eip1.id,
+      subnetId: publicSubnet1.id,
+      tags: {
+        Name: `${id}-nat-1`,
+        Environment: environment,
+      },
+    });
+
+    const natGateway2 = new NatGateway(this, `${id}-nat-2`, {
+      allocationId: eip2.id,
+      subnetId: publicSubnet2.id,
+      tags: {
+        Name: `${id}-nat-2`,
+        Environment: environment,
+      },
+    });
+
+    // Route tables for private subnets
+    const privateRouteTable1 = new RouteTable(this, `${id}-private-rt-1`, {
+      vpcId: vpc.id,
+      tags: {
+        Name: `${id}-private-rt-1`,
+        Environment: environment,
+      },
+    });
+
+    new Route(this, `${id}-private-route-1`, {
+      routeTableId: privateRouteTable1.id,
+      destinationCidrBlock: '0.0.0.0/0',
+      natGatewayId: natGateway1.id,
+    });
+
+    new RouteTableAssociation(this, `${id}-private-rta-1`, {
+      subnetId: privateSubnet1.id,
+      routeTableId: privateRouteTable1.id,
+    });
+
+    const privateRouteTable2 = new RouteTable(this, `${id}-private-rt-2`, {
+      vpcId: vpc.id,
+      tags: {
+        Name: `${id}-private-rt-2`,
+        Environment: environment,
+      },
+    });
+
+    new Route(this, `${id}-private-route-2`, {
+      routeTableId: privateRouteTable2.id,
+      destinationCidrBlock: '0.0.0.0/0',
+      natGatewayId: natGateway2.id,
+    });
+
+    new RouteTableAssociation(this, `${id}-private-rta-2`, {
+      subnetId: privateSubnet2.id,
+      routeTableId: privateRouteTable2.id,
     });
 
     // Security Groups
@@ -283,16 +383,20 @@ export class SandboxStack extends Construct {
     );
 
     // App Runner VPC Connector
+    // Note: abbreviated name with 'v2' suffix to allow clean migration from public to private subnets
     const vpcConnector = new ApprunnerVpcConnector(
       this,
       `${id}-vpc-connector`,
       {
-        vpcConnectorName: `${id}-vpc-connector`,
-        subnets: [publicSubnet1.id, publicSubnet2.id],
+        vpcConnectorName: `${id}-vpc-conn-v2`,
+        subnets: [privateSubnet1.id, privateSubnet2.id],
         securityGroups: [appRunnerSecurityGroup.id],
         tags: {
           Name: `${id}-vpc-connector`,
           Environment: environment,
+        },
+        lifecycle: {
+          createBeforeDestroy: true,
         },
       }
     );
@@ -316,11 +420,7 @@ export class SandboxStack extends Construct {
               DB_NAME: 'postgres',
             },
             runtimeEnvironmentSecrets: {
-              DB_SECRET: Fn.lookup(
-                Fn.element(rdsInstance.masterUserSecret, 0),
-                'secret_arn',
-                ''
-              ),
+              DB_SECRET: `\${try(aws_db_instance.${rdsInstance.friendlyUniqueId}.master_user_secret[0].secret_arn, "")}`,
             },
           },
         },
@@ -347,6 +447,9 @@ export class SandboxStack extends Construct {
       tags: {
         Name: `${id}-apprunner-service`,
         Environment: environment,
+      },
+      lifecycle: {
+        createBeforeDestroy: true,
       },
     });
   }

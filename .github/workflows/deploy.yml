@@ -40,7 +40,7 @@ jobs:
   # Terraform deployment is handled separately/manually for now
   # To deploy infrastructure changes:
   #   cd infra/cdktf
-  #   DEPLOY_ENV=aws-main pnpm deploy  # or aws-demo
+  #   DEPLOY_ENV=flexion-sandbox-main pnpm deploy  # or flexion-sandbox-demo
   #
   # Future: Automate Terraform deployment for AWS
   # deploy-infrastructure:
