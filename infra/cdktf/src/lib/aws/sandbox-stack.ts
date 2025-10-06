@@ -10,8 +10,6 @@ import { Route } from '../../../.gen/providers/aws/route';
 import { SecurityGroup } from '../../../.gen/providers/aws/security-group';
 import { DbSubnetGroup } from '../../../.gen/providers/aws/db-subnet-group';
 import { DbInstance } from '../../../.gen/providers/aws/db-instance';
-import { SecretsmanagerSecret } from '../../../.gen/providers/aws/secretsmanager-secret';
-import { SecretsmanagerSecretVersion } from '../../../.gen/providers/aws/secretsmanager-secret-version';
 import { EcrRepository } from '../../../.gen/providers/aws/ecr-repository';
 import { ApprunnerVpcConnector } from '../../../.gen/providers/aws/apprunner-vpc-connector';
 import { ApprunnerService } from '../../../.gen/providers/aws/apprunner-service';
@@ -19,8 +17,6 @@ import { IamRole } from '../../../.gen/providers/aws/iam-role';
 import { IamRolePolicy } from '../../../.gen/providers/aws/iam-role-policy';
 import { IamRolePolicyAttachment } from '../../../.gen/providers/aws/iam-role-policy-attachment';
 import { DataAwsAvailabilityZones } from '../../../.gen/providers/aws/data-aws-availability-zones';
-
-import { getDatabaseSecretKey } from '@flexion/forms-infra-core';
 
 interface SandboxStackConfig {
   environment: string;
@@ -151,28 +147,8 @@ export class SandboxStack extends Construct {
       },
     });
 
-    // Generate random password for database
+    // Database username (password will be managed by RDS in Secrets Manager)
     const dbUsername = 'postgres';
-    const dbPassword = Fn.base64encode(
-      Fn.uuid() // Use UUID for a secure random password
-    );
-
-    // Database secret (only username and password - host/port/db passed as env vars)
-    const dbSecret = new SecretsmanagerSecret(this, `${id}-db-secret`, {
-      name: getDatabaseSecretKey(environment),
-      description: `Database credentials for ${environment}`,
-      tags: {
-        Environment: environment,
-      },
-    });
-
-    new SecretsmanagerSecretVersion(this, `${id}-db-secret-version`, {
-      secretId: dbSecret.id,
-      secretString: Fn.jsonencode({
-        username: dbUsername,
-        password: dbPassword,
-      }),
-    });
 
     // RDS Subnet Group
     const dbSubnetGroup = new DbSubnetGroup(this, `${id}-db-subnet-group`, {
@@ -184,7 +160,7 @@ export class SandboxStack extends Construct {
       },
     });
 
-    // RDS Instance
+    // RDS Instance with AWS-managed password in Secrets Manager
     const rdsInstance = new DbInstance(this, `${id}-db`, {
       identifier: `${id}-db`,
       engine: 'postgres',
@@ -194,7 +170,7 @@ export class SandboxStack extends Construct {
       maxAllocatedStorage: 100,
       dbName: 'postgres',
       username: dbUsername,
-      password: dbPassword,
+      manageMasterUserPassword: true,
       dbSubnetGroupName: dbSubnetGroup.name,
       vpcSecurityGroupIds: [rdsSecurityGroup.id],
       publiclyAccessible: false,
@@ -340,7 +316,11 @@ export class SandboxStack extends Construct {
               DB_NAME: 'postgres',
             },
             runtimeEnvironmentSecrets: {
-              DB_SECRET: dbSecret.arn,
+              DB_SECRET: Fn.lookup(
+                Fn.element(rdsInstance.masterUserSecret, 0),
+                'secret_arn',
+                ''
+              ),
             },
           },
         },
