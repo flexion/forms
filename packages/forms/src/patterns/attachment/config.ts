@@ -9,8 +9,15 @@ export type AttachmentPattern = Pattern<AttachmentConfigSchema>;
 export const configSchema = z.object({
   label: z.string().min(1, message.patterns.attachment.fieldLabelRequired),
   required: z.boolean(),
-  maxAttachments: z.coerce.number().int().gt(0),
-  maxFileSizeMB: z.coerce.number().int().gt(1).lte(10),
+  maxAttachments: z.coerce
+    .number()
+    .int()
+    .gt(0, { message: 'Number must be greater than 0' }),
+  maxFileSizeMB: z.coerce
+    .number()
+    .int()
+    .gt(1)
+    .lte(10, { message: 'Number must be less than or equal to 10' }),
   allowedFileTypes: z.union([
     z
       .array(

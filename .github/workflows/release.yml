@@ -34,10 +34,10 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ inputs.playwright_version }}
+          key: ${{ runner.os }}-playwright-1.51.1
 
       - name: Install Playwright
-        run: pnpm dlx playwright@${{ inputs.playwright_version }} install --with-deps
+        run: pnpm dlx playwright@1.51.1 install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Build packages
