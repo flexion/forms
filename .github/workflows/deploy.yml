@@ -8,8 +8,8 @@ name: 'Deploy'
 # PREREQUISITES:
 # 1. Deploy infrastructure first to create ECR repositories:
 #    cd infra/cdktf
-#    pnpm deploy:aws-main    # for main branch
-#    pnpm deploy:aws-demo    # for demo branch
+#    pnpm deploy:flexion-sandbox-main    # for main branch
+#    pnpm deploy:flexion-sandbox-demo    # for demo branch
 #
 # 2. Configure GitHub secrets:
 #    - AWS_ACCOUNT_ID

@@ -340,7 +340,7 @@ export class SandboxStack extends Construct {
               DB_NAME: 'postgres',
             },
             runtimeEnvironmentSecrets: {
-              DB_SECRET_ARN: dbSecret.arn,
+              DB_SECRET: dbSecret.arn,
             },
           },
         },

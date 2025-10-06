@@ -59,10 +59,10 @@ export AWS_DEFAULT_REGION=us-east-1
 
 ```bash
 # Deploy infrastructure for demo environment
-pnpm deploy:aws-demo
+pnpm deploy:flexion-sandbox-demo
 
 # Deploy infrastructure for main/production environment
-pnpm deploy:aws-main
+pnpm deploy:flexion-sandbox-main
 ```
 
 This creates:
