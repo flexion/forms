@@ -25,13 +25,18 @@ describe('set-login-gov-secrets command', () => {
       }),
     };
     const appKey = randomUUID();
-    const result = await setLoginGovSecrets(context, 'dev', appKey);
+    const result = await setLoginGovSecrets(
+      context,
+      'flexion-forms-dev',
+      appKey
+    );
     expect(result.preexisting).toEqual(false);
     expect(
       await context.vault.getSecrets(await context.vault.getSecretKeys())
     ).toEqual({
-      [`/tts-10x-forms-dev/${appKey}/login.gov/public-key`]: 'mock public key',
-      [`/tts-10x-forms-dev/${appKey}/login.gov/private-key`]: 'mock private key',
+      [`/flexion-forms-dev/${appKey}/login.gov/public-key`]: 'mock public key',
+      [`/flexion-forms-dev/${appKey}/login.gov/private-key`]:
+        'mock private key',
     });
   });
 
@@ -50,7 +55,7 @@ describe('set-login-gov-secrets command', () => {
           privateKey: 'mock private key - 1',
         }),
       },
-      'dev',
+      'flexion-forms-dev',
       appKey
     );
     const secondResult = await setLoginGovSecrets(
@@ -61,7 +66,7 @@ describe('set-login-gov-secrets command', () => {
           privateKey: 'mock private key - 2',
         }),
       },
-      'dev',
+      'flexion-forms-dev',
       appKey
     );
 
@@ -69,9 +74,9 @@ describe('set-login-gov-secrets command', () => {
     expect(
       await context.vault.getSecrets(await context.vault.getSecretKeys())
     ).toEqual({
-      [`/tts-10x-forms-dev/${appKey}/login.gov/public-key`]:
+      [`/flexion-forms-dev/${appKey}/login.gov/public-key`]:
         'mock public key - 1',
-      [`/tts-10x-forms-dev/${appKey}/login.gov/private-key`]:
+      [`/flexion-forms-dev/${appKey}/login.gov/private-key`]:
         'mock private key - 1',
     });
   });

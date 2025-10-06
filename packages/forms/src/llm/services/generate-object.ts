@@ -35,9 +35,10 @@ export const generateObjectCached = async <T extends ZodType>(
   const cacheKey = await computeObjectCacheKey(params);
 
   // Try cache first
-  const cached = await context.cache.get<
-    Awaited<ReturnType<typeof generateObject<T>>>
-  >(cacheKey);
+  const cached =
+    await context.cache.get<Awaited<ReturnType<typeof generateObject<T>>>>(
+      cacheKey
+    );
 
   if (cached) {
     console.log('[LLM Cache] Hit:', cacheKey.slice(0, 16));

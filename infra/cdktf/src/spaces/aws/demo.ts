@@ -18,7 +18,7 @@ class AwsDemoStack extends TerraformStack {
 
     // Create the sandbox infrastructure
     new SandboxStack(this, stackName, {
-      environment: 'demo-aws',
+      environment: 'flexion-forms-demo',
     });
   }
 }

@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import { promisify } from 'util';
 
 import { type SecretsVault } from '../lib/types.js';
-import { type DeployEnv, getAppLoginGovKeys } from '../values.js';
+import { getAppLoginGovKeys } from '../values.js';
 
 const execPromise = promisify(exec);
 
@@ -24,13 +24,17 @@ type Context = {
 /**
  * Sets or retrieves Login.gov secrets for the given application key. It retrieves and returns the
  * existing key pair or generates, stores, and returns new key pair if one didn't exist previously.
+ *
+ * @param ctx Context with vault and secrets directory
+ * @param rootKey The root key for secrets (e.g., 'flexion-forms-demo', 'tts-10x-forms-dev')
+ * @param appKey The application key (e.g., 'server-doj', 'server-kansas')
  */
 export const setLoginGovSecrets = async (
   ctx: Context,
-  env: DeployEnv,
+  rootKey: string,
   appKey: string
 ) => {
-  const loginKeys = getAppLoginGovKeys(env, appKey);
+  const loginKeys = getAppLoginGovKeys(rootKey, appKey);
 
   // If the keypair is already set, do nothing and return it.
   const existingPublicKey = await ctx.vault.getSecret(loginKeys.publicKey);

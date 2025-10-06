@@ -18,7 +18,7 @@ class AwsMainStack extends TerraformStack {
 
     // Create the sandbox infrastructure
     new SandboxStack(this, stackName, {
-      environment: 'main-aws',
+      environment: 'flexion-forms-main',
     });
   }
 }

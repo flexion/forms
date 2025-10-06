@@ -9,7 +9,6 @@ import {
   type BedrockConfig,
 } from '../../../llm/providers/bedrock.js';
 
-
 /**
  * System prompt for the LLM
  */
