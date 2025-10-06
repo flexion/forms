@@ -22,7 +22,9 @@ export type PhoneNumberPatternOutput = z.infer<
 export const createPhoneSchema = (data: PhoneNumberPattern['data']) => {
   const phoneSchema = z
     .string()
-    .regex(/^(\d{3}-\d{3}-\d{4}|\d{10})$/, 'Invalid phone number format')
+    .regex(/^(\d{3}-\d{3}-\d{4}|\d{10})$/, {
+      message: 'Invalid phone number format',
+    })
     .transform(value => {
       const digits = value.replace(/[^\d]/g, '');
       return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
