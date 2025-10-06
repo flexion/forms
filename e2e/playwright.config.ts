@@ -58,7 +58,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm --filter @gsa-tts/forms-server dev',
+    command: 'pnpm --filter @flexion/forms-server dev',
     url: process.env.E2E_ENDPOINT || 'http://localhost:4321',
     reuseExistingServer: !process.env.CI,
   },

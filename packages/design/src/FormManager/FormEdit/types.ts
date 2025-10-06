@@ -5,7 +5,7 @@ import {
   type Pattern,
   type PatternProps,
   type PromptComponent,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 import { FormManagerContext } from '../types.js';
 
 export type PatternFocus = {

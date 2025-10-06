@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { type CheckboxGroupPattern } from '@gsa-tts/forms-core';
+import { type CheckboxGroupPattern } from '@flexion/forms-core';
 
 import { createPatternEditStoryMeta } from '../common/story-helper.js';
 import FormEdit from '../../index.js';
 import CheckboxGroupPatternEdit from './CheckboxGroupPatternEdit.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import { expect, userEvent } from '@storybook/test';
 import { within } from '@testing-library/react';
 

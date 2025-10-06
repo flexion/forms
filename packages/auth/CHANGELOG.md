@@ -1,5 +1,25 @@
 # @gsa-tts/forms-auth
 
+## 0.2.0
+
+### Minor Changes
+
+- 0a171f1: Initial Flexion Forms release
+
+### Patch Changes
+
+- Updated dependencies [0a171f1]
+  - @flexion/forms-common@0.2.0
+  - @flexion/forms-database@0.2.0
+
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [bbd065d]
+  - @flexion/forms-common@0.1.3
+  - @flexion/forms-database@0.1.3
+
 ## 0.1.2
 
 ### Patch Changes

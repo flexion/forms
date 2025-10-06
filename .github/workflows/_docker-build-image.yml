@@ -27,8 +27,8 @@ env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_REGION: us-east-2
-  ECR_REPOSITORY: tts-10x-forms-${{ inputs.deploy-key }}-image-${{ inputs.app-name }}
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: flexion-forms-sandbox-${{ inputs.deploy-key }}
 
 jobs:
   setup:
@@ -57,16 +57,16 @@ jobs:
         run: |
           docker push --all-tags ${REGISTRY_PATH}
 
-      # - name: Log in to AWS ECR
-      #   run: |
-      #     aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+      - name: Log in to AWS ECR
+        run: |
+          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
 
-      # - name: Tag Docker image for ECR
-      #   run: |
-      #     docker tag ${REGISTRY_PATH}:${COMMIT_SHA} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${COMMIT_SHA}
-      #     docker tag ${REGISTRY_PATH}:${TAG_NAME} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${TAG_NAME}
+      - name: Tag Docker image for ECR
+        run: |
+          docker tag ${REGISTRY_PATH}:${COMMIT_SHA} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${COMMIT_SHA}
+          docker tag ${REGISTRY_PATH}:${COMMIT_SHA} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
 
-      # - name: Push Docker image to ECR
-      #   run: |
-      #     docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${COMMIT_SHA}
-      #     docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${TAG_NAME}
+      - name: Push Docker image to ECR
+        run: |
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${COMMIT_SHA}
+          docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest

@@ -13,7 +13,7 @@ import {
   defaultFormConfig,
   Blueprint,
   type FormService,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 import { type FormManagerProps, type FormManagerContext } from './types.js';
 import FormDelete from './FormDelete/FormDelete.js';

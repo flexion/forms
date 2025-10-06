@@ -3,7 +3,7 @@ import { createE2eAuthContext } from './e2e.js';
 import { BaseAuthContext } from './base.js';
 
 // Mock imports
-vi.mock('@gsa-tts/forms-database/context', () => ({
+vi.mock('@flexion/forms-database/context', () => ({
   createFilesystemDatabaseContext: vi.fn().mockResolvedValue({}),
 }));
 

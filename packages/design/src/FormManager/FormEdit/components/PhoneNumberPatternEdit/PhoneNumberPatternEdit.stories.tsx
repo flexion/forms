@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent } from '@storybook/test';
 import { within } from '@testing-library/react';
 
-import { type PhoneNumberPattern } from '@gsa-tts/forms-core';
+import { type PhoneNumberPattern } from '@flexion/forms-core';
 import { createPatternEditStoryMeta } from '../common/story-helper.js';
 import FormEdit from '../../index.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 
 const pattern: PhoneNumberPattern = {
   id: 'phone-number-1',

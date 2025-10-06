@@ -10,7 +10,7 @@ import {
   type PatternMap,
   type RichTextPattern,
   type RichTextProps,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 import RichText from '../../../../Form/components/RichText/RichText.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';

@@ -8,15 +8,13 @@ import { type Pattern } from '../pattern.js';
 import { type InputPattern } from '../patterns/input/config.js';
 import { type SequencePattern } from '../patterns/sequence.js';
 import { type Blueprint } from '../types.js';
+import { defaultFormConfig } from '../patterns/index.js';
 import { getDocumentFieldData } from './pdf/extract.js';
 
 import { type PDFDocument } from './pdf/index.js';
-import {
-  type FetchPdfApiResponse,
-  type ParsedPdf,
-  fetchPdfApiResponse,
-  processApiResponse,
-} from './pdf/parsing-api.js';
+import { type ParsedPdf } from './pdf/domain/pattern-mapper.js';
+import { type PdfParser } from './pdf/services/parser-interface.js';
+import { parsePdfToPatterns } from './pdf/services/parse-pdf-to-patterns.js';
 
 import { type DocumentFieldMap } from './types.js';
 
@@ -55,14 +53,39 @@ export const addDocument = async (
     data: Uint8Array;
   },
   context: {
-    fetchPdfApiResponse: FetchPdfApiResponse;
-  } = { fetchPdfApiResponse }
+    parser?: PdfParser;
+  } = {}
 ) => {
   const fields = await getDocumentFieldData(fileDetails.data);
-  const json = await context.fetchPdfApiResponse(fileDetails.data);
-  const parsedPdf = await processApiResponse(json);
 
-  if (parsedPdf) {
+  // Skip parsing if no parser provided (fallback to simple field extraction)
+  if (!context.parser) {
+    const formWithFields = addDocumentFieldsToForm(form, fields);
+    const updatedForm = addFormOutput(formWithFields, {
+      id: 'document-1', // TODO: generate a unique ID
+      path: fileDetails.name,
+      fields,
+      formFields: Object.fromEntries(
+        Object.keys(fields).map(field => {
+          return [field, fields[field].name];
+        })
+      ),
+    });
+    return {
+      newFields: fields,
+      updatedForm,
+    };
+  }
+
+  // Parse PDF to patterns using injected parser
+  const result = await parsePdfToPatterns(
+    { parser: context.parser, formConfig: defaultFormConfig },
+    fileDetails.data
+  );
+
+  if (result.success) {
+    const parsedPdf = result.data;
+
     form = updateFormSummary(form, {
       title: parsedPdf.title || fileDetails.name,
       description: parsedPdf.description,
@@ -84,6 +107,7 @@ export const addDocument = async (
       errors: parsedPdf.errors,
     };
   } else {
+    // Fallback: parsing failed, use simple field extraction
     const formWithFields = addDocumentFieldsToForm(form, fields);
     const updatedForm = addFormOutput(formWithFields, {
       id: 'document-1', // TODO: generate a unique ID

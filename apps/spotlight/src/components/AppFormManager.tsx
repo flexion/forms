@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormManager } from '@gsa-tts/forms-design';
+import { FormManager } from '@flexion/forms-design';
 
 import { getAppContext } from '../context.js';
 import { getFormManagerUrlById, getFormUrl } from '../routes.js';

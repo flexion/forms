@@ -11,7 +11,7 @@ import {
   type PagePattern,
   type PageSetPattern,
   createForm,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 import {
   type ServerOptions,

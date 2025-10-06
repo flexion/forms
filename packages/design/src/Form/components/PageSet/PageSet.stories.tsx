@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { type PageSetProps } from '@gsa-tts/forms-core';
+import { type PageSetProps } from '@flexion/forms-core';
 
 import { FormManagerProvider } from '../../../FormManager/store.js';
 import {

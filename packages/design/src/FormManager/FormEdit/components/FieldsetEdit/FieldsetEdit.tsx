@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { type PatternId, type FieldsetProps } from '@gsa-tts/forms-core';
-import { FieldsetPattern } from '@gsa-tts/forms-core';
+import { type PatternId, type FieldsetProps } from '@flexion/forms-core';
+import { FieldsetPattern } from '@flexion/forms-core';
 
 import {
   CompoundAddPatternButton,
@@ -15,7 +15,7 @@ import { PatternEditComponent } from '../../types.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';
 import { PatternEditForm } from '../common/PatternEditForm.js';
 import { usePatternEditFormContext } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 import { type FormManagerContext } from '../../../types.js';
 import { type PatternComponent } from '../../../../Form/types.js';

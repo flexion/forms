@@ -9,7 +9,7 @@ import {
   type FormRoute,
   type FormSession,
   type Prompt,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 import { renderPromptComponents } from './form-common.js';
 import { FormUIContext } from './types.js';
 

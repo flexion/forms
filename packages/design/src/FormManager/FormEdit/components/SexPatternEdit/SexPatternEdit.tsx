@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { type SexProps, type SexPattern } from '@gsa-tts/forms-core';
+import { type SexProps, type SexPattern } from '@flexion/forms-core';
 
 import Sex from '../../../../Form/components/Sex/Sex.js';
 import { PatternEditComponent } from '../../types.js';
@@ -9,7 +9,7 @@ import { PatternEditComponent } from '../../types.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';
 import { PatternEditForm } from '../common/PatternEditForm.js';
 import { usePatternEditFormContext } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const SexPatternEdit: PatternEditComponent<SexProps> = ({

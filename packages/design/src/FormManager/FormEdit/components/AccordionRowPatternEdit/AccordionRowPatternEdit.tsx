@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import type {
   AccordionRowProps,
   AccordionRowPattern,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 import AccordionRow from '../../../../Form/components/AccordionRow/AccordionRow.js';
 import { PatternEditComponent } from '../../types.js';
@@ -12,7 +12,7 @@ import { PatternEditComponent } from '../../types.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';
 import { PatternEditForm } from '../common/PatternEditForm.js';
 import { usePatternEditFormContext } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const AccordionRowPatternEdit: PatternEditComponent<AccordionRowProps> = ({

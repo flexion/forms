@@ -1,6 +1,7 @@
-import { type ServiceMethod, createService } from '@gsa-tts/forms-common';
+import { type ServiceMethod, createService } from '@flexion/forms-common';
 
-import { type FormServiceContext } from '../context/index.js';
+import { type FormServiceContext, type InternalFormServiceContext } from '../context/index.js';
+import { parsePdf as parsePdfCore } from '../documents/pdf/parsing-api.js';
 
 import { type AddForm, addForm } from './add-form.js';
 import { type DeleteForm, deleteForm } from './delete-form.js';
@@ -16,8 +17,15 @@ import { type SubmitForm, submitForm } from './submit-form.js';
  *
  * @param {FormServiceContext} ctx - The context required to initialize the form service.
  */
-export const createFormService = (ctx: FormServiceContext) =>
-  createService(ctx, {
+export const createFormService = (ctx: FormServiceContext): FormService => {
+  // Create parsePdf wrapper that binds parser and config from context
+  const parsePdf = (pdfBytes: Uint8Array) =>
+    parsePdfCore({ parser: ctx.parser, formConfig: ctx.config }, pdfBytes);
+
+  // Augment context with parsePdf for internal use
+  const internalCtx: InternalFormServiceContext = { ...ctx, parsePdf };
+
+  return createService(internalCtx, {
     addForm,
     deleteForm,
     getForm,
@@ -27,6 +35,7 @@ export const createFormService = (ctx: FormServiceContext) =>
     saveForm,
     submitForm,
   });
+};
 
 export type FormService = {
   addForm: ServiceMethod<AddForm>;

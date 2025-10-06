@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 
-import { registerAppStack } from '../lib/app-stack';
+import { registerAppStack } from '../../lib/app-stack';
 
 const gitRef =
   process.env.DEPLOY_GIT_REF ||

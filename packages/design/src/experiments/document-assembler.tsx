@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { generateDummyPDF } from '@gsa-tts/forms-core';
+import { generateDummyPDF } from '@flexion/forms-core';
 
 export const downloadPdfBytes = (bytes: Uint8Array) => {
   const base64 = btoa(String.fromCharCode(...bytes));

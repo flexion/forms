@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type AddressComponentProps } from '@gsa-tts/forms-core';
+import { type AddressComponentProps } from '@flexion/forms-core';
 
 import { type PatternComponent } from '../../types.js';
 

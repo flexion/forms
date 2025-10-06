@@ -1,5 +1,44 @@
 # @gsa-tts/forms-server-doj
 
+## 0.2.3
+
+### Patch Changes
+
+- @flexion/forms-server@0.2.3
+
+## 0.2.2
+
+### Patch Changes
+
+- @flexion/forms-server@0.2.2
+
+## 0.2.1
+
+### Patch Changes
+
+- @flexion/forms-server@0.2.1
+
+## 0.2.0
+
+### Minor Changes
+
+- 0a171f1: Initial Flexion Forms release
+
+### Patch Changes
+
+- Updated dependencies [0a171f1]
+  - @flexion/forms-infra-core@0.2.0
+  - @flexion/forms-database@0.2.0
+  - @flexion/forms-server@0.2.0
+
+## 0.1.5
+
+### Patch Changes
+
+- @flexion/forms-infra-core@0.1.5
+- @flexion/forms-database@0.1.3
+- @flexion/forms-server@0.1.3
+
 ## 0.1.4
 
 ### Patch Changes

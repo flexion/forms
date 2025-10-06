@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type TextInputProps } from '@gsa-tts/forms-core';
+import { type TextInputProps } from '@flexion/forms-core';
 import { type PatternComponent } from '../../types.js';
 
 const TextInput: PatternComponent<TextInputProps> = ({

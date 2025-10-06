@@ -4,14 +4,14 @@ import {
   defaultFormConfig,
   type Blueprint,
   type Pattern,
-} from '@gsa-tts/forms-core';
-import { createTestBrowserFormService } from '@gsa-tts/forms-core/context';
-import { type InputPattern } from '@gsa-tts/forms-core';
-import { type PagePattern } from '@gsa-tts/forms-core';
-import { type PageSetPattern } from '@gsa-tts/forms-core';
-import { type SequencePattern } from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
+import { createTestBrowserFormService } from '@flexion/forms-core/context';
+import { type InputPattern } from '@flexion/forms-core';
+import { type PagePattern } from '@flexion/forms-core';
+import { type PageSetPattern } from '@flexion/forms-core';
+import { type SequencePattern } from '@flexion/forms-core';
 
-import { type FormSummaryPattern } from '@gsa-tts/forms-core';
+import { type FormSummaryPattern } from '@flexion/forms-core';
 import { type FormUIContext } from './Form/types.js';
 import { defaultPatternComponents } from './Form/components/index.js';
 import { defaultPatternEditComponents } from './FormManager/FormEdit/components/index.js';

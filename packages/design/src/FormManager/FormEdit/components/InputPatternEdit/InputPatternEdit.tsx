@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { PatternId, TextInputProps } from '@gsa-tts/forms-core';
-import { InputPattern } from '@gsa-tts/forms-core';
+import { PatternId, TextInputProps } from '@flexion/forms-core';
+import { InputPattern } from '@flexion/forms-core';
 
 import TextInput from '../../../../Form/components/TextInput/TextInput.js';
 import { useFormManagerStore } from '../../../store.js';
@@ -11,7 +11,7 @@ import { PatternEditComponent } from '../../types.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';
 import { PatternEditForm } from '../common/PatternEditForm.js';
 import { usePatternEditFormContext } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const InputPatternEdit: PatternEditComponent<TextInputProps> = ({

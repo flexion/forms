@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { type FieldsetProps } from '@gsa-tts/forms-core';
+import { type FieldsetProps } from '@flexion/forms-core';
 
 import { type PatternComponent } from '../../types.js';
 import { renderPromptComponents } from '../../form-common.js';

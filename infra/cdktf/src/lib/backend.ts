@@ -6,7 +6,7 @@ import { S3Backend, TerraformStack } from 'cdktf';
  */
 export const withBackend = (stack: TerraformStack, stackPrefix: string) =>
   new S3Backend(stack, {
-    bucket: '10x-atj-tfstate',
+    bucket: 'flexion-forms-demo-sandbox-tfstate',
     key: `${stackPrefix}.tfstate`,
-    region: 'us-east-2',
+    region: 'us-east-1',
   });

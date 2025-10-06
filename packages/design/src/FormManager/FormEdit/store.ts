@@ -9,14 +9,14 @@ import {
   getPattern,
   getSessionPage,
   mergeSession,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 import { type FormManagerContext } from '../types.js';
 import { type PatternFocus } from './types.js';
 import {
   type NotificationSlice,
   createNotificationsSlice,
 } from '../Notifications/index.js';
-import { getRouteDataFromQueryString } from '@gsa-tts/forms-core';
+import { getRouteDataFromQueryString } from '@flexion/forms-core';
 
 export type FormEditSlice = {
   context: FormManagerContext;

@@ -1,11 +1,14 @@
 {
-  "name": "@gsa-tts/forms-infra-core",
-  "version": "0.1.4",
+  "name": "@flexion/forms-infra-core",
+  "version": "0.2.0",
   "description": "10x Forms Platform core infrastructure management",
   "type": "module",
   "license": "CC0",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "tsc",
     "clean": "rimraf dist tsconfig.tsbuildinfo coverage",
@@ -15,8 +18,8 @@
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.758.0",
     "@aws-sdk/client-ssm": "^3.624.0",
-    "@gsa-tts/forms-common": "workspace:*",
-    "@gsa-tts/forms-core": "workspace:*",
-    "zod": "^3.23.8"
+    "@flexion/forms-common": "workspace:*",
+    "@flexion/forms-core": "workspace:*",
+    "zod": "^4.1.11"
   }
 }

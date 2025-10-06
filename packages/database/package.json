@@ -1,12 +1,15 @@
 {
-  "name": "@gsa-tts/forms-database",
-  "version": "0.1.2",
+  "name": "@flexion/forms-database",
+  "version": "0.2.0",
   "description": "10x Forms Platform database",
   "type": "module",
   "license": "CC0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
@@ -31,7 +34,7 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "@gsa-tts/forms-common": "workspace:*",
+    "@flexion/forms-common": "workspace:*",
     "@types/pg": "^8.11.6",
     "better-sqlite3": "^11.7.2",
     "knex": "^3.1.0",

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { type EmailInputProps } from '@gsa-tts/forms-core';
-import { type EmailInputPattern } from '@gsa-tts/forms-core';
+import { type EmailInputProps } from '@flexion/forms-core';
+import { type EmailInputPattern } from '@flexion/forms-core';
 
 import EmailInput from '../../../../Form/components/EmailInput/EmailInput.js';
 import { PatternEditComponent } from '../../types.js';
@@ -10,7 +10,7 @@ import { PatternEditComponent } from '../../types.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';
 import { PatternEditForm } from '../common/PatternEditForm.js';
 import { usePatternEditFormContext } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const EmailInputEdit: PatternEditComponent<EmailInputProps> = ({

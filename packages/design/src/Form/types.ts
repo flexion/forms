@@ -2,7 +2,7 @@ import {
   type FormConfig,
   type PatternProps,
   type PromptComponent,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 export type FormUIContext = {
   config: FormConfig;

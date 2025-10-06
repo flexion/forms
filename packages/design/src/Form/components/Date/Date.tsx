@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useFormContext } from 'react-hook-form';
-import { type DateProps } from '@gsa-tts/forms-core';
+import { type DateProps } from '@flexion/forms-core';
 import { type PatternComponent } from '../../types.js';
 
 const months = [

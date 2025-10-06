@@ -1,12 +1,12 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import {
   type PackageDownloadPattern,
   type PackageDownloadProps,
   type PatternId,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 import PackageDownload from '../../../Form/components/PackageDownload/PackageDownload.js';
 import { PatternEditComponent } from '../types.js';

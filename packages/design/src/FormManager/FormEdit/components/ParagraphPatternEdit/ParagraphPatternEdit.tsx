@@ -1,9 +1,9 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { enLocale as message } from '@gsa-tts/forms-common';
-import { PatternId, type ParagraphProps } from '@gsa-tts/forms-core';
-import { type ParagraphPattern } from '@gsa-tts/forms-core';
+import { enLocale as message } from '@flexion/forms-common';
+import { PatternId, type ParagraphProps } from '@flexion/forms-core';
+import { type ParagraphPattern } from '@flexion/forms-core';
 
 import Paragraph from '../../../../Form/components/Paragraph/Paragraph.js';
 import { PatternEditComponent } from '../../types.js';

@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { type FormSummaryProps } from '@gsa-tts/forms-core';
-import { type Pattern } from '@gsa-tts/forms-core';
-import { type FormSummaryPattern } from '@gsa-tts/forms-core';
+import { type FormSummaryProps } from '@flexion/forms-core';
+import { type Pattern } from '@flexion/forms-core';
+import { type FormSummaryPattern } from '@flexion/forms-core';
 
 import FormSummary from '../../../Form/components/FormSummary/FormSummary.js';
 import { PatternEditComponent } from '../types.js';

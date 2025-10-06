@@ -5,7 +5,7 @@ export default defineConfig({
     exclude: ['chromium-bidi', 'fsevents'],
   },
   test: {
-    name: '@gsa-tts/forms-server:browser',
+    name: '@flexion/forms-server:browser',
     browser: {
       provider: 'playwright',
       enabled: true,

@@ -2,8 +2,8 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { type FormService, createForm, nullSession } from '@gsa-tts/forms-core';
-import { createTestBrowserFormService } from '@gsa-tts/forms-core/context';
+import { type FormService, createForm, nullSession } from '@flexion/forms-core';
+import { createTestBrowserFormService } from '@flexion/forms-core/context';
 import { FormManagerProvider } from '../FormManager/store.js';
 import { createTestFormManagerContext } from '../test-form.js';
 import AvailableFormList from './index.js';

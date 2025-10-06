@@ -8,11 +8,11 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import { defaultPatternComponents, Form } from '@gsa-tts/forms-design';
+import { defaultPatternComponents, Form } from '@flexion/forms-design';
 import {
   defaultFormConfig,
   getRouteDataFromQueryString,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 import { getAppContext } from '../../../context.js';
 import { useFormPageStore } from '../store/index.js';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-import { type FormService } from '@gsa-tts/forms-core';
+import { type FormService } from '@flexion/forms-core';
 
 import * as AppRoutes from '../FormManager/routes.js';
 
@@ -10,7 +10,7 @@ type FormDetails = {
   title: string;
   description: string;
 };
-export type UrlForForm = (id: string) => string;
+export type UrlForForm = (id: string) => string | null;
 export type UrlForFormManager = UrlForForm;
 
 export default function AvailableFormList({
@@ -23,13 +23,20 @@ export default function AvailableFormList({
   urlForFormManager: UrlForFormManager;
 }) {
   const [forms, setForms] = useState<FormDetails[]>([]);
-  useEffect(() => {
+  const location = useLocation();
+
+  const loadForms = React.useCallback(() => {
     formService.getFormList().then(result => {
       if (result.success) {
         setForms(result.data);
       }
     });
-  }, []);
+  }, [formService]);
+
+  useEffect(() => {
+    loadForms();
+  }, [location.pathname, location.hash, location.key, loadForms]);
+
   return (
     <>
       <section className="padding-y-3 desktop:margin-top-10 border-base-lighter border-y">
@@ -103,33 +110,51 @@ const FormList = ({
               </th>
               <td data-label="Description">{form.description}</td>
               <td data-label="Actions">
-                <div className="grid-row grid-gap-md">
-                  <a
-                    href={urlForForm(form.id)}
-                    title={form.title}
-                    className="grid-col-auto"
-                  >
-                    Go to form
-                  </a>
-                  <a
-                    href={`${urlForFormManager(form.id)}/create`}
-                    className="grid-col-auto"
-                  >
-                    Edit
-                  </a>
-                  <a
-                    href={`${urlForFormManager(form.id)}/delete`}
-                    className="grid-col-auto"
-                  >
-                    Delete
-                  </a>
-                </div>
+                <FormActions
+                  form={form}
+                  urlForForm={urlForForm}
+                  urlForFormManager={urlForFormManager}
+                />
               </td>
             </tr>
           ))
         )}
       </tbody>
     </table>
+  );
+};
+
+const FormActions = ({
+  form,
+  urlForForm,
+  urlForFormManager,
+}: {
+  form: FormDetails;
+  urlForForm: UrlForForm;
+  urlForFormManager: UrlForFormManager;
+}) => {
+  const formUrl = urlForForm(form.id);
+
+  return (
+    <div className="grid-row grid-gap-md">
+      {formUrl && (
+        <a href={formUrl} title={form.title} className="grid-col-auto">
+          Go to form
+        </a>
+      )}
+      <a
+        href={`${urlForFormManager(form.id)}/create`}
+        className="grid-col-auto"
+      >
+        Edit
+      </a>
+      <a
+        href={`${urlForFormManager(form.id)}/delete`}
+        className="grid-col-auto"
+      >
+        Delete
+      </a>
+    </div>
   );
 };
 

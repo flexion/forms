@@ -5,7 +5,7 @@ import {
   type FormError,
   type Pattern,
   type PatternMap,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 import { useFormManagerStore } from '../../../store.js';
 

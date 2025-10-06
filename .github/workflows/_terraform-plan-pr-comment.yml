@@ -68,11 +68,11 @@ jobs:
 
       - name: Generate Terraform CDK provider constructs
         shell: bash
-        run: pnpm --filter @gsa-tts/forms-infra-cdktf build:get
+        run: pnpm --filter @flexion/forms-infra-cdktf build:get
 
       - name: Build Terraform configuration
         shell: bash
-        run: pnpm turbo run --filter @gsa-tts/forms-infra-cdktf build
+        run: NODE_OPTIONS=--max-old-space-size=6144 pnpm turbo run --filter @flexion/forms-infra-cdktf build
 
       - name: Get Terraform stack name
         id: get_stack_name

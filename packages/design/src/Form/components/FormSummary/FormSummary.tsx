@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { type FormSummaryProps } from '@gsa-tts/forms-core';
+import { type FormSummaryProps } from '@flexion/forms-core';
 import { type PatternComponent } from '../../types.js';
 
 const FormSummary: PatternComponent<FormSummaryProps> = props => {

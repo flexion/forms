@@ -8,7 +8,7 @@ import {
   addDocument,
   addDocumentFieldsToForm,
   createFormSession,
-} from '@gsa-tts/forms-core';
+} from '@flexion/forms-core';
 
 import Form from '../../../Form/Form.js';
 import { type FormUIContext } from '../../../Form/types.js';

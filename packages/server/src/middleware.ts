@@ -1,6 +1,6 @@
 import { defineMiddleware } from 'astro/middleware';
 
-import { processSessionCookie } from '@gsa-tts/forms-auth';
+import { processSessionCookie } from '@flexion/forms-auth';
 
 import { getServerContext } from './config/astro.js';
 

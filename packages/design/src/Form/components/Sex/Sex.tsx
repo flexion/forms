@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { type PatternComponent } from '../../types.js';
-import { type SexProps } from '@gsa-tts/forms-core';
+import { type SexProps } from '@flexion/forms-core';
 import Modal from './Modal.js';
 
 const getAriaDescribedBy = (hintId: string | null) => hintId || undefined;

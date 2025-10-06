@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-    inputs:
-      playwright-version:
-        description: "Set the Playwright version"
-        default: "1.51.1"
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -54,4 +50,4 @@ jobs:
           publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          #NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

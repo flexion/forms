@@ -1,5 +1,5 @@
-import { createPostgresDatabaseContext } from '@gsa-tts/forms-database/context';
-import { getAWSSecretsManagerVault } from '@gsa-tts/forms-infra-core';
+import { createPostgresDatabaseContext } from '@flexion/forms-database/context';
+import { getAWSSecretsManagerVault } from '@flexion/forms-infra-core';
 
 import { createCustomServer } from './server.js';
 
@@ -17,25 +17,25 @@ const getCloudGovServerSecrets = () => {
 };
 
 const getAppRunnerSecrets = async () => {
-  const secrets = {
-    dbHost: process.env.DB_HOST,
-    dbPort: process.env.DB_PORT,
-    dbName: process.env.DB_NAME,
-    dbSecretArn: process.env.DB_SECRET_ARN,
-  }
-  if (secrets.dbHost === undefined || secrets.dbPort === undefined || secrets.dbName === undefined || secrets.dbSecretArn === undefined) {
+  const dbSecretArn = process.env.DB_SECRET_ARN;
+  const dbHost = process.env.DB_HOST;
+  const dbPort = process.env.DB_PORT;
+  const dbName = process.env.DB_NAME;
+
+  if (!dbSecretArn || !dbHost || !dbPort || !dbName) {
     return;
   }
 
   const vault = getAWSSecretsManagerVault();
-  const dbSecret = await vault.getSecret(secrets.dbSecretArn);
-  if (dbSecret === undefined) {
-    console.error('Error getting secret:', secrets.dbSecretArn);
+  const dbSecretString = await vault.getSecret(dbSecretArn);
+  if (dbSecretString === undefined) {
+    console.error('Error getting secret:', dbSecretArn);
     return;
   }
-  const secret = JSON.parse(dbSecret);
+
+  const dbSecret = JSON.parse(dbSecretString);
   return {
-    dbUri: `postgresql://${secret.username}:${secret.password}@${secret.dbHost}:${secret.dbPort}/${secret.dbName}`
+    dbUri: `postgresql://${dbSecret.username}:${dbSecret.password}@${dbHost}:${dbPort}/${dbName}`
   };
 };
 

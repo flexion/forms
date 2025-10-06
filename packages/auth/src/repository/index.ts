@@ -1,5 +1,5 @@
-import { createService } from '@gsa-tts/forms-common';
-import { type DatabaseContext } from '@gsa-tts/forms-database';
+import { createService } from '@flexion/forms-common';
+import { type DatabaseContext } from '@flexion/forms-database';
 
 import { createSession } from './create-session.js';
 import { createUser } from './create-user.js';

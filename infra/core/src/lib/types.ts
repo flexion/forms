@@ -1,11 +1,11 @@
 import * as z from 'zod';
-import { type Result } from '@gsa-tts/forms-common';
+import { type Result } from '@flexion/forms-common';
 
 export type SecretKey = string;
 export type SecretValue = string | undefined;
 export type SecretMap = Record<SecretKey, SecretValue>;
 
-const secretMap = z.record(z.string());
+const secretMap = z.record(z.string(), z.string().optional());
 
 export const getSecretMapFromJsonString = (
   jsonString?: string

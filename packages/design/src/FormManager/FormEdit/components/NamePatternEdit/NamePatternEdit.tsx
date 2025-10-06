@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { type NameProps } from '@gsa-tts/forms-core';
-import { type NamePattern } from '@gsa-tts/forms-core';
+import { type NameProps } from '@flexion/forms-core';
+import { type NamePattern } from '@flexion/forms-core';
 
 import { PatternEditComponent } from '../../types.js';
 import Name from '../../../../Form/components/Name/Name.js';
@@ -10,7 +10,7 @@ import Name from '../../../../Form/components/Name/Name.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';
 import { PatternEditForm } from '../common/PatternEditForm.js';
 import { usePatternEditFormContext } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const NamePatternEdit: PatternEditComponent<NameProps> = ({

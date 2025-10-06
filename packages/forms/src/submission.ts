@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-import { type Result, failure, success } from '@gsa-tts/forms-common';
+import { type Result, failure, success } from '@flexion/forms-common';
 
 import {
   type FormConfig,

@@ -1,5 +1,27 @@
 # @gsa-tts/forms-cli
 
+## 0.2.0
+
+### Minor Changes
+
+- 0a171f1: Initial Flexion Forms release
+
+### Patch Changes
+
+- Updated dependencies [0a171f1]
+  - @flexion/forms-infra-core@0.2.0
+  - @flexion/forms-auth@0.2.0
+  - @flexion/forms-database@0.2.0
+
+## 0.1.5
+
+### Patch Changes
+
+- bbd065d: Change end-to-end tests to run against server rendered app
+  - @flexion/forms-infra-core@0.1.5
+  - @flexion/forms-auth@0.1.3
+  - @flexion/forms-database@0.1.3
+
 ## 0.1.4
 
 ### Patch Changes

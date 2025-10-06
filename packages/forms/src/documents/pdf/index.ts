@@ -1,14 +1,33 @@
-import { getDocumentFieldData } from './extract.js';
-import {
-  type ParsedPdf,
-  fetchPdfApiResponse,
-  processApiResponse,
-} from './parsing-api.js';
-import type { DocumentFieldMap } from '../types.js';
+// Primary PDF parsing API
+export { parsePdf } from './parsing-api.js';
+export type { ParsePdf } from './parsing-api.js';
 
+// Re-export types and utilities
+export type { ParsedPdf } from './domain/pattern-mapper.js';
+export type { FieldMetadata, ParseError } from './domain/types.js';
+export type { ExtractedForm } from './domain/schema.js';
+export type { PdfParser } from './services/parser-interface.js';
+export type { PdfParsingContext } from './services/context.js';
+
+// Parser implementations
+export { createBedrockParser } from './adapters/bedrock-parser.js';
+export {
+  FakePdfParser,
+  createSimpleFakeParser,
+} from './adapters/fake-parser.js';
+
+// Parser factory functions
+export {
+  createProductionPdfParser,
+  createTestPdfParser,
+  createNoopPdfParser,
+} from './context.js';
+
+// PDF generation
 export * from './generate.js';
 export { generateDummyPDF } from './generate-dummy.js';
 
+// Legacy types
 export type PDFDocument = {
   type: 'pdf';
   fields: PDFField[];
@@ -28,14 +47,3 @@ export type PDFFieldType =
   | 'RadioGroup'
   | 'Paragraph'
   | 'RichText';
-
-export type ParsePdf = (
-  pdf: Uint8Array
-) => Promise<{ parsedPdf: ParsedPdf; fields: DocumentFieldMap }>;
-
-export const parsePdf: ParsePdf = async (pdfBytes: Uint8Array) => {
-  const fields = await getDocumentFieldData(pdfBytes);
-  const apiResponse = await fetchPdfApiResponse(pdfBytes);
-  const parsedPdf = await processApiResponse(apiResponse);
-  return { parsedPdf, fields };
-};

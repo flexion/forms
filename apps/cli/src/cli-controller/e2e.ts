@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import { Command } from 'commander';
 
 import { type Context } from './types.js';
-import { createTestDbSession, createE2eAuthContext } from '@gsa-tts/forms-auth';
+import { createTestDbSession, createE2eAuthContext } from '@flexion/forms-auth';
 
 export const addE2eCommands = (ctx: Context, cli: Command) => {
   const cmd = cli

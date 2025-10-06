@@ -1,5 +1,26 @@
 name: 'Deploy'
 
+# Triggers on pushes to main or demo branches
+# Builds Docker image and pushes to:
+# - GitHub Container Registry (ghcr.io)
+# - AWS ECR (requires ECR repositories to exist first)
+#
+# PREREQUISITES:
+# 1. Deploy infrastructure first to create ECR repositories:
+#    cd infra/cdktf
+#    pnpm deploy:aws-main    # for main branch
+#    pnpm deploy:aws-demo    # for demo branch
+#
+# 2. Configure GitHub secrets:
+#    - AWS_ACCOUNT_ID
+#    - AWS_ACCESS_KEY_ID
+#    - AWS_SECRET_ACCESS_KEY
+#
+# DEPLOYMENT FLOW:
+# - Push to main branch → builds image → pushes to flexion-forms-sandbox-main ECR
+# - Push to demo branch → builds image → pushes to flexion-forms-sandbox-demo ECR
+# - App Runner auto-deploys when new images are detected (autoDeploymentsEnabled: true)
+
 on:
   push:
     branches:
@@ -8,7 +29,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-image:
+  build-and-push-image:
     uses: ./.github/workflows/_docker-build-image.yml
     secrets: inherit
     with:
@@ -16,10 +37,15 @@ jobs:
       tag-name: ${{ github.ref_name }}
       deploy-key: ${{ github.ref_name }}
 
-  deploy:
-    needs: [build-image]
-    uses: ./.github/workflows/_terraform-apply.yml
-    secrets: inherit
-    with:
-      deploy-env: ${{ github.ref_name }}
-      #deploy-env: main
+  # Terraform deployment is handled separately/manually for now
+  # To deploy infrastructure changes:
+  #   cd infra/cdktf
+  #   DEPLOY_ENV=aws-main pnpm deploy  # or aws-demo
+  #
+  # Future: Automate Terraform deployment for AWS
+  # deploy-infrastructure:
+  #   needs: [build-and-push-image]
+  #   uses: ./.github/workflows/_terraform-apply.yml
+  #   secrets: inherit
+  #   with:
+  #     deploy-env: aws-${{ github.ref_name }}

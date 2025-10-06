@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { defaultFormConfig, type PatternConfig } from '@gsa-tts/forms-core';
+import { defaultFormConfig, type PatternConfig } from '@flexion/forms-core';
 import { useFormManagerStore } from '../store.js';
 import styles from './formEditStyles.module.css';
 import blockIcon from './images/block-icon.svg';
@@ -11,7 +11,7 @@ import multipleChoiceIcon from './images/radio-options-icon.svg';
 import templateIcon from './images/template-icon.svg';
 
 import classNames from 'classnames';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 const icons: Record<string, string | any> = {

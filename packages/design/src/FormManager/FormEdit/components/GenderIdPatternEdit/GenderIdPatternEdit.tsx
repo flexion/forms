@@ -1,8 +1,8 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { type GenderIdProps } from '@gsa-tts/forms-core';
-import { type GenderIdPattern } from '@gsa-tts/forms-core';
+import { type GenderIdProps } from '@flexion/forms-core';
+import { type GenderIdPattern } from '@flexion/forms-core';
 
 import GenderId from '../../../../Form/components/GenderId/GenderId.js';
 import { PatternEditComponent } from '../../types.js';
@@ -10,7 +10,7 @@ import { PatternEditComponent } from '../../types.js';
 import { PatternEditActions } from '../common/PatternEditActions.js';
 import { PatternEditForm } from '../common/PatternEditForm.js';
 import { usePatternEditFormContext } from '../common/hooks.js';
-import { enLocale as message } from '@gsa-tts/forms-common';
+import { enLocale as message } from '@flexion/forms-common';
 import styles from '../../formEditStyles.module.css';
 
 const GenderIdPatternEdit: PatternEditComponent<GenderIdProps> = ({

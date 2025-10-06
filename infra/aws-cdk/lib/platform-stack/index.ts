@@ -9,7 +9,7 @@ import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as changeCase from 'change-case';
 import { Duration } from 'aws-cdk-lib';
 
-import { getDatabaseSecretKey } from '@gsa-tts/forms-infra-core';
+import { getDatabaseSecretKey } from '@flexion/forms-infra-core';
 
 export class FormsPlatformStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {

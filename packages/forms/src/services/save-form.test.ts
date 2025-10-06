@@ -4,7 +4,7 @@ import { createForm, generatePatternId } from '../index.js';
 import { createTestFormServiceContext } from '../testing.js';
 
 import { saveForm } from './save-form.js';
-import { success } from '@gsa-tts/forms-common';
+import { success } from '@flexion/forms-common';
 
 const TEST_FORM = createForm({ title: 'Form Title', description: '' });
 const formSummaryId = generatePatternId();
