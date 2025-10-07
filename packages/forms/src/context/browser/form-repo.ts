@@ -144,7 +144,7 @@ export class BrowserFormRepository implements FormRepository {
   addDocument(document: {
     fileName: string;
     data: Uint8Array;
-    extract: { parsedPdf: ParsedPdf; fields: DocumentFieldMap };
+    extract?: { parsedPdf: ParsedPdf; fields: DocumentFieldMap };
   }) {
     const documentId = crypto.randomUUID();
     const data = uint8ArrayToBase64(document.data);
@@ -155,7 +155,7 @@ export class BrowserFormRepository implements FormRepository {
         type: 'pdf',
         file_name: document.fileName,
         data,
-        extract: JSON.stringify(document.extract),
+        extract: document.extract ? JSON.stringify(document.extract) : '',
       })
     );
     return Promise.resolve(
@@ -182,6 +182,33 @@ export class BrowserFormRepository implements FormRepository {
       ...json,
       data: base64ToUint8Array(json.data),
     });
+  }
+
+  // Job methods are not supported in browser context
+  createFormJob(): Promise<any> {
+    return Promise.resolve(
+      failure('Job management is not supported in browser context')
+    );
+  }
+
+  completeFormJob(): Promise<any> {
+    return Promise.resolve(
+      failure('Job management is not supported in browser context')
+    );
+  }
+
+  failFormJob(): Promise<any> {
+    return Promise.resolve(
+      failure('Job management is not supported in browser context')
+    );
+  }
+
+  getLatestFormJob(): Promise<any> {
+    return Promise.resolve(success(null));
+  }
+
+  getFormJobs(): Promise<any> {
+    return Promise.resolve(success([]));
   }
 }
 

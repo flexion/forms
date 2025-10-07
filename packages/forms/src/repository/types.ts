@@ -9,6 +9,11 @@ import type { GetFormList } from './get-form-list.js';
 import type { GetFormSession } from './get-form-session.js';
 import type { SaveForm } from './save-form.js';
 import type { UpsertFormSession } from './upsert-form-session.js';
+import type { CreateFormJob } from './jobs/create-form-job.js';
+import type { CompleteFormJob } from './jobs/complete-form-job.js';
+import type { FailFormJob } from './jobs/fail-form-job.js';
+import type { GetLatestFormJob } from './jobs/get-latest-form-job.js';
+import type { GetFormJobs } from './jobs/get-form-jobs.js';
 
 /**
  * Interface for the forms repository.
@@ -24,4 +29,9 @@ export interface FormRepository {
   getFormList: ServiceMethod<GetFormList>;
   saveForm: ServiceMethod<SaveForm>;
   upsertFormSession: ServiceMethod<UpsertFormSession>;
+  createFormJob: ServiceMethod<CreateFormJob>;
+  completeFormJob: ServiceMethod<CompleteFormJob>;
+  failFormJob: ServiceMethod<FailFormJob>;
+  getLatestFormJob: ServiceMethod<GetLatestFormJob>;
+  getFormJobs: ServiceMethod<GetFormJobs>;
 }

@@ -16,6 +16,25 @@ import {
   type UpsertFormSession,
   upsertFormSession,
 } from './upsert-form-session.js';
+import {
+  type CreateFormJob,
+  createFormJob,
+} from './jobs/create-form-job.js';
+import {
+  type CompleteFormJob,
+  completeFormJob,
+} from './jobs/complete-form-job.js';
+import { type FailFormJob, failFormJob } from './jobs/fail-form-job.js';
+import {
+  type GetLatestFormJob,
+  getLatestFormJob,
+} from './jobs/get-latest-form-job.js';
+import { type GetFormJobs, getFormJobs } from './jobs/get-form-jobs.js';
+import {
+  type FormJob,
+  type JobType,
+  type JobStatus,
+} from './jobs/types.js';
 
 export type { FormRepository };
 
@@ -23,6 +42,8 @@ export type FormRepositoryContext = {
   db: DatabaseContext;
   formConfig: FormConfig;
 };
+
+export { type FormJob, type JobType, type JobStatus } from './jobs/types.js';
 
 export const createFormsRepository = (
   ctx: FormRepositoryContext
@@ -37,4 +58,9 @@ export const createFormsRepository = (
     getForm,
     saveForm,
     upsertFormSession,
+    createFormJob,
+    completeFormJob,
+    failFormJob,
+    getLatestFormJob,
+    getFormJobs,
   });

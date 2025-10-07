@@ -12,6 +12,10 @@ export * from './util/base64.js';
 export * from './patterns/address/jurisdictions.js';
 export { type FormService, createFormService } from './services/index.js';
 export {
+  type FormStatusResponse,
+  type GetFormStatusError,
+} from './services/get-form-status.js';
+export {
   defaultFormConfig,
   attachmentFileTypeOptions,
   attachmentFileTypeMimes,

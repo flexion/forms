@@ -710,14 +710,33 @@ export const addFormOutput = (
 
 /**
  * Updates the summary of a given form with the provided summary details.
+ * Also updates the form-summary pattern to keep them in sync.
  */
 export const updateFormSummary = (
   form: Blueprint,
   summary: FormSummary
 ): Blueprint => {
+  // Find the form-summary pattern and update it
+  const formSummaryPatternEntry = Object.entries(form.patterns).find(
+    ([_, pattern]) => pattern.type === 'form-summary'
+  );
+
+  const updatedPatterns = { ...form.patterns };
+  if (formSummaryPatternEntry) {
+    const [patternId, pattern] = formSummaryPatternEntry;
+    updatedPatterns[patternId] = {
+      ...pattern,
+      data: {
+        ...pattern.data,
+        ...summary,
+      },
+    };
+  }
+
   return {
     ...form,
     summary,
+    patterns: updatedPatterns,
   };
 };
 

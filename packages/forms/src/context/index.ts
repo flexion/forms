@@ -23,6 +23,7 @@ export type FormServiceContext = {
   repository: FormRepository;
   config: FormConfig;
   isUserLoggedIn: () => boolean;
+  getUserId?: () => string;
   parser: PdfParser;
 };
 

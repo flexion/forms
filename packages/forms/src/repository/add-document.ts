@@ -9,7 +9,7 @@ export type AddDocument = (
   document: {
     fileName: string;
     data: Uint8Array;
-    extract: {
+    extract?: {
       parsedPdf: ParsedPdf;
       fields: DocumentFieldMap;
     };
@@ -30,7 +30,7 @@ export const addDocument: AddDocument = async (ctx, document) => {
       type: 'pdf',
       file_name: document.fileName,
       data: Buffer.from(document.data),
-      extract: JSON.stringify(document.extract),
+      extract: document.extract ? JSON.stringify(document.extract) : '',
     })
     .execute()
     .then(() =>

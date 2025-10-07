@@ -29,8 +29,11 @@ export const getDocument: GetDocument = async (ctx, id) => {
     .where('id', '=', id)
     .executeTakeFirstOrThrow()
     .then(data => {
+      // Handle documents without extract (stored during async processing initialization)
       const extract: { parsedPdf: ParsedPdf; fields: DocumentFieldMap } =
-        JSON.parse(data.extract);
+        data.extract && data.extract !== ''
+          ? JSON.parse(data.extract)
+          : { parsedPdf: {} as ParsedPdf, fields: {} };
       return success({
         id: data.id,
         data: data.data,

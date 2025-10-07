@@ -11,6 +11,7 @@ import { type DeleteForm, deleteForm } from './delete-form.js';
 import { type GetForm, getForm } from './get-form.js';
 import { type GetFormList, getFormList } from './get-form-list.js';
 import { type GetFormSession, getFormSession } from './get-form-session.js';
+import { type GetFormStatus, getFormStatus } from './get-form-status.js';
 import { type InitializeForm, initializeForm } from './initialize-form.js';
 import { type SaveForm, saveForm } from './save-form.js';
 import { type SubmitForm, submitForm } from './submit-form.js';
@@ -34,6 +35,7 @@ export const createFormService = (ctx: FormServiceContext): FormService => {
     getForm,
     getFormList,
     getFormSession,
+    getFormStatus,
     initializeForm,
     saveForm,
     submitForm,
@@ -46,6 +48,7 @@ export type FormService = {
   getForm: ServiceMethod<GetForm>;
   getFormList: ServiceMethod<GetFormList>;
   getFormSession: ServiceMethod<GetFormSession>;
+  getFormStatus: ServiceMethod<GetFormStatus>;
   initializeForm: ServiceMethod<InitializeForm>;
   saveForm: ServiceMethod<SaveForm>;
   submitForm: ServiceMethod<SubmitForm>;
