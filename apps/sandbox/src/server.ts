@@ -13,7 +13,23 @@ export const createCustomServer = async (db: DatabaseContext): Promise<any> => {
       //clientSecret: '', // secrets.loginGovClientSecret,
     },
     isUserAuthorized: async (email: string) => {
-      return email.endsWith('.gov');
+      // Flexion addresses
+      if (email.endsWith('@flexion.us')) {
+        return true;
+      }
+
+      // Other authorized users
+      return [
+        // Digital Public Ventures
+        'jim@digitalpublic.ventures',
+        'mike@digitalpublic.ventures',
+
+        // Maryland Digital Service
+        'syed.azeem@maryland.gov',
+        'lauren.george@maryland.gov',
+        'emil.leong@maryland.gov',
+        'paul.roberts@maryland.gov',
+      ].includes(email.toLowerCase());
     },
   });
 };
