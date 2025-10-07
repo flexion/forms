@@ -16,10 +16,7 @@ import {
   type UpsertFormSession,
   upsertFormSession,
 } from './upsert-form-session.js';
-import {
-  type CreateFormJob,
-  createFormJob,
-} from './jobs/create-form-job.js';
+import { type CreateFormJob, createFormJob } from './jobs/create-form-job.js';
 import {
   type CompleteFormJob,
   completeFormJob,
@@ -30,11 +27,7 @@ import {
   getLatestFormJob,
 } from './jobs/get-latest-form-job.js';
 import { type GetFormJobs, getFormJobs } from './jobs/get-form-jobs.js';
-import {
-  type FormJob,
-  type JobType,
-  type JobStatus,
-} from './jobs/types.js';
+import { type FormJob, type JobType, type JobStatus } from './jobs/types.js';
 
 export type { FormRepository };
 

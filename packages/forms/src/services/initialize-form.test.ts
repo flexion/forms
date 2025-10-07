@@ -126,7 +126,10 @@ describe('initializeForm', () => {
     );
 
     // Verify job was completed successfully
-    const jobResult = await ctx.repository.getLatestFormJob(formId, 'import-pdf');
+    const jobResult = await ctx.repository.getLatestFormJob(
+      formId,
+      'import-pdf'
+    );
     expect(jobResult.success).toBe(true);
     if (!jobResult.success) return;
 
@@ -188,7 +191,10 @@ describe('initializeForm', () => {
     );
 
     // Verify job failed with error message
-    const jobResult = await ctx.repository.getLatestFormJob(formId, 'import-pdf');
+    const jobResult = await ctx.repository.getLatestFormJob(
+      formId,
+      'import-pdf'
+    );
     expect(jobResult.success).toBe(true);
     if (!jobResult.success) return;
 

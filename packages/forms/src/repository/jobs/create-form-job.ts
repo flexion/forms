@@ -1,6 +1,11 @@
 import { type Result, success, failure } from '@flexion/forms-common';
 import type { FormRepositoryContext } from '../index.js';
-import { type FormJob, type JobMetadata, type JobStatus, type JobType } from './types.js';
+import {
+  type FormJob,
+  type JobMetadata,
+  type JobStatus,
+  type JobType,
+} from './types.js';
 
 /**
  * Create a new job record in 'processing' state.
