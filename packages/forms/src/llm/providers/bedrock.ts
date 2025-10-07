@@ -1,4 +1,6 @@
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
+import { fromNodeProviderChain } from '@aws-sdk/credential-providers';
+import type { AwsCredentialIdentityProvider } from '@aws-sdk/types';
 import type { LanguageModel } from 'ai';
 
 /**
@@ -7,6 +9,14 @@ import type { LanguageModel } from 'ai';
 export type BedrockConfig = {
   modelId: string;
   region: string;
+  /**
+   * Optional credential provider for AWS authentication.
+   * Defaults to fromNodeProviderChain() which automatically handles:
+   * - Environment variables (local development)
+   * - IAM roles (App Runner, ECS, EKS, EC2)
+   * - Shared credentials file
+   */
+  credentialProvider?: AwsCredentialIdentityProvider;
 };
 
 /**
@@ -32,7 +42,11 @@ export const DEFAULT_BEDROCK_CONFIG: BedrockConfig = {
 export const createBedrockModel = (
   config: Partial<BedrockConfig> = {}
 ): LanguageModel => {
-  const { modelId, region } = { ...DEFAULT_BEDROCK_CONFIG, ...config };
-  const bedrock = createAmazonBedrock({ region });
+  const {
+    modelId,
+    region,
+    credentialProvider = fromNodeProviderChain(),
+  } = { ...DEFAULT_BEDROCK_CONFIG, ...config };
+  const bedrock = createAmazonBedrock({ region, credentialProvider });
   return bedrock(modelId);
 };
