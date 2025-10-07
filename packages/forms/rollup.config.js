@@ -14,6 +14,7 @@ export default {
   input: {
     index: 'src/index.ts',
     context: 'src/context/index.ts',
+    'documents/pdf/context': 'src/documents/pdf/context.ts',
   },
   output: [
     {

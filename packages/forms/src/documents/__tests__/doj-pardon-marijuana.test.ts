@@ -91,7 +91,7 @@ describe('DOJ Pardon Attorney Office - Marijuana pardon application form', () =>
         'doj-pardon-marijuana/demo-application_for_certificate_of_pardon_for_simple_marijuana_possession.pdf'
       );
 
-      const { createTestPdfParser } = await import('../pdf/index.js');
+      const { createTestPdfParser } = await import('../pdf/context.js');
       const { defaultFormConfig } = await import('../../patterns/index.js');
       const parser = createTestPdfParser();
       const result = await parsePdf(

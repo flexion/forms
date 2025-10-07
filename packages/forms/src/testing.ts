@@ -3,7 +3,8 @@ import { createInMemoryDatabaseContext } from '@flexion/forms-database/context';
 
 import type { InternalFormServiceContext } from './context';
 import type { PdfParser } from './documents/pdf/services/parser-interface';
-import { createTestPdfParser, parsePdf as parsePdfCore } from './documents/pdf';
+import { parsePdf as parsePdfCore } from './documents/pdf';
+import { createTestPdfParser } from './documents/pdf/context';
 import { defaultFormConfig } from './patterns';
 import { createFormsRepository } from './repository';
 

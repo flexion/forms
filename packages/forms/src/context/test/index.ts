@@ -1,5 +1,5 @@
 import { BrowserFormRepository } from '../browser/form-repo.js';
-import { createTestPdfParser } from '../../documents/pdf/index.js';
+import { createSimpleFakeParser } from '../../documents/pdf/index.js';
 import { defaultFormConfig } from '../../patterns/index.js';
 import { type FormService, createFormService } from '../../services/index.js';
 
@@ -15,7 +15,7 @@ export const createTestBrowserFormService = (
     repository,
     config: defaultFormConfig,
     isUserLoggedIn: () => true,
-    parser: createTestPdfParser(),
+    parser: createSimpleFakeParser(),
   });
   if (testData) {
     Object.entries(testData).forEach(([id, blueprint]) => {

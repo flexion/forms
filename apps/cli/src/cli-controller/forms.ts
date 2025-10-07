@@ -3,7 +3,8 @@ import { Command } from 'commander';
 
 import { commands } from '@flexion/forms-infra-core';
 import { type Context } from './types.js';
-import { createFormService, createFormsRepository, defaultFormConfig, createTestPdfParser, parsePdf as parsePdfCore } from '@flexion/forms-core';
+import { createFormService, createFormsRepository, defaultFormConfig, parsePdf as parsePdfCore } from '@flexion/forms-core';
+import { createTestPdfParser } from '@flexion/forms-core/documents/pdf/context';
 import { createFilesystemDatabaseContext } from '@flexion/forms-database/context';
 
 export const addFormCommands = (ctx: Context, cli: Command) => {

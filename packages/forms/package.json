@@ -20,6 +20,11 @@
       "types": "./dist/types/context/index.d.ts",
       "import": "./dist/esm/context.js",
       "require": "./dist/cjs/context.js"
+    },
+    "./documents/pdf/context": {
+      "types": "./dist/types/documents/pdf/context.d.ts",
+      "import": "./dist/esm/documents/pdf/context.js",
+      "require": "./dist/cjs/documents/pdf/context.js"
     }
   },
   "scripts": {

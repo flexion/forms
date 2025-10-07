@@ -3,8 +3,8 @@ import {
   createFormService,
   createFormsRepository,
   defaultFormConfig,
-  createProductionPdfParser,
 } from '@flexion/forms-core';
+import { createProductionPdfParser } from '@flexion/forms-core/documents/pdf/context';
 import { type ServerOptions } from './options.js';
 
 export const createServerFormService = (

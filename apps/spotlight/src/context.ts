@@ -2,7 +2,7 @@ import {
   type FormConfig,
   type FormService,
   createFormService,
-  createNoopPdfParser,
+  createSimpleFakeParser,
 } from '@flexion/forms-core';
 import { defaultFormConfig } from '@flexion/forms-core';
 import { BrowserFormRepository } from '@flexion/forms-core/context';
@@ -44,7 +44,7 @@ const createAppFormService = () => {
       repository,
       config: defaultFormConfig,
       isUserLoggedIn: () => true,
-      parser: createNoopPdfParser(),
+      parser: createSimpleFakeParser(),
     });
   } else {
     return createTestBrowserFormService();
