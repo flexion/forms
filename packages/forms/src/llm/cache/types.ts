@@ -19,9 +19,9 @@ export interface AiRequestCache {
 
   /**
    * Clears all cached entries.
-   * Optional - primarily for testing.
+   * Primarily intended for testing.
    */
-  clear?(): Promise<void>;
+  clear(): Promise<void>;
 }
 
 /**

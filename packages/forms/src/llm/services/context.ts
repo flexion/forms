@@ -1,8 +1,8 @@
 import type { DatabaseContext } from '@flexion/forms-database';
 import type { AiRequestCache } from '../cache/types.js';
-import { DatabaseCache } from '../cache/database.js';
-import { FilesystemCache } from '../cache/filesystem.js';
-import { NoOpCache } from '../cache/noop.js';
+import { DatabaseCache } from '../cache/backends/database.js';
+import { FilesystemCache } from '../cache/backends/filesystem.js';
+import { NoOpCache } from '../cache/backends/noop.js';
 
 /**
  * Context for LLM operations.

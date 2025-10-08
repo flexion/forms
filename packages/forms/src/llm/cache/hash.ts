@@ -73,8 +73,16 @@ const sha256 = async (data: string): Promise<string> => {
 /**
  * Computes SHA-256 hash of a buffer using Web Crypto API.
  */
-const sha256Buffer = async (data: Uint8Array): Promise<string> => {
-  const hashBuffer = await globalThis.crypto.subtle.digest('SHA-256', data);
+const sha256Buffer = async (
+  data: Uint8Array | ArrayBuffer | ArrayBufferLike
+): Promise<string> => {
+  // Create a new Uint8Array to ensure proper ArrayBuffer backing
+  const bytes = data instanceof Uint8Array ? data : new Uint8Array(data);
+  const normalizedData = new Uint8Array(bytes);
+  const hashBuffer = await globalThis.crypto.subtle.digest(
+    'SHA-256',
+    normalizedData
+  );
   return Array.from(new Uint8Array(hashBuffer))
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');

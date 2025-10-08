@@ -17,7 +17,7 @@ export interface Database<T extends Engine = Engine> {
   form_sessions: FormSessionsTable;
   form_documents: FormDocumentsTable;
   form_jobs: FormJobsTable;
-  llm_request_cache: LlmRequestCacheTable;
+  llm_request_cache: LlmRequestCacheTable<T>;
 }
 export type DatabaseClient = Kysely<Database>;
 
@@ -92,12 +92,12 @@ export type FormJobsTableSelectable = Selectable<FormJobsTable>;
 export type FormJobsTableInsertable = Insertable<FormJobsTable>;
 export type FormJobsTableUpdateable = Updateable<FormJobsTable>;
 
-interface LlmRequestCacheTable {
+interface LlmRequestCacheTable<T extends Engine = Engine> {
   id: Generated<number>;
   cache_key: string;
   response_data: string;
-  created_at: Generated<Date>;
-  accessed_at: Date;
+  created_at: DbDate<T>;
+  accessed_at: DbDate<T>;
   access_count: number;
 }
 export type LlmRequestCacheTableSelectable = Selectable<LlmRequestCacheTable>;
