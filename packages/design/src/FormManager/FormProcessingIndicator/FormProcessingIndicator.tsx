@@ -96,12 +96,13 @@ export const FormProcessingIndicator: React.FC<
                       Processing your form
                     </h3>
                     <p className={styles.description}>
-                      We're analyzing your PDF document and extracting form
+                      We&apos;re analyzing your PDF document and extracting form
                       fields. This process may take several minutes to complete.
                     </p>
                     <div className={styles.timeInfo}>
                       <p className={styles.elapsedTime}>
-                        <strong>Elapsed time:</strong> {formatElapsedTime(elapsedSeconds)}
+                        <strong>Elapsed time:</strong>{' '}
+                        {formatElapsedTime(elapsedSeconds)}
                       </p>
                       {elapsedSeconds > 180 && (
                         <p className={styles.warningText}>

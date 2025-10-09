@@ -150,13 +150,15 @@ const FormRow = ({
   urlForFormManager: UrlForFormManager;
 }) => {
   const [showError, setShowError] = React.useState(false);
-  const isFailed = form.latestJob?.status === 'failed';
 
   return (
     <>
       <tr>
         <th data-label="Form title" scope="row">
-          <div className="display-flex flex-align-center flex-wrap" style={{ gap: '0.5rem' }}>
+          <div
+            className="display-flex flex-align-center flex-wrap"
+            style={{ gap: '0.5rem' }}
+          >
             <span>{form.title}</span>
             <FormStatusBadge form={form} />
           </div>
@@ -170,7 +172,7 @@ const FormRow = ({
           />
         </td>
       </tr>
-      {isFailed && form.latestJob && (
+      {form.latestJob?.status === 'failed' && form.latestJob && (
         <tr>
           <td colSpan={3}>
             <div className="usa-alert usa-alert--error usa-alert--slim margin-top-1">
@@ -178,8 +180,7 @@ const FormRow = ({
                 <p className="usa-alert__text margin-y-0">
                   <strong>Import error:</strong>{' '}
                   {form.latestJob.errorMessage ||
-                    'An error occurred while processing this form.'}
-                  {' '}
+                    'An error occurred while processing this form.'}{' '}
                   <button
                     type="button"
                     className="usa-button usa-button--unstyled"
@@ -216,7 +217,6 @@ const FormActions = ({
 }) => {
   const formUrl = urlForForm(form.id);
   const isProcessing = form.latestJob?.status === 'processing';
-  const isFailed = form.latestJob?.status === 'failed';
 
   return (
     <div className="grid-row grid-gap-md">

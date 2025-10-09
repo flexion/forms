@@ -7,7 +7,8 @@
     "moduleResolution": "NodeNext",
     "jsx": "react",
     "resolveJsonModule": true,
-    "types": ["@testing-library/jest-dom"]
+    "types": ["@testing-library/jest-dom"],
+    "customConditions": ["development"]
   },
   "include": [
     "globals.d.ts",

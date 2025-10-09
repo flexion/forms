@@ -6,6 +6,17 @@
   "license": "CC0",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
+  "exports": {
+    ".": {
+      "development": {
+        "types": "./src/index.ts",
+        "import": "./src/index.ts"
+      },
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
