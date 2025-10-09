@@ -19,9 +19,7 @@ export async function testCacheSpecification(cache: AiRequestCache) {
     nested: { array: [1, 2, 3], nullValue: null, bool: true },
   };
   await cache.set('complex', complexValue);
-  expect(await cache.get<typeof complexValue>('complex')).toEqual(
-    complexValue
-  );
+  expect(await cache.get<typeof complexValue>('complex')).toEqual(complexValue);
 
   // Overwriting existing value
   await cache.set('key1', 'updated');

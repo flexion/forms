@@ -228,7 +228,11 @@ const FormActions = ({
       <a
         href={`${urlForFormManager(form.id)}/create`}
         className="grid-col-auto"
-        aria-label={isProcessing ? `View processing status for ${form.title}` : `Edit ${form.title}`}
+        aria-label={
+          isProcessing
+            ? `View processing status for ${form.title}`
+            : `Edit ${form.title}`
+        }
       >
         {isProcessing ? 'View' : 'Edit'}
       </a>

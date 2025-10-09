@@ -1,5 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import type { Blueprint, FormService, FormStatusResponse } from '@flexion/forms-core';
+import type {
+  Blueprint,
+  FormService,
+  FormStatusResponse,
+} from '@flexion/forms-core';
 import { useFormStatus } from './useFormStatus.js';
 
 type UseBlueprintWithStatusResult = {
@@ -24,10 +28,11 @@ export const useBlueprintWithStatus = (
   const [formLoading, setFormLoading] = useState(true);
   const previousStatusRef = useRef<string | null>(null);
 
-  const { status, isLoading: statusLoading, error: statusError } = useFormStatus(
-    formId,
-    formService
-  );
+  const {
+    status,
+    isLoading: statusLoading,
+    error: statusError,
+  } = useFormStatus(formId, formService);
 
   const currentStatus = status?.latestJob?.status || null;
 
@@ -62,7 +67,10 @@ export const useBlueprintWithStatus = (
       setFormLoading(true);
       formService.getForm(formId).then(result => {
         if (result.success) {
-          console.log('Form reloaded successfully with patterns:', Object.keys(result.data.patterns).length);
+          console.log(
+            'Form reloaded successfully with patterns:',
+            Object.keys(result.data.patterns).length
+          );
           setForm(result.data);
           setFormError(null);
         } else {

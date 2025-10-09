@@ -106,7 +106,8 @@ export const FailedWithMessage: Story = {
         status: 'failed',
         createdAt: new Date(Date.now() - 30000).toISOString(),
         completedAt: new Date(Date.now() - 5000).toISOString(),
-        errorMessage: 'Unable to extract text from PDF. The document may be image-based or corrupted.',
+        errorMessage:
+          'Unable to extract text from PDF. The document may be image-based or corrupted.',
       },
     },
   },

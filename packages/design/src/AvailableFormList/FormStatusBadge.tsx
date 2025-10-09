@@ -24,11 +24,7 @@ export const FormStatusBadge: React.FC<FormStatusBadgeProps> = ({ form }) => {
         role="status"
         aria-live="polite"
       >
-        <svg
-          className={styles.spinner}
-          viewBox="0 0 20 20"
-          aria-hidden="true"
-        >
+        <svg className={styles.spinner} viewBox="0 0 20 20" aria-hidden="true">
           <circle
             className={styles.spinnerCircle}
             cx="10"
@@ -45,10 +41,7 @@ export const FormStatusBadge: React.FC<FormStatusBadgeProps> = ({ form }) => {
 
   if (isFailed) {
     return (
-      <span
-        className={`${styles.badge} ${styles.badgeFailed}`}
-        role="alert"
-      >
+      <span className={`${styles.badge} ${styles.badgeFailed}`} role="alert">
         <svg
           className={styles.errorIcon}
           aria-hidden="true"
@@ -57,10 +50,7 @@ export const FormStatusBadge: React.FC<FormStatusBadgeProps> = ({ form }) => {
           viewBox="0 0 24 24"
         >
           <circle cx="12" cy="12" r="10" fill="currentColor" />
-          <path
-            fill="white"
-            d="M11 7h2v6h-2V7zm0 8h2v2h-2v-2z"
-          />
+          <path fill="white" d="M11 7h2v6h-2V7zm0 8h2v2h-2v-2z" />
         </svg>
         <span>Import failed</span>
       </span>

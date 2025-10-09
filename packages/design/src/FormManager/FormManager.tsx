@@ -78,10 +78,8 @@ export default function FormManager(props: FormManagerProps) {
           path={AppRoutes.Inspect.path}
           Component={() => {
             const { formId } = useParams();
-            const { form, status, isLoading, isProcessing } = useBlueprintWithStatus(
-              formId,
-              context.formService
-            );
+            const { form, status, isLoading, isProcessing } =
+              useBlueprintWithStatus(formId, context.formService);
 
             if (isProcessing && formId && status) {
               return (
@@ -118,10 +116,8 @@ export default function FormManager(props: FormManagerProps) {
             if (formId === undefined) {
               return <div>formId is undefined</div>;
             }
-            const { form, status, isLoading, isProcessing } = useBlueprintWithStatus(
-              formId,
-              context.formService
-            );
+            const { form, status, isLoading, isProcessing } =
+              useBlueprintWithStatus(formId, context.formService);
 
             if (isProcessing && status) {
               return (
@@ -167,10 +163,8 @@ export default function FormManager(props: FormManagerProps) {
             if (formId === undefined) {
               return <div>formId is undefined</div>;
             }
-            const { form, status, isLoading, isProcessing } = useBlueprintWithStatus(
-              formId,
-              context.formService
-            );
+            const { form, status, isLoading, isProcessing } =
+              useBlueprintWithStatus(formId, context.formService);
 
             if (isProcessing && status) {
               return (
@@ -222,10 +216,8 @@ export default function FormManager(props: FormManagerProps) {
             if (formId === undefined) {
               return <div>formId is undefined</div>;
             }
-            const { form, status, isLoading, isProcessing } = useBlueprintWithStatus(
-              formId,
-              context.formService
-            );
+            const { form, status, isLoading, isProcessing } =
+              useBlueprintWithStatus(formId, context.formService);
 
             if (isProcessing && status) {
               return (
@@ -338,10 +330,8 @@ export default function FormManager(props: FormManagerProps) {
             if (formId === undefined) {
               return <div>formId is undefined</div>;
             }
-            const { form, status, isLoading, isProcessing } = useBlueprintWithStatus(
-              formId,
-              context.formService
-            );
+            const { form, status, isLoading, isProcessing } =
+              useBlueprintWithStatus(formId, context.formService);
 
             if (isProcessing && status) {
               return (
@@ -438,4 +428,3 @@ export default function FormManager(props: FormManagerProps) {
     </HashRouter>
   );
 }
-
