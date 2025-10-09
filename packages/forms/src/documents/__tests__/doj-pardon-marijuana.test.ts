@@ -81,10 +81,7 @@ describe('DOJ Pardon Attorney Office - Marijuana pardon application form', () =>
     });
   });
 
-  // Only run if AWS credentials available
-  const skipIfNoCredentials = process.env.AWS_ACCESS_KEY_ID ? test : test.skip;
-
-  skipIfNoCredentials(
+  test(
     'generates guided interview from PDF via Bedrock',
     async () => {
       const pdfBytes = await loadSamplePDF(
@@ -122,8 +119,8 @@ describe('DOJ Pardon Attorney Office - Marijuana pardon application form', () =>
       // Should also extract raw field data
       expect(Object.keys(fields).length).toBeGreaterThan(0);
     },
-    30000
-  ); // Longer timeout for LLM call
+    300000
+  ); // 5 minute timeout for initial Bedrock call and caching
 });
 
 const getFieldByName = (fields: DocumentFieldMap, name: string) => {

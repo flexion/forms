@@ -43,8 +43,8 @@ async function main() {
   console.log('Invoking Bedrock...');
   const startTime = Date.now();
 
-  // Use test LLM context with filesystem caching
-  const llmContext = createTestLlmContext('__fixtures__/ai-cache');
+  // Use test LLM context with filesystem caching (shared workspace root)
+  const llmContext = createTestLlmContext();
   const parser = createBedrockParser(llmContext);
   const result = await parser.parse(
     new Uint8Array(pdfBytes),

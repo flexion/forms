@@ -29,19 +29,20 @@ export const createProductionPdfParser = (db: DatabaseContext): PdfParser => {
  * Creates a test PDF parser with filesystem-backed LLM caching (VCR pattern).
  * Enables "record once, replay forever" testing workflow.
  *
- * @param cachePath - Directory path for storing cached LLM responses
+ * By default, uses a shared cache directory at the workspace root to ensure
+ * all tests and CLI tools can share cached Bedrock responses.
+ *
+ * @param cachePath - Directory path for storing cached LLM responses (defaults to workspace root)
  * @returns PdfParser configured for testing
  *
  * @example
  * ```typescript
- * const parser = createTestPdfParser('__fixtures__/ai-cache');
- * // First run: records live Bedrock API response to disk
- * // Subsequent runs: replays from disk, no API calls
+ * const parser = createTestPdfParser();
+ * // First run: records live Bedrock API response to workspace root cache
+ * // Subsequent runs: replays from shared cache, no API calls
  * ```
  */
-export const createTestPdfParser = (
-  cachePath: string = '__fixtures__/ai-cache'
-): PdfParser => {
+export const createTestPdfParser = (cachePath?: string): PdfParser => {
   const llmContext = createTestLlmContext(cachePath);
   return createBedrockParser(llmContext);
 };

@@ -1,0 +1,399 @@
+{
+  "object": {
+    "form_summary": {
+      "title": "Application for Certificate of Pardon for Marijuana Offenses",
+      "description": "Apply for a certificate of pardon for federal offenses of simple possession, attempted possession, or use of marijuana under presidential proclamations."
+    },
+    "pages": [
+      {
+        "title": "Introduction",
+        "elements": [
+          {
+            "component_type": "rich_text",
+            "text": "<h2>Application for Certificate of Pardon for Marijuana Offenses</h2><p>On October 6, 2022, and December 22, 2023, President Biden issued presidential proclamations pardoning federal and D.C. offenses for simple marijuana possession, attempted possession, and use.</p><h3>How a Pardon Can Help You</h3><p>A pardon is an expression of the President's forgiveness. It does not mean you are innocent or expunge your conviction, but it does remove civil disabilities such as restrictions on voting, holding office, or serving on a jury. It may also help with obtaining licenses, bonding, or employment.</p><h3>You Qualify If:</h3><ul><li>On or before December 22, 2023, you were charged with or convicted of simple possession, attempted possession, or use of marijuana under federal code, D.C. code, or Code of Federal Regulations</li><li>You were a U.S. citizen or lawfully present in the United States at the time of the offense</li><li>You were a U.S. citizen or lawful permanent resident on December 22, 2023</li></ul>"
+          },
+          {
+            "component_type": "rich_text",
+            "text": "<h3>What You'll Need</h3><p><strong>About You:</strong> Personal details including name, citizenship status, and contact information (mailing address and/or email).</p><p><strong>About the Charge or Conviction:</strong> Whether it was a charge or conviction, court district, date, and if possible, case information (docket number, code section) and supporting documents.</p><p><strong>Important:</strong> Submit a separate form for each conviction or charge. Without complete information, we cannot guarantee we can determine your eligibility.</p>"
+          },
+          {
+            "component_type": "paragraph",
+            "text": "The estimated time to complete this application is 120 minutes. Information regarding gender, race, or ethnicity is optional and will not affect processing."
+          }
+        ]
+      },
+      {
+        "title": "Personal Information",
+        "elements": [
+          {
+            "component_type": "paragraph",
+            "text": "Provide your current legal name."
+          },
+          {
+            "component_type": "fieldset",
+            "legend": "Current Name",
+            "fields": [
+              {
+                "component_type": "text_input",
+                "id": "Fst Name 1",
+                "label": "First Name",
+                "required": true
+              },
+              {
+                "component_type": "text_input",
+                "id": "Mid Name 1",
+                "label": "Middle Name",
+                "required": false
+              },
+              {
+                "component_type": "text_input",
+                "id": "Lst Name 1",
+                "label": "Last Name",
+                "required": true
+              }
+            ]
+          },
+          {
+            "component_type": "paragraph",
+            "text": "If your name was different at the time of conviction, provide that name below."
+          },
+          {
+            "component_type": "fieldset",
+            "legend": "Name at Conviction (if different)",
+            "fields": [
+              {
+                "component_type": "text_input",
+                "id": "Conv Fst Name",
+                "label": "First Name",
+                "required": false
+              },
+              {
+                "component_type": "text_input",
+                "id": "Conv Mid Name",
+                "label": "Middle Name",
+                "required": false
+              },
+              {
+                "component_type": "text_input",
+                "id": "Conv Lst Name",
+                "label": "Last Name",
+                "required": false
+              }
+            ]
+          },
+          {
+            "component_type": "text_input",
+            "id": "Date of Birth",
+            "label": "Date of Birth (MM/DD/YYYY)",
+            "required": true
+          },
+          {
+            "component_type": "text_input",
+            "id": "Gender",
+            "label": "Gender (optional)",
+            "required": false
+          }
+        ]
+      },
+      {
+        "title": "Contact Information",
+        "elements": [
+          {
+            "component_type": "paragraph",
+            "text": "Provide your mailing address and/or email address. We strongly recommend including an email address for faster communication."
+          },
+          {
+            "component_type": "fieldset",
+            "legend": "Mailing Address",
+            "fields": [
+              {
+                "component_type": "text_input",
+                "id": "Address",
+                "label": "Street Address (number, street, apartment/unit)",
+                "required": false
+              },
+              {
+                "component_type": "text_input",
+                "id": "City",
+                "label": "City",
+                "required": false
+              },
+              {
+                "component_type": "text_input",
+                "id": "State",
+                "label": "State",
+                "required": false
+              },
+              {
+                "component_type": "text_input",
+                "id": "Zip Code",
+                "label": "ZIP Code",
+                "required": false
+              }
+            ]
+          },
+          {
+            "component_type": "text_input",
+            "id": "Email Address",
+            "label": "Email Address",
+            "required": false
+          },
+          {
+            "component_type": "text_input",
+            "id": "Phone Number",
+            "label": "Phone Number",
+            "required": false
+          }
+        ]
+      },
+      {
+        "title": "Demographics",
+        "elements": [
+          {
+            "component_type": "paragraph",
+            "text": "The following demographic information is optional and will not affect the processing of your application."
+          },
+          {
+            "component_type": "radio_group",
+            "id": "Ethnicity.undefined",
+            "legend": "Are you Hispanic or Latino?",
+            "options": [
+              {
+                "id": "Ethnicity.0",
+                "label": "Yes",
+                "name": "Ethnicity.undefined",
+                "default_checked": false
+              },
+              {
+                "id": "Ethnicity.1",
+                "label": "No",
+                "name": "Ethnicity.undefined",
+                "default_checked": false
+              }
+            ]
+          },
+          {
+            "component_type": "checkbox_group",
+            "legend": "Race (check all that apply)",
+            "options": [
+              {
+                "id": "Nat Amer",
+                "label": "Alaska Native or American Indian",
+                "default_checked": false
+              },
+              {
+                "id": "Asian",
+                "label": "Asian",
+                "default_checked": false
+              },
+              {
+                "id": "Blck Amer",
+                "label": "Black or African American",
+                "default_checked": false
+              },
+              {
+                "id": "Nat Haw Islander",
+                "label": "Native Hawaiian or Other Pacific Islander",
+                "default_checked": false
+              },
+              {
+                "id": "White",
+                "label": "White",
+                "default_checked": false
+              },
+              {
+                "id": "Other",
+                "label": "Other",
+                "default_checked": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Citizenship and Residency",
+        "elements": [
+          {
+            "component_type": "paragraph",
+            "text": "Select your citizenship or residency status. If you are a naturalized citizen or lawful permanent resident, provide the relevant dates and documentation numbers."
+          },
+          {
+            "component_type": "radio_group",
+            "id": "Citizenship.undefined",
+            "legend": "Citizenship or Residency Status",
+            "options": [
+              {
+                "id": "Citizenship.0",
+                "label": "U.S. citizen by birth",
+                "name": "Citizenship.undefined",
+                "default_checked": false
+              },
+              {
+                "id": "Citizenship.1",
+                "label": "U.S. naturalized citizen",
+                "name": "Citizenship.undefined",
+                "default_checked": false
+              },
+              {
+                "id": "Citizenship.2",
+                "label": "Lawful Permanent Resident",
+                "name": "Citizenship.undefined",
+                "default_checked": false
+              }
+            ]
+          },
+          {
+            "component_type": "text_input",
+            "id": "Naturalization Date_af_date",
+            "label": "Date Naturalization Granted (if applicable)",
+            "required": false
+          },
+          {
+            "component_type": "text_input",
+            "id": "Residency Date_af_date",
+            "label": "Date Residency Granted (if applicable)",
+            "required": false
+          },
+          {
+            "component_type": "text_input",
+            "id": "A-Number",
+            "label": "Alien Registration Number (A-Number), Certificate of Naturalization Number, or Citizenship Number (if applicable)",
+            "required": false
+          }
+        ]
+      },
+      {
+        "title": "Conviction Information",
+        "elements": [
+          {
+            "component_type": "paragraph",
+            "text": "Complete this section if you were CONVICTED of simple possession, attempted possession, or use of marijuana. Provide the conviction date, court information, docket number, and code section."
+          },
+          {
+            "component_type": "text_input",
+            "id": "Convict-Date_af_date",
+            "label": "Date of Conviction (MM/DD/YYYY)",
+            "required": false
+          },
+          {
+            "component_type": "text_input",
+            "id": "US District Court",
+            "label": "U.S. District Court (e.g., Northern, Eastern, Southern, Western)",
+            "required": false
+          },
+          {
+            "component_type": "text_input",
+            "id": "Dist State",
+            "label": "District of (State)",
+            "required": false
+          },
+          {
+            "component_type": "checkbox",
+            "id": "D.C. Superior Court 1",
+            "label": "D.C. Superior Court (check if applicable instead of U.S. District Court)",
+            "default_checked": false
+          },
+          {
+            "component_type": "text_input",
+            "id": "Docket No",
+            "label": "Docket Number",
+            "required": false
+          },
+          {
+            "component_type": "text_input",
+            "id": "Code Section",
+            "label": "Code Section",
+            "required": false
+          }
+        ]
+      },
+      {
+        "title": "Charge Information",
+        "elements": [
+          {
+            "component_type": "paragraph",
+            "text": "Complete this section if you were CHARGED (but not convicted) with simple possession, attempted possession, or use of marijuana. Provide the court information, code section, and docket number."
+          },
+          {
+            "component_type": "text_input",
+            "id": "Code Section_2",
+            "label": "Code Section",
+            "required": false
+          },
+          {
+            "component_type": "text_input",
+            "id": "US District Court_2",
+            "label": "U.S. District Court (e.g., Northern, Eastern, Southern, Western)",
+            "required": false
+          },
+          {
+            "component_type": "text_input",
+            "id": "District 2",
+            "label": "District of (State)",
+            "required": false
+          },
+          {
+            "component_type": "checkbox",
+            "id": "D.C. Superior Court 2",
+            "label": "D.C. Superior Court (check if applicable instead of U.S. District Court)",
+            "default_checked": false
+          },
+          {
+            "component_type": "text_input",
+            "id": "Docket No 2",
+            "label": "Docket Number",
+            "required": false
+          }
+        ]
+      },
+      {
+        "title": "Certification and Signature",
+        "elements": [
+          {
+            "component_type": "rich_text",
+            "text": "<h3>Certification</h3><p>With knowledge of the penalties for false statements to Federal Agencies, as provided by 18 U.S.C. § 1001, and with knowledge that this statement is submitted to affect action by the U.S. Department of Justice, I certify that:</p><ol><li>The applicant was either a U.S. citizen or lawfully present in the United States at the time of the offense.</li><li>The applicant was a U.S. citizen or lawful permanent resident on December 22, 2023.</li><li>The above statements, and accompanying documents, are true and complete to the best of my knowledge, information, and belief.</li><li>I acknowledge that any certificate issued in reliance on the above information will be voided if the information is subsequently determined to be false.</li></ol>"
+          },
+          {
+            "component_type": "text_input",
+            "id": "App Date",
+            "label": "Date (MM/DD/YYYY)",
+            "required": true
+          },
+          {
+            "component_type": "paragraph",
+            "text": "After completing this form, sign and submit it with any supporting documents to USPardon.Attorney@usdoj.gov or mail to: U.S. Department of Justice, Office of the Pardon Attorney, 950 Pennsylvania Avenue NW, Washington, DC 20530."
+          }
+        ]
+      }
+    ]
+  },
+  "finishReason": "tool-calls",
+  "usage": {
+    "inputTokens": 8233,
+    "outputTokens": 3532,
+    "totalTokens": 11765,
+    "cachedInputTokens": 0
+  },
+  "warnings": [],
+  "providerMetadata": {
+    "bedrock": {
+      "usage": {
+        "cacheWriteInputTokens": 0
+      },
+      "isJsonResponseFromTool": true
+    }
+  },
+  "response": {
+    "id": "aiobj-lBGkNnDR0D5WSAaylwbnO2hf",
+    "timestamp": "2025-10-09T05:12:43.629Z",
+    "modelId": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "headers": {
+      "connection": "keep-alive",
+      "content-length": "9747",
+      "content-type": "application/json",
+      "date": "Thu, 09 Oct 2025 05:12:43 GMT",
+      "x-amzn-requestid": "abf19a6e-cba7-49cd-bf04-5434f3ac2a94"
+    }
+  },
+  "request": {}
+}
