@@ -6,7 +6,7 @@ import {
   generatePatternId,
   getPatternMap,
   removeChildPattern,
-} from './pattern';
+} from './pattern.js';
 import {
   type FieldsetPattern,
   type FormSummaryPattern,
@@ -14,8 +14,8 @@ import {
   type PageSetPattern,
   type RepeaterPattern,
   type SequencePattern,
-} from './patterns';
-import { type Blueprint, type FormOutput, type FormSummary } from './types';
+} from './patterns/index.js';
+import { type Blueprint, type FormOutput, type FormSummary } from './types.js';
 
 export const nullBlueprint: Blueprint = {
   summary: {
@@ -357,7 +357,7 @@ export const copyPage = (
   }
 
   newPage.data.patterns = pagePattern.data.patterns.map(
-    id => idMap.get(id) || id
+    (id: PatternId) => idMap.get(id) || id
   );
   updatedBp.patterns[newPageId] = newPage;
 
@@ -440,7 +440,7 @@ export const copyPattern = (
     bp: Blueprint,
     childId: PatternId
   ): PatternId | null => {
-    for (const [id, pattern] of Object.entries(bp.patterns)) {
+    for (const [id, pattern] of Object.entries(bp.patterns) as [string, Pattern][]) {
       if (
         pattern.type === 'fieldset' &&
         pattern.data.patterns.includes(childId)
@@ -487,7 +487,7 @@ export const copyPattern = (
     }
 
     newFieldset.data.patterns = originalFieldset.data.patterns.map(
-      id => idMap.get(id) || id
+      (id: PatternId) => idMap.get(id) || id
     );
 
     updatedBp = {
@@ -688,7 +688,7 @@ export const updatePatterns = (
   const patternConfig = config.patterns[root.type];
   const children = patternConfig.getChildren(root, newPatterns);
   targetPatterns[root.id] = root;
-  children.forEach(child => (targetPatterns[child.id] = child));
+  children.forEach((child: Pattern) => (targetPatterns[child.id] = child));
   return {
     ...form,
     patterns: targetPatterns,
@@ -717,7 +717,7 @@ export const updateFormSummary = (
   summary: FormSummary
 ): Blueprint => {
   // Find the form-summary pattern and update it
-  const formSummaryPatternEntry = Object.entries(form.patterns).find(
+  const formSummaryPatternEntry = (Object.entries(form.patterns) as [string, Pattern][]).find(
     ([_, pattern]) => pattern.type === 'form-summary'
   );
 

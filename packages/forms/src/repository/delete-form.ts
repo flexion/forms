@@ -1,7 +1,7 @@
 import { type VoidResult, failure, voidSuccess } from '@flexion/forms-common';
 
-import type { FormOutput } from '../types';
-import type { FormRepositoryContext } from '.';
+import type { FormOutput } from '../types.js';
+import type { FormRepositoryContext } from './index.js';
 
 export type DeleteForm = (
   ctx: FormRepositoryContext,
@@ -14,7 +14,7 @@ export type DeleteForm = (
 export const deleteForm: DeleteForm = async (ctx, formId) => {
   const db = await ctx.db.getKysely();
 
-  const result = await db.transaction().execute(async trx => {
+  const result = await db.transaction().execute(async (trx) => {
     const deleteResult = await trx
       .deleteFrom('forms')
       .where('id', '=', formId)
@@ -38,7 +38,7 @@ export const deleteForm: DeleteForm = async (ctx, formId) => {
       .deleteFrom('form_documents')
       .where('id', 'in', documentIds)
       .execute()
-      .then(_ => voidSuccess)
+      .then((_) => voidSuccess)
       .catch((error: Error) => {
         return failure({ message: error.message, code: 'unknown' as const });
       });

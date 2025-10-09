@@ -7,9 +7,9 @@ import {
   type Pattern,
   type PatternId,
   getPattern,
-} from './pattern';
-import { type FormSession } from './session';
-import { type Blueprint, type DocumentFieldMap } from '.';
+} from './pattern.js';
+import { type FormSession } from './session.js';
+import { type Blueprint, type DocumentFieldMap } from './index.js';
 
 export type SubmitHandlerContext = {
   config: FormConfig;

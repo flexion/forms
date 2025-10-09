@@ -1,6 +1,6 @@
 import { type Result, failure, success } from '@flexion/forms-common';
-import { type FormSession, type FormSessionId } from '../session';
-import type { FormRepositoryContext } from '.';
+import { type FormSession, type FormSessionId } from '../session.js';
+import type { FormRepositoryContext } from './index.js';
 
 export type GetFormSession = (
   ctx: FormRepositoryContext,
@@ -26,14 +26,14 @@ export const getFormSession: GetFormSession = async (
     .where('id', '=', id)
     .select(['id', 'form_id', 'data'])
     .executeTakeFirstOrThrow()
-    .then(result => {
+    .then((result) => {
       return success({
         id: result.id,
         formId: result.form_id,
         data: JSON.parse(result.data),
       });
     })
-    .catch(err => {
+    .catch((err: Error) => {
       return failure(err.message);
     });
 };

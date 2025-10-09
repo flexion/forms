@@ -1,11 +1,11 @@
 import { failure, success, type Result } from '@flexion/forms-common';
 
-import { type Blueprint, type FormOutput } from '../..';
-import { createFormOutputFieldData, fillPDF } from '../../documents';
-import { sessionIsComplete } from '../../session';
-import { type SubmitHandler } from '../../submission';
+import { type FormOutput } from '../../index.js';
+import { createFormOutputFieldData, fillPDF } from '../../documents/index.js';
+import { sessionIsComplete } from '../../session.js';
+import { type SubmitHandler } from '../../submission.js';
 
-import { type PackageDownloadPattern } from './index';
+import { type PackageDownloadPattern } from './index.js';
 
 export const downloadPackageHandler: SubmitHandler<
   PackageDownloadPattern

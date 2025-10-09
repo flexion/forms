@@ -1,5 +1,5 @@
-import { type DocumentFieldMap } from './documents/types';
-import { type PatternId, type PatternMap } from './pattern';
+import { type DocumentFieldMap } from './documents/types.js';
+import { type PatternId, type PatternMap } from './pattern.js';
 
 export type Blueprint = {
   summary: FormSummary;

@@ -1,8 +1,8 @@
 import { type Result, failure, success } from '@flexion/forms-common';
 
-import type { ParsedPdf } from '../documents/pdf/parsing-api';
-import type { DocumentFieldMap } from '../documents/types';
-import type { FormRepositoryContext } from '.';
+import type { ParsedPdf } from '../documents/pdf/parsing-api.js';
+import type { DocumentFieldMap } from '../documents/types.js';
+import type { FormRepositoryContext } from './index.js';
 
 export type GetDocument = (
   ctx: FormRepositoryContext,
@@ -28,7 +28,7 @@ export const getDocument: GetDocument = async (ctx, id) => {
     .select(['id', 'type', 'file_name', 'data', 'extract'])
     .where('id', '=', id)
     .executeTakeFirstOrThrow()
-    .then(data => {
+    .then((data) => {
       // Handle documents without extract (stored during async processing initialization)
       const extract: { parsedPdf: ParsedPdf; fields: DocumentFieldMap } =
         data.extract && data.extract !== ''
@@ -41,5 +41,5 @@ export const getDocument: GetDocument = async (ctx, id) => {
         fields: extract.fields,
       });
     })
-    .catch(err => failure(err.message));
+    .catch((err: Error) => failure(err.message));
 };

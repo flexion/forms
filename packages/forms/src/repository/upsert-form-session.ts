@@ -1,6 +1,6 @@
 import { type Result, failure, success } from '@flexion/forms-common';
-import { type FormSession } from '../session';
-import type { FormRepositoryContext } from '.';
+import { type FormSession } from '../session.js';
+import type { FormRepositoryContext } from './index.js';
 
 export type UpsertFormSession = (
   ctx: FormRepositoryContext,
@@ -25,7 +25,7 @@ export const upsertFormSession: UpsertFormSession = async (ctx, opts) => {
       form_id: opts.formId,
       data: strData,
     })
-    .onConflict(oc =>
+    .onConflict((oc) =>
       oc.columns(['id', 'form_id']).doUpdateSet({
         data: strData,
       })
@@ -37,7 +37,7 @@ export const upsertFormSession: UpsertFormSession = async (ctx, opts) => {
         id,
       });
     })
-    .catch(err => {
+    .catch((err: Error) => {
       return failure(err.message);
     });
 };

@@ -1,8 +1,8 @@
 import { type Result, failure, success } from '@flexion/forms-common';
 
-import type { ParsedPdf } from '../documents/pdf/parsing-api';
-import type { DocumentFieldMap } from '../documents/types';
-import type { FormRepositoryContext } from '.';
+import type { ParsedPdf } from '../documents/pdf/parsing-api.js';
+import type { DocumentFieldMap } from '../documents/types.js';
+import type { FormRepositoryContext } from './index.js';
 
 export type AddDocument = (
   ctx: FormRepositoryContext,
@@ -38,5 +38,5 @@ export const addDocument: AddDocument = async (ctx, document) => {
         id: uuid,
       })
     )
-    .catch(err => failure(err.message));
+    .catch((err: Error) => failure(err.message));
 };

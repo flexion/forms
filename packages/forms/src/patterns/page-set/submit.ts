@@ -5,10 +5,10 @@ import {
   getPatternSafely,
   aggregatePatternSessionValues,
 } from '../../pattern.js';
-import { type FormSession } from '../../session';
-import { type SubmitHandler } from '../../submission';
-import { type PagePattern } from '../page/config';
-import { type PageSetPattern } from './config';
+import { type FormSession } from '../../session.js';
+import { type SubmitHandler } from '../../submission.js';
+import { type PagePattern } from '../page/config.js';
+import { type PageSetPattern } from './config.js';
 
 const getPage = (formSession: FormSession) => {
   const page = formSession.route?.params.page?.toString();

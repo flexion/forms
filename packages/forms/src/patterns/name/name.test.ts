@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createNameSchema, nameConfig, type NamePattern } from './index';
+import { createNameSchema, nameConfig, type NamePattern } from './index.js';
 
 describe('NamePattern tests', () => {
   describe('createNameSchema', () => {

@@ -2,6 +2,7 @@ import { PDFDocument } from 'pdf-lib';
 
 import { Result } from '@flexion/forms-common';
 import { type FormOutput } from '../../index.js';
+import { type DocumentFieldValue } from '../types.js';
 import { type PDFFieldType } from './index.js';
 import { fillPdfField } from './patterns/index.js';
 
@@ -10,7 +11,7 @@ export const createFormOutputFieldData = (
   formData: Record<string, string>
 ): Record<string, { value: any; type: PDFFieldType }> => {
   const results = {} as Record<string, { value: any; type: PDFFieldType }>;
-  Object.entries(output.fields).forEach(([patternId, docField]) => {
+  (Object.entries(output.fields) as [string, DocumentFieldValue][]).forEach(([patternId, docField]) => {
     if (docField.type === 'not-supported') {
       console.error(`unsupported field: ${patternId}: ${docField}`);
       return;

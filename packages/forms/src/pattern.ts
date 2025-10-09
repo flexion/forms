@@ -1,5 +1,4 @@
 import * as r from '@flexion/forms-common';
-import set from 'set-value';
 
 import { type CreatePrompt } from './components.js';
 import { type FormError, type FormErrors } from './error.js';
@@ -249,6 +248,9 @@ export const getFirstPattern = (
 ): Pattern => {
   if (!pattern) {
     pattern = form.patterns[form.root];
+    if (!pattern) {
+      throw new Error(`Root pattern with id ${form.root} not found`);
+    }
   }
   const elemConfig = getPatternConfig(config, pattern.type);
   const children = elemConfig.getChildren(pattern, form.patterns);
