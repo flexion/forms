@@ -29,10 +29,6 @@ import { FieldsetPattern } from './patterns/index.js';
 import { type FormSummaryPattern } from './patterns/form-summary/form-summary.js';
 import { RepeaterPattern } from './patterns/index.js';
 export {
-  type FormRepository,
-  createFormsRepository,
-} from './repository/index.js';
-export {
   type FormRoute,
   type RouteData,
   getRouteDataFromQueryString,

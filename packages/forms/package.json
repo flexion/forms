@@ -37,6 +37,15 @@
       "types": "./dist/types/documents/pdf/context.d.ts",
       "import": "./dist/esm/documents/pdf/context.js",
       "require": "./dist/cjs/documents/pdf/context.js"
+    },
+    "./repository": {
+      "development": {
+        "types": "./src/repository/index.ts",
+        "import": "./src/repository/index.ts"
+      },
+      "types": "./dist/types/repository/index.d.ts",
+      "import": "./dist/esm/repository.js",
+      "require": "./dist/cjs/repository.js"
     }
   },
   "scripts": {
