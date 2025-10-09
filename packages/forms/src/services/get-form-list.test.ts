@@ -16,7 +16,7 @@ describe('getFormList', () => {
       success: false,
       error: {
         status: 401,
-        message: 'You must be logged in to delete a form',
+        message: 'You must be logged in to get form list',
       },
     });
   });
