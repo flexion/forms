@@ -99,6 +99,8 @@ jobs:
       - name: Initialize Terraform CDK configuration
         shell: bash
         working-directory: infra/cdktf
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
         run: |
           pnpm cdktf get
           pnpm build:tsc
