@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { type FormService } from '@flexion/forms-core';
+import { type FormService, type FormListItem } from '@flexion/forms-core';
 
 import * as AppRoutes from '../FormManager/routes.js';
+import { FormStatusBadge } from './FormStatusBadge.js';
 
-type FormDetails = {
-  id: string;
-  title: string;
-  description: string;
-};
 export type UrlForForm = (id: string) => string | null;
 export type UrlForFormManager = UrlForForm;
 
@@ -22,8 +18,9 @@ export default function AvailableFormList({
   urlForForm: UrlForForm;
   urlForFormManager: UrlForFormManager;
 }) {
-  const [forms, setForms] = useState<FormDetails[]>([]);
+  const [forms, setForms] = useState<FormListItem[]>([]);
   const location = useLocation();
+  const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const loadForms = React.useCallback(() => {
     formService.getFormList().then(result => {
@@ -36,6 +33,32 @@ export default function AvailableFormList({
   useEffect(() => {
     loadForms();
   }, [location.pathname, location.hash, location.key, loadForms]);
+
+  // Poll if any forms are processing
+  useEffect(() => {
+    const hasProcessingForms = forms.some(
+      form => form.latestJob?.status === 'processing'
+    );
+
+    // Clear any existing interval
+    if (pollIntervalRef.current) {
+      clearInterval(pollIntervalRef.current);
+      pollIntervalRef.current = null;
+    }
+
+    // Start polling if needed
+    if (hasProcessingForms) {
+      pollIntervalRef.current = setInterval(() => {
+        loadForms();
+      }, 3000); // Poll every 3 seconds
+    }
+
+    return () => {
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+      }
+    };
+  }, [forms, loadForms]);
 
   return (
     <>
@@ -74,7 +97,7 @@ const FormList = ({
   urlForForm,
   urlForFormManager,
 }: {
-  forms: FormDetails[];
+  forms: FormListItem[];
   urlForForm: UrlForForm;
   urlForFormManager: UrlForFormManager;
 }) => {
@@ -104,23 +127,81 @@ const FormList = ({
           </tr>
         ) : (
           forms.map((form, index) => (
-            <tr key={index}>
-              <th data-label="Form title" scope="row">
-                {form.title}
-              </th>
-              <td data-label="Description">{form.description}</td>
-              <td data-label="Actions">
-                <FormActions
-                  form={form}
-                  urlForForm={urlForForm}
-                  urlForFormManager={urlForFormManager}
-                />
-              </td>
-            </tr>
+            <FormRow
+              key={form.id || index}
+              form={form}
+              urlForForm={urlForForm}
+              urlForFormManager={urlForFormManager}
+            />
           ))
         )}
       </tbody>
     </table>
+  );
+};
+
+const FormRow = ({
+  form,
+  urlForForm,
+  urlForFormManager,
+}: {
+  form: FormListItem;
+  urlForForm: UrlForForm;
+  urlForFormManager: UrlForFormManager;
+}) => {
+  const [showError, setShowError] = React.useState(false);
+  const isFailed = form.latestJob?.status === 'failed';
+
+  return (
+    <>
+      <tr>
+        <th data-label="Form title" scope="row">
+          <div className="display-flex flex-align-center flex-wrap" style={{ gap: '0.5rem' }}>
+            <span>{form.title}</span>
+            <FormStatusBadge form={form} />
+          </div>
+        </th>
+        <td data-label="Description">{form.description}</td>
+        <td data-label="Actions">
+          <FormActions
+            form={form}
+            urlForForm={urlForForm}
+            urlForFormManager={urlForFormManager}
+          />
+        </td>
+      </tr>
+      {isFailed && form.latestJob && (
+        <tr>
+          <td colSpan={3}>
+            <div className="usa-alert usa-alert--error usa-alert--slim margin-top-1">
+              <div className="usa-alert__body">
+                <p className="usa-alert__text margin-y-0">
+                  <strong>Import error:</strong>{' '}
+                  {form.latestJob.errorMessage ||
+                    'An error occurred while processing this form.'}
+                  {' '}
+                  <button
+                    type="button"
+                    className="usa-button usa-button--unstyled"
+                    onClick={() => setShowError(!showError)}
+                  >
+                    {showError ? 'Hide details' : 'Show details'}
+                  </button>
+                </p>
+                {showError && form.latestJob.errorMessage && (
+                  <details className="margin-top-1">
+                    <summary>Technical details</summary>
+                    <pre className="font-mono-2xs margin-top-1 padding-1 bg-base-lightest">
+                      {form.latestJob.errorMessage}
+                    </pre>
+                  </details>
+                )}
+              </div>
+            </div>
+          </td>
+        </tr>
+      )}
+    </>
   );
 };
 
@@ -129,15 +210,17 @@ const FormActions = ({
   urlForForm,
   urlForFormManager,
 }: {
-  form: FormDetails;
+  form: FormListItem;
   urlForForm: UrlForForm;
   urlForFormManager: UrlForFormManager;
 }) => {
   const formUrl = urlForForm(form.id);
+  const isProcessing = form.latestJob?.status === 'processing';
+  const isFailed = form.latestJob?.status === 'failed';
 
   return (
     <div className="grid-row grid-gap-md">
-      {formUrl && (
+      {formUrl && !isProcessing && (
         <a href={formUrl} title={form.title} className="grid-col-auto">
           Go to form
         </a>
@@ -145,8 +228,9 @@ const FormActions = ({
       <a
         href={`${urlForFormManager(form.id)}/create`}
         className="grid-col-auto"
+        aria-label={isProcessing ? `View processing status for ${form.title}` : `Edit ${form.title}`}
       >
-        Edit
+        {isProcessing ? 'View' : 'Edit'}
       </a>
       <a
         href={`${urlForFormManager(form.id)}/delete`}

@@ -15,6 +15,7 @@ export {
   type FormStatusResponse,
   type GetFormStatusError,
 } from './services/get-form-status.js';
+export { type FormListItem } from './services/get-form-list.js';
 export {
   defaultFormConfig,
   attachmentFileTypeOptions,
