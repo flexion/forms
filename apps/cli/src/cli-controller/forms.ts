@@ -1,7 +1,6 @@
 import { promises as fs } from 'fs';
 import { Command } from 'commander';
 
-import { commands } from '@flexion/forms-infra-core';
 import { type Context } from './types.js';
 import { createFormService, defaultFormConfig, parsePdf as parsePdfCore } from '@flexion/forms-core';
 import { createFormsRepository } from '@flexion/forms-core/repository';

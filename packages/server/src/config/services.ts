@@ -1,9 +1,9 @@
 import {
   type FormService,
   createFormService,
-  createFormsRepository,
   defaultFormConfig,
 } from '@flexion/forms-core';
+import { createFormsRepository } from '@flexion/forms-core/repository';
 import { createProductionPdfParser } from '@flexion/forms-core/documents/pdf/context';
 import { type ServerOptions } from './options.js';
 
