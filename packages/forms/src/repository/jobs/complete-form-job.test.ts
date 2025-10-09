@@ -94,7 +94,6 @@ describeDatabase('completeFormJob', () => {
     expect(latestResult.data.completedAt).toBeDefined();
     expect(latestResult.data.result).toBeUndefined();
   });
-
 });
 
 const testForm = {

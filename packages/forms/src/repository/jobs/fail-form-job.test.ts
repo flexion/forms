@@ -97,7 +97,6 @@ describeDatabase('failFormJob', () => {
     expect(latestResult.data.errorMessage).toBe('Validation failed');
     expect(latestResult.data.errorStack).toBeUndefined();
   });
-
 });
 
 const testForm = {

@@ -47,10 +47,6 @@ export const getFormStatus: GetFormStatus = async (ctx, formId) => {
     });
   }
 
-  // Check if form has patterns (content)
-  const hasContent = Object.keys(form.patterns).length > 1; // >1 because root pattern always exists
-  const formStatus = hasContent ? 'ready' : 'draft';
-
   // Get latest import-pdf job (if any)
   const latestJobResult = await ctx.repository.getLatestFormJob(
     formId,
@@ -65,6 +61,19 @@ export const getFormStatus: GetFormStatus = async (ctx, formId) => {
   }
 
   const job = latestJobResult.data;
+
+  // Determine form status based on job state first to avoid race conditions
+  // If a job is actively processing, keep status as 'draft' even if patterns exist
+  let formStatus: 'draft' | 'ready';
+
+  if (job && (job.status === 'pending' || job.status === 'processing')) {
+    // Job is still active - form is not ready yet
+    formStatus = 'draft';
+  } else {
+    // No active job - determine status based on content
+    const hasContent = Object.keys(form.patterns).length > 1; // >1 because root pattern always exists
+    formStatus = hasContent ? 'ready' : 'draft';
+  }
 
   return success({
     formId,
