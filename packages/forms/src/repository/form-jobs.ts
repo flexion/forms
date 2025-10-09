@@ -1,5 +1,6 @@
 import { type Result, success, failure } from '@flexion/forms-common';
 import type { FormRepositoryContext } from './index.js';
+import { dateValue } from '@flexion/forms-database';
 
 // Type-safe job metadata by job type
 export type JobMetadata = {
@@ -79,8 +80,8 @@ export const createFormJob: CreateFormJob = async (ctx, params) => {
         form_id: params.formId,
         job_type: params.jobType,
         status: 'processing',
-        created_at: now.toISOString() as any,
-        started_at: now.toISOString() as any,
+        created_at: dateValue(ctx.db.engine, now),
+        started_at: dateValue(ctx.db.engine, now),
         metadata: params.metadata ? JSON.stringify(params.metadata) : null,
       })
       .execute();

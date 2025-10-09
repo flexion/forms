@@ -16,7 +16,7 @@ export interface Database<T extends Engine = Engine> {
   forms: FormsTable;
   form_sessions: FormSessionsTable;
   form_documents: FormDocumentsTable;
-  form_jobs: FormJobsTable;
+  form_jobs: FormJobsTable<T>;
   llm_request_cache: LlmRequestCacheTable<T>;
 }
 export type DatabaseClient = Kysely<Database>;
@@ -75,14 +75,14 @@ export type FormDocumentsTableSelectable = Selectable<FormDocumentsTable>;
 export type FormDocumentsTableInsertable = Insertable<FormDocumentsTable>;
 export type FormDocumentsTableUpdateable = Updateable<FormDocumentsTable>;
 
-interface FormJobsTable {
+interface FormJobsTable<T extends Engine = Engine> {
   id: string;
   form_id: string;
   job_type: string;
   status: string;
-  created_at: Generated<Date>;
-  started_at: Date | null;
-  completed_at: Date | null;
+  created_at: DbDate<T>;
+  started_at: DbDate<T> | null;
+  completed_at: DbDate<T> | null;
   error_message: string | null;
   error_stack: string | null;
   metadata: string | null;

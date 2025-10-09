@@ -6,6 +6,7 @@ import {
   type JobStatus,
   type JobType,
 } from './types.js';
+import { dateValue } from '@flexion/forms-database';
 
 /**
  * Create a new job record in 'processing' state.
@@ -33,8 +34,8 @@ export const createFormJob: CreateFormJob = async (ctx, params) => {
         form_id: params.formId,
         job_type: params.jobType,
         status: 'processing',
-        created_at: now.toISOString() as any,
-        started_at: now.toISOString() as any,
+        created_at: dateValue(ctx.db.engine, now),
+        started_at: dateValue(ctx.db.engine, now),
         metadata: params.metadata ? JSON.stringify(params.metadata) : null,
       })
       .execute();
