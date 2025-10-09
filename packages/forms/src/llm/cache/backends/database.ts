@@ -1,7 +1,7 @@
 import { sql } from 'kysely';
 
-import { type DatabaseContext } from '@flexion/forms-database';
-import type { AiRequestCache } from './types.js';
+import { type DatabaseContext, dateValue } from '@flexion/forms-database';
+import type { AiRequestCache } from '../types.js';
 
 /**
  * Database-backed cache for production use.
@@ -34,7 +34,7 @@ export class DatabaseCache implements AiRequestCache {
 
   async set<T>(key: string, value: T): Promise<void> {
     const kysely = await this.db.getKysely();
-    const now = new Date();
+    const now = dateValue(this.db.engine, new Date());
 
     await kysely
       .insertInto('llm_request_cache')
@@ -69,7 +69,7 @@ export class DatabaseCache implements AiRequestCache {
     await kysely
       .updateTable('llm_request_cache')
       .set({
-        accessed_at: new Date(),
+        accessed_at: dateValue(this.db.engine, new Date()),
         access_count: sql`access_count + 1`,
       })
       .where('cache_key', '=', key)

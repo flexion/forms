@@ -1,0 +1,68 @@
+/* Badge container */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Processing badge */
+.badgeProcessing {
+  background-color: #e7f6f8; /* USWDS info-lighter */
+  color: #00687d; /* USWDS info-darker */
+}
+
+/* Failed badge */
+.badgeFailed {
+  background-color: #f4e3db; /* USWDS error-lighter */
+  color: #b50909; /* USWDS red-warm-60v */
+}
+
+/* Spinner animation */
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  animation: rotate 1s linear infinite;
+  flex-shrink: 0;
+}
+
+.spinnerCircle {
+  stroke: currentColor;
+  stroke-dasharray: 40, 60;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite;
+  stroke-linecap: round;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 100;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 40, 100;
+    stroke-dashoffset: -20;
+  }
+  100% {
+    stroke-dasharray: 40, 100;
+    stroke-dashoffset: -60;
+  }
+}
+
+/* Error icon */
+.errorIcon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}

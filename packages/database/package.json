@@ -12,16 +12,28 @@
   },
   "exports": {
     ".": {
+      "development": {
+        "types": "./src/index.ts",
+        "import": "./src/index.ts"
+      },
       "types": "./dist/types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
     "./context": {
+      "development": {
+        "types": "./src/context/index.ts",
+        "import": "./src/context/index.ts"
+      },
       "types": "./dist/types/context/index.d.ts",
       "import": "./dist/esm/context.js",
       "require": "./dist/cjs/context.js"
     },
     "./testing": {
+      "development": {
+        "types": "./src/testing.ts",
+        "import": "./src/testing.ts"
+      },
       "types": "./dist/types/testing.d.ts",
       "import": "./dist/esm/testing.js",
       "require": "./dist/cjs/testing.js"

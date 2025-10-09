@@ -43,7 +43,6 @@ export const Edit = {
     step: NavPage.edit,
     next: '#',
     back: '#',
-    preview: '#',
   },
 } satisfies StoryObj<typeof FormManagerLayout>;
 
@@ -52,6 +51,5 @@ export const Publish = {
     step: NavPage.publish,
     next: '#',
     back: '#',
-    preview: '#',
   },
 } satisfies StoryObj<typeof FormManagerLayout>;

@@ -114,6 +114,45 @@ common → (no dependencies)
 - **Testing**: Vitest (unit/integration), Playwright (E2E), @vitest/browser (Storybook)
 - **Language**: TypeScript throughout
 
+### Development Workflow with Conditional Exports
+
+This monorepo uses **conditional exports** for zero-build development workflow:
+
+**In Development:**
+- Library packages (common, database, forms-core, auth, design) are consumed directly from TypeScript source files
+- No build step required when editing library code - changes are immediately reflected in consuming apps
+- Hot module replacement (HMR) works instantly across package boundaries
+- Consumer apps (server, spotlight, etc.) are configured with `customConditions: ["development"]` in tsconfig.json
+- Vite/Astro resolve the `development` export condition to use `./src/**/*.ts` files
+
+**In Production:**
+- Library packages are built and published from `dist/` folders
+- Production builds use optimized, transpiled artifacts
+- The `development` export condition is not used
+
+**How it Works:**
+Each library package.json has exports like:
+```json
+{
+  "exports": {
+    ".": {
+      "development": {
+        "types": "./src/index.ts",
+        "import": "./src/index.ts"
+      },
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  }
+}
+```
+
+**Build Scripts:**
+- **Important:** The `design` package requires CSS/SASS compilation:
+  - First time setup: Run `pnpm --filter @flexion/forms-design build:styles` (one-time)
+  - Or use `pnpm dev` which includes `dev:styles` (gulp watch) for the design package
+- Production builds (`pnpm build`) are still required before publishing
+
 ### Pattern System
 
 Patterns are the platform's primary building blocks. Each pattern has:
@@ -137,5 +176,9 @@ Use `describeDatabase` helper for testing database routines against both SQLite 
 - Node version is specified in `.nvmrc` - use `nvm install` to ensure correct version
 - Requires Docker or Podman for running tests (PostgreSQL container)
 - Playwright version must match exactly (1.51.1) across local and CI environments
-- Build is required before running `pnpm dev`
+- **Development**:
+  - No TypeScript build required - packages are consumed from source via conditional exports
+  - CSS/styles must be built once: `pnpm --filter @flexion/forms-design build:styles`
+  - Or run `pnpm dev` which includes style watching
+- **Production/Publishing**: Run `pnpm build` to create optimized artifacts before publishing
 - Pre-commit hook runs `pnpm format` automatically

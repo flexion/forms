@@ -22,21 +22,37 @@ export type PhoneNumberPatternOutput = z.infer<
 export const createPhoneSchema = (data: PhoneNumberPattern['data']) => {
   const phoneSchema = z
     .string()
-    .regex(/^(\d{3}-\d{3}-\d{4}|\d{10})$/, {
-      message: 'Invalid phone number format',
+    .superRefine((value, ctx) => {
+      // Allow empty string if not required
+      if (value === '' && !data.required) {
+        return;
+      }
+
+      // Validate format
+      if (!/^(\d{3}-\d{3}-\d{4}|\d{10})$/.test(value)) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Invalid phone number format',
+        });
+        return;
+      }
+
+      // Validate length
+      const digits = value.replace(/[^\d]/g, '');
+      if (digits.length !== 10) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Invalid phone number format',
+        });
+      }
     })
     .transform(value => {
+      if (value === '') {
+        return value;
+      }
       const digits = value.replace(/[^\d]/g, '');
       return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
-    })
-    .refine(value => {
-      const digits = value.replace(/[^\d]/g, '');
-      return digits.length === 10;
-    }, 'Phone number must contain exactly 10 digits');
-
-  if (!data.required) {
-    return z.union([z.literal(''), phoneSchema]);
-  }
+    });
 
   return phoneSchema;
 };
@@ -64,7 +80,7 @@ export const phoneNumberConfig: PatternConfig<
     return [];
   },
 
-  createPrompt(_, session, pattern, options) {
+  createPrompt(_, session, pattern) {
     const sessionValue = getFormSessionValue(session, pattern.id);
     const sessionError = getFormSessionError(session, pattern.id);
 

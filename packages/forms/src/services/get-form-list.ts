@@ -1,12 +1,10 @@
 import { type Result, failure, success } from '@flexion/forms-common';
 
 import { type FormServiceContext } from '../context/index.js';
+import type { FormListItem as RepositoryFormListItem } from '../repository/get-form-list.js';
 
-export type FormListItem = {
-  id: string;
-  title: string;
-  description: string;
-};
+export type FormListItem = RepositoryFormListItem;
+
 type FormListError = {
   status: number;
   message: string;
@@ -24,7 +22,7 @@ export const getFormList: GetFormList = async ctx => {
   if (!ctx.isUserLoggedIn()) {
     return failure({
       status: 401,
-      message: 'You must be logged in to delete a form',
+      message: 'You must be logged in to get form list',
     });
   }
   const forms = await ctx.repository.getFormList();

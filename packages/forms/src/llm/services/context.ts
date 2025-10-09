@@ -1,8 +1,9 @@
 import type { DatabaseContext } from '@flexion/forms-database';
 import type { AiRequestCache } from '../cache/types.js';
-import { DatabaseCache } from '../cache/database.js';
-import { FilesystemCache } from '../cache/filesystem.js';
-import { NoOpCache } from '../cache/noop.js';
+import { DatabaseCache } from '../cache/backends/database.js';
+import { FilesystemCache } from '../cache/backends/filesystem.js';
+import { NoOpCache } from '../cache/backends/noop.js';
+import { getDefaultCachePath } from '../../util/workspace-root.js';
 
 /**
  * Context for LLM operations.
@@ -37,22 +38,25 @@ export const createProductionLlmContext = (
  * Creates a test LLM context with filesystem-backed caching (VCR pattern).
  * Enables "record once, replay forever" testing workflow.
  *
- * @param cachePath - Directory path for storing cached responses
+ * By default, uses a shared cache directory at the workspace root to ensure
+ * all tests and CLI tools can share cached responses.
+ *
+ * @param cachePath - Directory path for storing cached responses (defaults to workspace root)
  * @param pretty - Whether to pretty-print JSON files (default: true)
  * @returns LlmContext configured for testing
  *
  * @example
  * ```typescript
- * const llmContext = createTestLlmContext('__fixtures__/ai-cache');
- * // First run: records live API response to disk
- * // Subsequent runs: replays from disk, no API calls
+ * const llmContext = createTestLlmContext();
+ * // First run: records live API response to workspace root cache
+ * // Subsequent runs: replays from shared cache, no API calls
  * ```
  */
 export const createTestLlmContext = (
-  cachePath: string = '__fixtures__/ai-cache',
+  cachePath?: string,
   pretty: boolean = true
 ): LlmContext => ({
-  cache: new FilesystemCache(cachePath, { pretty }),
+  cache: new FilesystemCache(cachePath ?? getDefaultCachePath(), { pretty }),
 });
 
 /**

@@ -14,6 +14,8 @@ type InitializeFormError = {
 type InitializeFormResult = {
   timestamp: string;
   id: string;
+  jobId?: string;
+  status: 'ready' | 'processing';
 };
 
 export type InitializeForm = (
@@ -50,8 +52,9 @@ const optionSchema = z.object({
 });
 
 /**
- * Asynchronously initializes a new form based on the provided context and options. Handles schema validation,
- * document import (parses uploaded PDF), builds a Blueprint, and saves to the repository.
+ * Asynchronously initializes a new form based on the provided context and options.
+ * If a document is provided, creates the form immediately and processes the PDF asynchronously.
+ * Otherwise, creates a form with the provided summary.
  */
 export const initializeForm: InitializeForm = async (ctx, opts) => {
   if (!ctx.isUserLoggedIn()) {
@@ -71,56 +74,164 @@ export const initializeForm: InitializeForm = async (ctx, opts) => {
   }
   const { document, summary } = parseResult.data;
 
+  // Create empty blueprint
   const builder = new BlueprintBuilder(ctx.config);
-  if (document !== undefined) {
-    const parsePdfResult = await ctx
-      .parsePdf(document.data)
-      .then(result => success(result))
-      .catch(err =>
-        failure({
-          status: 400,
-          message: `Failed to parse PDF: ${err.message}`,
-        })
-      );
-    if (!parsePdfResult.success) {
-      return parsePdfResult;
-    }
-    const { parsedPdf } = parsePdfResult.data;
 
+  if (summary) {
+    builder.setFormSummary(summary);
+  } else if (document) {
     builder.setFormSummary({
-      title: parsedPdf.title || document.fileName,
-      description: parsedPdf.description,
+      title: document.fileName,
+      description: '',
     });
+  }
 
+  // Step 1: Create form in database (empty, draft state)
+  const formResult = await ctx.repository.addForm(builder.form);
+  if (!formResult.success) {
+    console.error('Failed to add form:', formResult.error);
+    return failure({
+      status: 500,
+      message: formResult.error,
+    });
+  }
+
+  const formId = formResult.data.id;
+
+  // Step 2: If document provided, store it and initiate async processing
+  if (document !== undefined) {
     const fileName = document.fileName.split('/').pop() || 'my-form.pdf';
+
+    // Store document (without extract, will be filled by job processing)
     const addDocumentResult = await ctx.repository.addDocument({
       fileName,
       data: document.data,
-      extract: parsePdfResult.data,
+      extract: undefined,
     });
+
     if (!addDocumentResult.success) {
       return failure({
         status: 500,
         message: `Failed to add document: ${addDocumentResult.error}`,
       });
     }
+
+    const documentId = addDocumentResult.data.id;
+
+    // Create job record (status: 'processing')
+    const jobResult = await ctx.repository.createFormJob({
+      formId,
+      jobType: 'import-pdf',
+      metadata: {
+        documentId,
+        fileName,
+        userId: ctx.getUserId?.() || 'system',
+      },
+    });
+
+    if (!jobResult.success) {
+      return failure({
+        status: 500,
+        message: 'Failed to create processing job',
+      });
+    }
+
+    const job = jobResult.data;
+
+    // Step 3: Fire async processing (don't await!)
+    processFormDocumentAsync(ctx, formId, job.id, documentId).catch(err => {
+      console.error('Async form processing failed:', err);
+      // Error already logged to database by processFormDocumentAsync
+    });
+
+    // Step 4: Return immediately
+    return success({
+      id: formId,
+      timestamp: formResult.data.timestamp,
+      jobId: job.id,
+      status: 'processing',
+    });
+  }
+
+  // No document, form is ready immediately
+  return success({
+    id: formId,
+    timestamp: formResult.data.timestamp,
+    status: 'ready',
+  });
+};
+
+/**
+ * Async function that processes PDF and updates form + job.
+ * Runs in background, not awaited by HTTP request.
+ */
+async function processFormDocumentAsync(
+  ctx: InternalFormServiceContext,
+  formId: string,
+  jobId: string,
+  documentId: string
+): Promise<void> {
+  try {
+    // Get document data
+    const documentResult = await ctx.repository.getDocument(documentId);
+    if (!documentResult.success) {
+      await ctx.repository.failFormJob(jobId, {
+        message: `Document not found: ${documentResult.error}`,
+      });
+      return;
+    }
+
+    // Parse PDF via Bedrock
+    const parsePdfResult = await ctx.parsePdf(documentResult.data.data);
+    const { parsedPdf, fields } = parsePdfResult;
+
+    // Get current form
+    const formResult = await ctx.repository.getForm(formId);
+    if (!formResult.success || !formResult.data) {
+      await ctx.repository.failFormJob(jobId, {
+        message: 'Form not found',
+      });
+      return;
+    }
+
+    // Build updated form with parsed patterns
+    const builder = new BlueprintBuilder(ctx.config, formResult.data);
+
+    // Update summary from parsed PDF
+    builder.setFormSummary({
+      title: parsedPdf.title || documentResult.data.path || 'Untitled',
+      description: parsedPdf.description || '',
+    });
+
+    // Add document reference
     await builder.addDocumentRef({
-      id: addDocumentResult.data.id,
+      id: documentId,
       extract: parsedPdf,
     });
-  }
 
-  if (summary) {
-    builder.setFormSummary(summary);
-  }
+    // Save updated form
+    const saveResult = await ctx.repository.saveForm(formId, builder.form);
+    if (!saveResult.success) {
+      await ctx.repository.failFormJob(jobId, {
+        message: `Failed to save form: ${saveResult.error}`,
+      });
+      return;
+    }
 
-  const result = await ctx.repository.addForm(builder.form);
-  if (!result.success) {
-    console.error('Failed to add form:', result.error);
-    return failure({
-      status: 500,
-      message: result.error,
+    // Mark job as completed
+    await ctx.repository.completeFormJob(jobId, {
+      patternsAdded: Object.keys(builder.form.patterns).length,
+      fieldsExtracted: Object.keys(fields).length,
+      documentId,
+    });
+
+    console.log(`Form ${formId} processed successfully`);
+  } catch (err) {
+    // Catch any unexpected errors
+    console.error('Unexpected error in processFormDocumentAsync:', err);
+    await ctx.repository.failFormJob(jobId, {
+      message: (err as Error).message,
+      stack: (err as Error).stack,
     });
   }
-  return result;
-};
+}

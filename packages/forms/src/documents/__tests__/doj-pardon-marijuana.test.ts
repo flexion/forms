@@ -81,49 +81,42 @@ describe('DOJ Pardon Attorney Office - Marijuana pardon application form', () =>
     });
   });
 
-  // Only run if AWS credentials available
-  const skipIfNoCredentials = process.env.AWS_ACCESS_KEY_ID ? test : test.skip;
+  test('generates guided interview from PDF via Bedrock', async () => {
+    const pdfBytes = await loadSamplePDF(
+      'doj-pardon-marijuana/demo-application_for_certificate_of_pardon_for_simple_marijuana_possession.pdf'
+    );
 
-  skipIfNoCredentials(
-    'generates guided interview from PDF via Bedrock',
-    async () => {
-      const pdfBytes = await loadSamplePDF(
-        'doj-pardon-marijuana/demo-application_for_certificate_of_pardon_for_simple_marijuana_possession.pdf'
-      );
+    const { createTestPdfParser } = await import('../pdf/context.js');
+    const { defaultFormConfig } = await import('../../patterns/index.js');
+    const parser = createTestPdfParser();
+    const result = await parsePdf(
+      { parser, formConfig: defaultFormConfig },
+      pdfBytes
+    );
+    const { parsedPdf, fields } = result;
 
-      const { createTestPdfParser } = await import('../pdf/context.js');
-      const { defaultFormConfig } = await import('../../patterns/index.js');
-      const parser = createTestPdfParser();
-      const result = await parsePdf(
-        { parser, formConfig: defaultFormConfig },
-        pdfBytes
-      );
-      const { parsedPdf, fields } = result;
+    // Should create valid pattern structure
+    expect(parsedPdf.root).toBe('root');
+    expect(parsedPdf.patterns['root']).toBeDefined();
+    expect(parsedPdf.errors.length).toBe(0);
 
-      // Should create valid pattern structure
-      expect(parsedPdf.root).toBe('root');
-      expect(parsedPdf.patterns['root']).toBeDefined();
-      expect(parsedPdf.errors.length).toBe(0);
+    // Should organize into pages
+    const rootPattern = parsedPdf.patterns['root'] as PageSetPattern;
+    expect(rootPattern.data.pages.length).toBeGreaterThan(0);
 
-      // Should organize into pages
-      const rootPattern = parsedPdf.patterns['root'] as PageSetPattern;
-      expect(rootPattern.data.pages.length).toBeGreaterThan(0);
+    // Should maintain field mappings
+    const fieldNames = Object.values(parsedPdf.outputs).map(
+      output => output.name
+    );
+    expect(fieldNames.length).toBeGreaterThan(0);
 
-      // Should maintain field mappings
-      const fieldNames = Object.values(parsedPdf.outputs).map(
-        output => output.name
-      );
-      expect(fieldNames.length).toBeGreaterThan(0);
+    // Should have a title and description
+    expect(parsedPdf.title).toBeTruthy();
+    expect(parsedPdf.description).toBeTruthy();
 
-      // Should have a title and description
-      expect(parsedPdf.title).toBeTruthy();
-      expect(parsedPdf.description).toBeTruthy();
-
-      // Should also extract raw field data
-      expect(Object.keys(fields).length).toBeGreaterThan(0);
-    },
-    30000
-  ); // Longer timeout for LLM call
+    // Should also extract raw field data
+    expect(Object.keys(fields).length).toBeGreaterThan(0);
+  }, 300000); // 5 minute timeout for initial Bedrock call and caching
 });
 
 const getFieldByName = (fields: DocumentFieldMap, name: string) => {

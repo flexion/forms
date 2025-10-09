@@ -21,6 +21,11 @@ export default defineConfig({
     define: {
       'import.meta.env.GITHUB': JSON.stringify(githubRepository),
     },
+    resolve: {
+      conditions: process.env.NODE_ENV === 'production'
+        ? ['production', 'import', 'module', 'browser', 'default']
+        : ['development', 'import', 'module', 'browser', 'default'],
+    },
   },
 });
 

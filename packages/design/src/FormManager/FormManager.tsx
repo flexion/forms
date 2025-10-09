@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   useParams,
   HashRouter,
@@ -11,8 +11,6 @@ import {
   createFormSession,
   nullSession,
   defaultFormConfig,
-  Blueprint,
-  type FormService,
 } from '@flexion/forms-core';
 
 import { type FormManagerProps, type FormManagerContext } from './types.js';
@@ -27,6 +25,8 @@ import * as AppRoutes from './routes.js';
 import { FormManagerProvider } from './store.js';
 import AvailableFormList from '../AvailableFormList/index.js';
 import styles from './FormEdit/formEditStyles.module.css';
+import { FormProcessingIndicator } from './FormProcessingIndicator/index.js';
+import { useBlueprintWithStatus } from './hooks.js';
 
 import {
   defaultPatternComponents,
@@ -78,10 +78,23 @@ export default function FormManager(props: FormManagerProps) {
           path={AppRoutes.Inspect.path}
           Component={() => {
             const { formId } = useParams();
-            const form = useBlueprint(formId, context.formService);
-            if (form === null) {
+            const { form, status, isLoading, isProcessing } =
+              useBlueprintWithStatus(formId, context.formService);
+
+            if (isProcessing && formId && status) {
+              return (
+                <FormManagerProvider context={context} session={nullSession}>
+                  <FormManagerLayout>
+                    <FormProcessingIndicator formId={formId} status={status} />
+                  </FormManagerLayout>
+                </FormManagerProvider>
+              );
+            }
+
+            if (isLoading || form === null) {
               return <div>Loading...</div>;
             }
+
             return (
               <FormManagerProvider
                 context={context}
@@ -103,10 +116,23 @@ export default function FormManager(props: FormManagerProps) {
             if (formId === undefined) {
               return <div>formId is undefined</div>;
             }
-            const form = useBlueprint(formId, context.formService);
-            if (form === null) {
+            const { form, status, isLoading, isProcessing } =
+              useBlueprintWithStatus(formId, context.formService);
+
+            if (isProcessing && status) {
+              return (
+                <FormManagerProvider context={context} session={nullSession}>
+                  <FormManagerLayout>
+                    <FormProcessingIndicator formId={formId} status={status} />
+                  </FormManagerLayout>
+                </FormManagerProvider>
+              );
+            }
+
+            if (isLoading || form === null) {
               return <div>Loading...</div>;
             }
+
             return (
               <FormManagerProvider
                 context={context}
@@ -137,10 +163,28 @@ export default function FormManager(props: FormManagerProps) {
             if (formId === undefined) {
               return <div>formId is undefined</div>;
             }
-            const form = useBlueprint(formId, context.formService);
-            if (form === null) {
+            const { form, status, isLoading, isProcessing } =
+              useBlueprintWithStatus(formId, context.formService);
+
+            if (isProcessing && status) {
+              return (
+                <FormManagerProvider context={context} session={nullSession}>
+                  <FormManagerLayout
+                    step={NavPage.edit}
+                    back={AppRoutes.GuidedFormCreation.getUrl()}
+                    previewPath={AppRoutes.Preview.getUrl(formId)}
+                    currentPath={AppRoutes.Create.getUrl(formId)}
+                  >
+                    <FormProcessingIndicator formId={formId} status={status} />
+                  </FormManagerLayout>
+                </FormManagerProvider>
+              );
+            }
+
+            if (isLoading || form === null) {
               return <div>Loading...</div>;
             }
+
             return (
               <FormManagerProvider
                 context={context}
@@ -172,10 +216,28 @@ export default function FormManager(props: FormManagerProps) {
             if (formId === undefined) {
               return <div>formId is undefined</div>;
             }
-            const form = useBlueprint(formId, context.formService);
-            if (form === null) {
+            const { form, status, isLoading, isProcessing } =
+              useBlueprintWithStatus(formId, context.formService);
+
+            if (isProcessing && status) {
+              return (
+                <FormManagerProvider context={context} session={nullSession}>
+                  <FormManagerLayout
+                    step={NavPage.settings}
+                    back={AppRoutes.Create.getUrl(formId)}
+                    previewPath={AppRoutes.Preview.getUrl(formId)}
+                    currentPath={AppRoutes.Configure.getUrl(formId)}
+                  >
+                    <FormProcessingIndicator formId={formId} status={status} />
+                  </FormManagerLayout>
+                </FormManagerProvider>
+              );
+            }
+
+            if (isLoading || form === null) {
               return <div>Loading...</div>;
             }
+
             return (
               <FormManagerProvider
                 context={context}
@@ -268,10 +330,28 @@ export default function FormManager(props: FormManagerProps) {
             if (formId === undefined) {
               return <div>formId is undefined</div>;
             }
-            const form = useBlueprint(formId, context.formService);
-            if (form === null) {
+            const { form, status, isLoading, isProcessing } =
+              useBlueprintWithStatus(formId, context.formService);
+
+            if (isProcessing && status) {
+              return (
+                <FormManagerProvider context={context} session={nullSession}>
+                  <FormManagerLayout
+                    step={NavPage.publish}
+                    back={AppRoutes.Configure.getUrl(formId)}
+                    previewPath={AppRoutes.Preview.getUrl(formId)}
+                    currentPath={AppRoutes.Publish.getUrl(formId)}
+                  >
+                    <FormProcessingIndicator formId={formId} status={status} />
+                  </FormManagerLayout>
+                </FormManagerProvider>
+              );
+            }
+
+            if (isLoading || form === null) {
               return <div>Loading...</div>;
             }
+
             const session = createFormSession(form);
             return (
               <FormManagerProvider
@@ -348,21 +428,3 @@ export default function FormManager(props: FormManagerProps) {
     </HashRouter>
   );
 }
-
-const useBlueprint = (formId: string | undefined, formService: FormService) => {
-  if (formId === undefined) {
-    console.error('formId is undefined');
-    return null;
-  }
-  const [form, setForm] = useState<Blueprint | null>(null);
-  useEffect(() => {
-    formService.getForm(formId).then(result => {
-      if (result.success) {
-        setForm(result.data);
-      } else {
-        console.error('Error loading form', result.error);
-      }
-    });
-  }, []);
-  return form;
-};

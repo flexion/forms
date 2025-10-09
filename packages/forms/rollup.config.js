@@ -15,6 +15,7 @@ export default {
     index: 'src/index.ts',
     context: 'src/context/index.ts',
     'documents/pdf/context': 'src/documents/pdf/context.ts',
+    repository: 'src/repository/index.ts',
   },
   output: [
     {

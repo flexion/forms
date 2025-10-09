@@ -12,19 +12,40 @@
   },
   "exports": {
     ".": {
+      "development": {
+        "types": "./src/index.ts",
+        "import": "./src/index.ts"
+      },
       "types": "./dist/types/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
     "./context": {
+      "development": {
+        "types": "./src/context/index.ts",
+        "import": "./src/context/index.ts"
+      },
       "types": "./dist/types/context/index.d.ts",
       "import": "./dist/esm/context.js",
       "require": "./dist/cjs/context.js"
     },
     "./documents/pdf/context": {
+      "development": {
+        "types": "./src/documents/pdf/context.ts",
+        "import": "./src/documents/pdf/context.ts"
+      },
       "types": "./dist/types/documents/pdf/context.d.ts",
       "import": "./dist/esm/documents/pdf/context.js",
       "require": "./dist/cjs/documents/pdf/context.js"
+    },
+    "./repository": {
+      "development": {
+        "types": "./src/repository/index.ts",
+        "import": "./src/repository/index.ts"
+      },
+      "types": "./dist/types/repository/index.d.ts",
+      "import": "./dist/esm/repository.js",
+      "require": "./dist/cjs/repository.js"
     }
   },
   "scripts": {

@@ -12,6 +12,11 @@ export * from './util/base64.js';
 export * from './patterns/address/jurisdictions.js';
 export { type FormService, createFormService } from './services/index.js';
 export {
+  type FormStatusResponse,
+  type GetFormStatusError,
+} from './services/get-form-status.js';
+export { type FormListItem } from './services/get-form-list.js';
+export {
   defaultFormConfig,
   attachmentFileTypeOptions,
   attachmentFileTypeMimes,
@@ -23,10 +28,6 @@ import { type SequencePattern } from './patterns/sequence.js';
 import { FieldsetPattern } from './patterns/index.js';
 import { type FormSummaryPattern } from './patterns/form-summary/form-summary.js';
 import { RepeaterPattern } from './patterns/index.js';
-export {
-  type FormRepository,
-  createFormsRepository,
-} from './repository/index.js';
 export {
   type FormRoute,
   type RouteData,

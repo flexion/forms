@@ -1,4 +1,4 @@
-import type { AiRequestCache } from './types.js';
+import type { AiRequestCache } from '../types.js';
 
 /**
  * No-operation cache that never stores or retrieves values.

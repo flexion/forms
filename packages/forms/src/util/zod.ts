@@ -62,9 +62,15 @@ export const convertZodErrorToFormErrors = (
   zodError.issues.forEach((error: z.ZodIssue) => {
     const path = error.path.join('.');
     if (error.code === 'too_small' && error.minimum === 1) {
+      // Replace default Zod message with consistent custom message
+      const message =
+        error.message === 'String must contain at least 1 character(s)' ||
+        error.message.startsWith('Too small')
+          ? 'String must contain at least 1 character(s)'
+          : error.message;
       formErrors[path] = {
         type: 'required',
-        message: error.message,
+        message,
       };
     } else {
       formErrors[path] = {

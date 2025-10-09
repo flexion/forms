@@ -139,11 +139,11 @@ describe('parseFormString', () => {
         '[\n' +
         '  {\n' +
         '    "code": "custom",\n' +
-        '    "message": "Invalid pattern",\n' +
         '    "path": [\n' +
         '      "patterns",\n' +
         '      "invalidPattern"\n' +
-        '    ]\n' +
+        '    ],\n' +
+        '    "message": "Invalid pattern"\n' +
         '  }\n' +
         ']',
     });

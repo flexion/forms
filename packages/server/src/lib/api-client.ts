@@ -6,6 +6,8 @@ import {
   type Blueprint,
   type FormService,
   type FormSummary,
+  type FormStatusResponse,
+  type GetFormStatusError,
 } from '@flexion/forms-core';
 import { type FormServiceContext } from '@flexion/forms-core/context';
 
@@ -37,7 +39,12 @@ export class FormServiceClient implements FormService {
         }
   ): Promise<
     Result<
-      { timestamp: string; id: string },
+      {
+        timestamp: string;
+        id: string;
+        jobId?: string;
+        status: 'ready' | 'processing';
+      },
       { status: number; message: string }
     >
   > {
@@ -134,6 +141,15 @@ export class FormServiceClient implements FormService {
     Result<{ id?: string | undefined; formId: string; data: FormSession }>
   > {
     throw new Error('Not implemented');
+  }
+
+  async getFormStatus(
+    formId: string
+  ): Promise<Result<FormStatusResponse, GetFormStatusError>> {
+    const response = await fetch(
+      `${this.ctx.baseUrl}api/forms/${formId}/status`
+    );
+    return await response.json();
   }
 
   getContext() {
