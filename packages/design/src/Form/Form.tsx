@@ -78,13 +78,15 @@ export default function Form({
 
   const formMethods = useForm<Record<string, string>>({});
 
-  // Reset React Hook Form when route changes (e.g., page navigation)
+  // Reset React Hook Form when route changes (e.g., page navigation in FormPreview)
   // This prevents field values from bleeding across pages
+  // Only reset when we have an onSubmit handler (FormPreview mode), not in FormEdit mode
+  const hasOnSubmit = !!onSubmit;
   useEffect(() => {
-    if (isPreview) {
+    if (isPreview && hasOnSubmit) {
       formMethods.reset({});
     }
-  }, [session.route?.params.page, isPreview]);
+  }, [session.route?.params.page, isPreview, hasOnSubmit]);
 
   return (
     <FormProvider {...formMethods}>
@@ -122,25 +124,23 @@ export default function Form({
               >
                 <FormContents context={context} prompt={prompt} />
               </form>
-            ) : (
+            ) : onSubmit ? (
               <form
                 className="usa-form margin-bottom-3 maxw-full formContentWrapper"
                 encType="multipart/form-data"
-                onSubmit={
-                  onSubmit
-                    ? formMethods.handleSubmit(async (data, event) => {
-                        event?.preventDefault();
-                        onSubmit(data);
-                      })
-                    : (event) => {
-                        event.preventDefault();
-                      }
-                }
+                onSubmit={formMethods.handleSubmit(async (data, event) => {
+                  event?.preventDefault();
+                  onSubmit(data);
+                })}
                 method="POST"
                 aria-label={session.form.summary.title || 'Form'}
               >
                 <FormContents context={context} prompt={prompt} />
               </form>
+            ) : (
+              <div className="formContentWrapper">
+                <FormContents context={context} prompt={prompt} />
+              </div>
             )}
           </div>
         </div>
