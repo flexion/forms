@@ -6,7 +6,7 @@ import {
   generatePatternId,
   getPatternMap,
   removeChildPattern,
-} from './pattern';
+} from './pattern.js';
 import {
   type FieldsetPattern,
   type FormSummaryPattern,
@@ -14,8 +14,8 @@ import {
   type PageSetPattern,
   type RepeaterPattern,
   type SequencePattern,
-} from './patterns';
-import { type Blueprint, type FormOutput, type FormSummary } from './types';
+} from './patterns/index.js';
+import { type Blueprint, type FormOutput, type FormSummary } from './types.js';
 
 export const nullBlueprint: Blueprint = {
   summary: {

@@ -25,7 +25,7 @@
     "build:storybook": "storybook build",
     "build:styles": "gulp update",
     "clean": "pnpm clean:lib && pnpm clean:styles",
-    "clean:lib": "rimraf dist",
+    "clean:lib": "rimraf dist tsconfig.tsbuildinfo tsconfig.build.tsbuildinfo coverage storybook-static",
     "clean:styles": "rimraf static",
     "dev": "run-p dev:*",
     "dev:lib": "vite",

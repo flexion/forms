@@ -1,4 +1,4 @@
-import type { FormRepositoryContext } from '.';
+import type { FormRepositoryContext } from './index.js';
 import type { JobStatus } from './jobs/types.js';
 
 export type FormListItem = {

@@ -5,7 +5,7 @@ import { type PatternConfig } from '../../pattern.js';
 import { parseConfigData, type AttachmentPattern } from './config.js';
 import { createPrompt } from './prompt.js';
 import { type AttachmentPatternOutput, parseUserInput } from './response.js';
-import { attachmentFileTypeMimes } from './file-type-options';
+import { attachmentFileTypeMimes } from './file-type-options.js';
 
 export const attachmentConfig: PatternConfig<
   AttachmentPattern,

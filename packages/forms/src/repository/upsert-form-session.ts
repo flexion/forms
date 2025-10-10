@@ -1,6 +1,6 @@
 import { type Result, failure, success } from '@flexion/forms-common';
-import { type FormSession } from '../session';
-import type { FormRepositoryContext } from '.';
+import { type FormSession } from '../session.js';
+import type { FormRepositoryContext } from './index.js';
 
 export type UpsertFormSession = (
   ctx: FormRepositoryContext,

@@ -1,8 +1,8 @@
 import * as z from 'zod';
 
 import { failure, success, type Result } from '@flexion/forms-common';
-import type { FormConfig } from '../pattern';
-import type { Blueprint } from '../types';
+import type { FormConfig } from '../pattern.js';
+import type { Blueprint } from '../types.js';
 
 /**
  * Parses and validates an object against a form schema defined by the given configuration.

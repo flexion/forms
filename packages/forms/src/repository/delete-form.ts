@@ -1,7 +1,7 @@
 import { type VoidResult, failure, voidSuccess } from '@flexion/forms-common';
 
-import type { FormOutput } from '../types';
-import type { FormRepositoryContext } from '.';
+import type { FormOutput } from '../types.js';
+import type { FormRepositoryContext } from './index.js';
 
 export type DeleteForm = (
   ctx: FormRepositoryContext,
@@ -39,7 +39,7 @@ export const deleteForm: DeleteForm = async (ctx, formId) => {
       .where('id', 'in', documentIds)
       .execute()
       .then(_ => voidSuccess)
-      .catch((error: Error) => {
+      .catch(error => {
         return failure({ message: error.message, code: 'unknown' as const });
       });
   });

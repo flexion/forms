@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "auth": "pnpm --filter=@flexion/forms-cli cli e2e create-test-session -p ../../packages/server/src/main.db -o ../../e2e/.env",
+    "clean": "rimraf coverage test-results playwright-report",
     "dev": "tsc -w",
     "test:e2e:ci": "pnpm auth && pnpm playwright test --headed",
     "test:e2e:dev": "pnpm auth && pnpm playwright test --ui-port=8080 --ui-host=0.0.0.0"

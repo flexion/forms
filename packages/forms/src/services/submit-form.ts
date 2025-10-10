@@ -1,14 +1,14 @@
 import { failure, success, type Result } from '@flexion/forms-common';
 
 import { type FormServiceContext } from '../context/index.js';
-import { submitPage } from '../patterns/page-set/submit';
-import { downloadPackageHandler } from '../patterns/package-download/submit';
+import { submitPage } from '../patterns/page-set/submit.js';
+import { downloadPackageHandler } from '../patterns/package-download/submit.js';
 import {
   repeaterAddRowHandler,
   repeaterDeleteRowHandler,
-} from '../patterns/repeater/submit';
+} from '../patterns/repeater/submit.js';
 import { type FormRoute } from '../route-data.js';
-import { SubmissionRegistry } from '../submission';
+import { SubmissionRegistry } from '../submission.js';
 import {
   createFormSession,
   type FormSession,

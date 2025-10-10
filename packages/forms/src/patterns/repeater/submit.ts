@@ -1,7 +1,7 @@
 import { success } from '@flexion/forms-common';
 
-import { type RepeaterPattern } from '../..';
-import { type SubmitHandler } from '../../submission';
+import { type RepeaterPattern } from '../../index.js';
+import { type SubmitHandler } from '../../submission.js';
 
 export const repeaterAddRowHandler: SubmitHandler<RepeaterPattern> = async (
   context,
@@ -15,7 +15,7 @@ export const repeaterAddRowHandler: SubmitHandler<RepeaterPattern> = async (
       : [];
 
   const initialRepeaterRowData = opts.pattern.data.patterns.reduce(
-    (acc, patternId: string) => {
+    (acc, patternId) => {
       // THIS requires all the patterns to have object not string input values
       // acc[patternId] = {};
 

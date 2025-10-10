@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { enLocale as message } from '@flexion/forms-common';
 import { ParsePatternConfigData, type Pattern } from '../../pattern.js';
 import { safeZodParseFormErrors } from '../../util/zod.js';
-import { attachmentFileTypeMimes } from './file-type-options';
+import { attachmentFileTypeMimes } from './file-type-options.js';
 
 export type AttachmentPattern = Pattern<AttachmentConfigSchema>;
 
