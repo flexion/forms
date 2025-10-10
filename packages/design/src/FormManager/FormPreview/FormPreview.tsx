@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { mergeSession } from '@flexion/forms-core';
+import { applyPromptResponse, mergeSession } from '@flexion/forms-core';
 
 import Form from '../../Form/Form.js';
 import { useRouteParams } from '../hooks.js';
@@ -29,8 +29,22 @@ export const FormPreview = () => {
     }
   }, [routeParams.page]);
 
-  const handleSubmit = () => {
-    // Simple navigation: just go to the next page
+  const handleSubmit = (data: Record<string, string>) => {
+    // Validate and update session with form data
+    const result = applyPromptResponse(context.config, session, {
+      action: 'submit',
+      data,
+    });
+
+    if (!result.success) {
+      console.warn('Error applying prompt response in preview...', result.error);
+      return;
+    }
+
+    // Update session with validated data
+    setSession(result.data);
+
+    // Navigate to next page
     const currentPage = Number(routeParams.page) || 0;
     const nextPage = currentPage + 1;
     const newParams = new URLSearchParams({

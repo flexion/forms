@@ -78,6 +78,14 @@ export default function Form({
 
   const formMethods = useForm<Record<string, string>>({});
 
+  // Reset React Hook Form when route changes (e.g., page navigation)
+  // This prevents field values from bleeding across pages
+  useEffect(() => {
+    if (isPreview) {
+      formMethods.reset({});
+    }
+  }, [session.route?.params.page, isPreview]);
+
   return (
     <FormProvider {...formMethods}>
       <div className="preview grid-container">
