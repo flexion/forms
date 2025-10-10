@@ -9,7 +9,7 @@ export type Initialize = (
 
 export const initialize: Initialize = (ctx, opts) => {
   // Get the session ID from local storage so we can use it on page reload.
-  const sessionId = window.localStorage.getItem('form_session_id') || undefined;
+  const sessionId = window.localStorage.getItem(`form_session_id_${opts.formId}`) || undefined;
   getFormSession(ctx, {
     formId: opts.formId,
     route: opts.route,

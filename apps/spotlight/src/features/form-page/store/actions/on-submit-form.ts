@@ -37,7 +37,7 @@ export const onSubmitForm: OnSubmitForm = async (ctx, opts) => {
         sessionId: submission.data.sessionId,
       },
     });
-    window.localStorage.setItem('form_session_id', submission.data.sessionId);
+    window.localStorage.setItem(`form_session_id_${opts.formId}`, submission.data.sessionId);
   } else {
     console.error(submission.error);
   }

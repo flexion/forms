@@ -235,7 +235,7 @@ const submitForm = async (
     request: new Request(`http://localhost/forms/${formId}`, {
       method: 'POST',
       body: formData,
-      headers: sessionId ? { Cookie: `form_session_id=${sessionId}` } : {},
+      headers: sessionId ? { Cookie: `form_session_id_${formId}=${sessionId}` } : {},
     }),
   });
 
