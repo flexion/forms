@@ -15,7 +15,7 @@ export const repeaterAddRowHandler: SubmitHandler<RepeaterPattern> = async (
       : [];
 
   const initialRepeaterRowData = opts.pattern.data.patterns.reduce(
-    (acc: Record<string, any>, patternId: string) => {
+    (acc, patternId) => {
       // THIS requires all the patterns to have object not string input values
       // acc[patternId] = {};
 
@@ -70,14 +70,14 @@ export const repeaterDeleteRowHandler: SubmitHandler<RepeaterPattern> = async (
   );
 
   const childPatternIds = opts.pattern.data.patterns.map(
-    (patternId: string) => `${opts.pattern.id}.${indexToDelete}`
+    patternId => `${opts.pattern.id}.${indexToDelete}`
   );
 
   const newValues = { ...opts.session.data.values };
 
   // Only delete keys that actually exist
-  const keysToDelete = Object.keys(newValues).filter((key: string) =>
-    childPatternIds.some((prefix: string) => key.startsWith(prefix))
+  const keysToDelete = Object.keys(newValues).filter(key =>
+    childPatternIds.some(prefix => key.startsWith(prefix))
   );
 
   if (keysToDelete.length > 0) {

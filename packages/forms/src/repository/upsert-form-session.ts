@@ -25,7 +25,7 @@ export const upsertFormSession: UpsertFormSession = async (ctx, opts) => {
       form_id: opts.formId,
       data: strData,
     })
-    .onConflict((oc) =>
+    .onConflict(oc =>
       oc.columns(['id', 'form_id']).doUpdateSet({
         data: strData,
       })
@@ -37,7 +37,7 @@ export const upsertFormSession: UpsertFormSession = async (ctx, opts) => {
         id,
       });
     })
-    .catch((err: Error) => {
+    .catch(err => {
       return failure(err.message);
     });
 };

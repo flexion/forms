@@ -22,6 +22,7 @@
     "build:typescript": "tsc",
     "build:synth": "cdk synth",
     "cdk": "cdk",
+    "clean": "rimraf dist cdk.out tsconfig.tsbuildinfo coverage",
     "test": "echo 'no tests'",
     "watch": "tsc -w"
   },

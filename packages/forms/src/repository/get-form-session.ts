@@ -26,14 +26,14 @@ export const getFormSession: GetFormSession = async (
     .where('id', '=', id)
     .select(['id', 'form_id', 'data'])
     .executeTakeFirstOrThrow()
-    .then((result) => {
+    .then(result => {
       return success({
         id: result.id,
         formId: result.form_id,
         data: JSON.parse(result.data),
       });
     })
-    .catch((err: Error) => {
+    .catch(err => {
       return failure(err.message);
     });
 };

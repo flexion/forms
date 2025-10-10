@@ -28,7 +28,7 @@ export const getDocument: GetDocument = async (ctx, id) => {
     .select(['id', 'type', 'file_name', 'data', 'extract'])
     .where('id', '=', id)
     .executeTakeFirstOrThrow()
-    .then((data) => {
+    .then(data => {
       // Handle documents without extract (stored during async processing initialization)
       const extract: { parsedPdf: ParsedPdf; fields: DocumentFieldMap } =
         data.extract && data.extract !== ''
@@ -41,5 +41,5 @@ export const getDocument: GetDocument = async (ctx, id) => {
         fields: extract.fields,
       });
     })
-    .catch((err: Error) => failure(err.message));
+    .catch(err => failure(err.message));
 };

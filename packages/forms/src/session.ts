@@ -167,7 +167,7 @@ export const sessionIsComplete = (config: FormConfig, session: FormSession) => {
    *  each field of the repeater based on the validation rules for the individual field type.
    */
 
-  return (Object.values(session.form.patterns) as Pattern[]).every(pattern => {
+  return Object.values(session.form.patterns).every(pattern => {
     const patternConfig = getPatternConfig(config, pattern.type);
     const value = getFormSessionValue(session, pattern.id);
     const isValidResult = validatePattern(patternConfig, pattern, value);

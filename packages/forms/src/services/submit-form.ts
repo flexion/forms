@@ -107,7 +107,7 @@ export const submitForm: SubmitForm = async (
   const newSessionResult = await handler(
     {
       config: ctx.config,
-      getDocument: (id: string) => {
+      getDocument: id => {
         return ctx.repository.getDocument(id);
       },
     },

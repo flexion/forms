@@ -14,7 +14,7 @@ export type DeleteForm = (
 export const deleteForm: DeleteForm = async (ctx, formId) => {
   const db = await ctx.db.getKysely();
 
-  const result = await db.transaction().execute(async (trx) => {
+  const result = await db.transaction().execute(async trx => {
     const deleteResult = await trx
       .deleteFrom('forms')
       .where('id', '=', formId)
@@ -38,8 +38,8 @@ export const deleteForm: DeleteForm = async (ctx, formId) => {
       .deleteFrom('form_documents')
       .where('id', 'in', documentIds)
       .execute()
-      .then((_) => voidSuccess)
-      .catch((error: Error) => {
+      .then(_ => voidSuccess)
+      .catch(error => {
         return failure({ message: error.message, code: 'unknown' as const });
       });
   });

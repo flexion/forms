@@ -357,7 +357,7 @@ export const copyPage = (
   }
 
   newPage.data.patterns = pagePattern.data.patterns.map(
-    (id: PatternId) => idMap.get(id) || id
+    id => idMap.get(id) || id
   );
   updatedBp.patterns[newPageId] = newPage;
 
@@ -440,7 +440,7 @@ export const copyPattern = (
     bp: Blueprint,
     childId: PatternId
   ): PatternId | null => {
-    for (const [id, pattern] of Object.entries(bp.patterns) as [string, Pattern][]) {
+    for (const [id, pattern] of Object.entries(bp.patterns)) {
       if (
         pattern.type === 'fieldset' &&
         pattern.data.patterns.includes(childId)
@@ -487,7 +487,7 @@ export const copyPattern = (
     }
 
     newFieldset.data.patterns = originalFieldset.data.patterns.map(
-      (id: PatternId) => idMap.get(id) || id
+      id => idMap.get(id) || id
     );
 
     updatedBp = {
@@ -688,7 +688,7 @@ export const updatePatterns = (
   const patternConfig = config.patterns[root.type];
   const children = patternConfig.getChildren(root, newPatterns);
   targetPatterns[root.id] = root;
-  children.forEach((child: Pattern) => (targetPatterns[child.id] = child));
+  children.forEach(child => (targetPatterns[child.id] = child));
   return {
     ...form,
     patterns: targetPatterns,
@@ -717,7 +717,7 @@ export const updateFormSummary = (
   summary: FormSummary
 ): Blueprint => {
   // Find the form-summary pattern and update it
-  const formSummaryPatternEntry = (Object.entries(form.patterns) as [string, Pattern][]).find(
+  const formSummaryPatternEntry = Object.entries(form.patterns).find(
     ([_, pattern]) => pattern.type === 'form-summary'
   );
 

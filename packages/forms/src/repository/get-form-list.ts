@@ -30,7 +30,7 @@ export const getFormList: GetFormList = async ctx => {
 
   // For each form, get the latest import-pdf job
   const formList = await Promise.all(
-    forms.map(async (row) => {
+    forms.map(async row => {
       const form = JSON.parse(row.data);
 
       // Get latest import-pdf job for this form

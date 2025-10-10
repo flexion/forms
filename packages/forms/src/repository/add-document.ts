@@ -38,5 +38,5 @@ export const addDocument: AddDocument = async (ctx, document) => {
         id: uuid,
       })
     )
-    .catch((err: Error) => failure(err.message));
+    .catch(err => failure(err.message));
 };
