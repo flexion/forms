@@ -15,13 +15,13 @@ import ContentLayout from '../../layouts/ContentLayout.astro';
 const { id: formId } = getAstroRouteParams(Astro, ['id']);
 const ctx = await getServerContext(Astro);
 
-const sessionId = Astro.cookies.get('form_session_id')?.value;
+const sessionId = Astro.cookies.get(`form_session_id_${formId}`)?.value;
 
 const setFormSessionCookie = (sessionId?: string) => {
   if (sessionId) {
-    Astro.cookies.set('form_session_id', sessionId);
+    Astro.cookies.set(`form_session_id_${formId}`, sessionId);
   } else {
-    Astro.cookies.delete('form_session_id');
+    Astro.cookies.delete(`form_session_id_${formId}`);
   }
 };
 
