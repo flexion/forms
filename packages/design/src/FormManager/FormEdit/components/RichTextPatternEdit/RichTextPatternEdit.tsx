@@ -21,15 +21,14 @@ import { useFormManagerStore } from '../../../store.js';
 import { PatternEditComponent } from '../../types.js';
 import styles from './richTextPatternEditStyles.module.css';
 
-import boldSvg from './images/format_bold.svg';
-import italicSvg from './images/format_italic.svg';
-import bulletListSvg from './images/format_list_bulleted.svg';
-import orderedListSvg from './images/format_list_numbered.svg';
-import headingSvg from './images/format_h2.svg';
-import subheadingSvg from './images/format_h3.svg';
+import boldSvg from './images/format_bold.svg?url';
+import italicSvg from './images/format_italic.svg?url';
+import bulletListSvg from './images/format_list_bulleted.svg?url';
+import orderedListSvg from './images/format_list_numbered.svg?url';
+import headingSvg from './images/format_h2.svg?url';
+import subheadingSvg from './images/format_h3.svg?url';
 
-// eslint-disable-next-line  @typescript-eslint/no-explicit-any
-const icons: Record<string, string | any> = {
+const icons: Record<string, string> = {
   'format_h2.svg': headingSvg,
   'format_h3.svg': subheadingSvg,
   'format_bold.svg': boldSvg,
@@ -39,7 +38,7 @@ const icons: Record<string, string | any> = {
 };
 
 const getIconPath = (iconPath: string) => {
-  return Object.values(icons[iconPath])[0] as string;
+  return icons[iconPath];
 };
 
 interface MenuBarProps {
