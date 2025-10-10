@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { mergeSession } from '@flexion/forms-core';
 
@@ -12,7 +13,8 @@ export const FormPreview = () => {
     setSession: state.setSession,
   }));
   const session = useFormManagerStore(state => state.session);
-  const { routeParams } = useRouteParams();
+  const { routeParams, pathname } = useRouteParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (routeParams.page !== session.route?.params.page) {
@@ -27,5 +29,23 @@ export const FormPreview = () => {
     }
   }, [routeParams.page]);
 
-  return <Form isPreview={true} context={context} session={session} />;
+  const handleSubmit = () => {
+    // Simple navigation: just go to the next page
+    const currentPage = Number(routeParams.page) || 0;
+    const nextPage = currentPage + 1;
+    const newParams = new URLSearchParams({
+      ...routeParams,
+      page: nextPage.toString(),
+    });
+    navigate(`${pathname}?${newParams.toString()}`);
+  };
+
+  return (
+    <Form
+      isPreview={true}
+      context={context}
+      session={session}
+      onSubmit={handleSubmit}
+    />
+  );
 };

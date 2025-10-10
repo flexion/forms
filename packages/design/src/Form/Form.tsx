@@ -115,9 +115,24 @@ export default function Form({
                 <FormContents context={context} prompt={prompt} />
               </form>
             ) : (
-              <div className="formContentWrapper">
+              <form
+                className="usa-form margin-bottom-3 maxw-full formContentWrapper"
+                encType="multipart/form-data"
+                onSubmit={
+                  onSubmit
+                    ? formMethods.handleSubmit(async (data, event) => {
+                        event?.preventDefault();
+                        onSubmit(data);
+                      })
+                    : (event) => {
+                        event.preventDefault();
+                      }
+                }
+                method="POST"
+                aria-label={session.form.summary.title || 'Form'}
+              >
                 <FormContents context={context} prompt={prompt} />
-              </div>
+              </form>
             )}
           </div>
         </div>
@@ -134,10 +149,8 @@ const FormContents = ({
   prompt: Prompt;
 }) => {
   return (
-    <>
-      <fieldset className="usa-fieldset width-full">
-        {renderPromptComponents(context, prompt.components)}
-      </fieldset>
-    </>
+    <fieldset className="usa-fieldset width-full">
+      {renderPromptComponents(context, prompt.components)}
+    </fieldset>
   );
 };
