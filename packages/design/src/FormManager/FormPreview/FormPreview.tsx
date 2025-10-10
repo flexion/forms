@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { mergeSession } from '@flexion/forms-core';
+import { applyPromptResponse, mergeSession } from '@flexion/forms-core';
 
 import Form from '../../Form/Form.js';
 import { useRouteParams } from '../hooks.js';
@@ -12,7 +13,8 @@ export const FormPreview = () => {
     setSession: state.setSession,
   }));
   const session = useFormManagerStore(state => state.session);
-  const { routeParams } = useRouteParams();
+  const { routeParams, pathname } = useRouteParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (routeParams.page !== session.route?.params.page) {
@@ -27,5 +29,37 @@ export const FormPreview = () => {
     }
   }, [routeParams.page]);
 
-  return <Form isPreview={true} context={context} session={session} />;
+  const handleSubmit = (data: Record<string, string>) => {
+    // Validate and update session with form data
+    const result = applyPromptResponse(context.config, session, {
+      action: 'submit',
+      data,
+    });
+
+    if (!result.success) {
+      console.warn('Error applying prompt response in preview...', result.error);
+      return;
+    }
+
+    // Update session with validated data
+    setSession(result.data);
+
+    // Navigate to next page
+    const currentPage = Number(routeParams.page) || 0;
+    const nextPage = currentPage + 1;
+    const newParams = new URLSearchParams({
+      ...routeParams,
+      page: nextPage.toString(),
+    });
+    navigate(`${pathname}?${newParams.toString()}`);
+  };
+
+  return (
+    <Form
+      isPreview={true}
+      context={context}
+      session={session}
+      onSubmit={handleSubmit}
+    />
+  );
 };
