@@ -3,7 +3,7 @@
   "version": "0.2.3",
   "description": "Form server instance for DOJ",
   "type": "module",
-  "license": "CC0",
+  "license": "Apache-2.0",
   "main": "src/index.ts",
   "private": true,
   "publishConfig": {

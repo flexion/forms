@@ -4,7 +4,7 @@
   "description": "10x Forms Platform",
   "type": "module",
   "main": "index.js",
-  "license": "CC0",
+  "license": "Apache-2.0",
   "packageManager": "pnpm@9.8.0",
   "scripts": {
     "build": "turbo run build --filter=!@flexion/forms-infra-cdktf --filter=!@flexion/forms-infra-aws-cdk",
