@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "10x Forms Platform shared resources",
   "type": "module",
-  "license": "CC0",
+  "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
