@@ -443,24 +443,6 @@ export class SandboxStack extends Construct {
         }
       );
 
-      // Create DNS validation records for App Runner certificate
-      // App Runner provides CNAME records for certificate validation
-      for (let i = 0; i < 3; i++) {
-        new Route53Record(
-          this,
-          `${id}-validation-record-${i}`,
-          {
-            zoneId: zone.zoneId,
-            name: `\${${customDomainAssociation.fqn}.certificate_validation_records[${i}].name}`,
-            type: `\${${customDomainAssociation.fqn}.certificate_validation_records[${i}].type}`,
-            records: [
-              `\${${customDomainAssociation.fqn}.certificate_validation_records[${i}].value}`,
-            ],
-            ttl: 300,
-          }
-        );
-      }
-
       // CNAME record pointing the domain to App Runner service URL
       new Route53Record(this, `${id}-apprunner-alias`, {
         zoneId: zone.zoneId,
@@ -474,6 +456,19 @@ export class SandboxStack extends Construct {
       new TerraformOutput(this, `${id}-nameservers`, {
         value: zone.nameServers,
         description: `Name servers for ${domainName} - configure these in the parent zone (labs.flexion.us)`,
+      });
+
+      // Output certificate validation records for manual DNS configuration.
+      // After the first apply, create these CNAME records in the hosted zone
+      // to complete App Runner certificate validation.
+      new TerraformOutput(this, `${id}-cert-validation-records`, {
+        value: customDomainAssociation.certificateValidationRecords,
+        description: `Certificate validation CNAME records for ${domainName}`,
+      });
+
+      new TerraformOutput(this, `${id}-dns-target`, {
+        value: customDomainAssociation.dnsTarget,
+        description: `App Runner DNS target for ${domainName}`,
       });
     }
   }
