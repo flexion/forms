@@ -21,6 +21,7 @@ import { IamRolePolicyAttachment } from '../../../.gen/providers/aws/iam-role-po
 import { DataAwsAvailabilityZones } from '../../../.gen/providers/aws/data-aws-availability-zones';
 import { Route53Zone } from '../../../.gen/providers/aws/route53-zone';
 import { ApprunnerCustomDomainAssociation } from '../../../.gen/providers/aws/apprunner-custom-domain-association';
+import { Route53Record } from '../../../.gen/providers/aws/route53-record';
 
 interface SandboxStackConfig {
   environment: string;
@@ -435,10 +436,7 @@ export class SandboxStack extends Construct {
         },
       });
 
-      // Associate custom domain with App Runner service.
-      // App Runner handles traffic routing for the custom domain once the
-      // certificate validation records are in place — no separate CNAME/ALIAS
-      // record is needed (and a CNAME at the zone apex would be invalid).
+      // Associate custom domain with App Runner service
       const customDomainAssociation = new ApprunnerCustomDomainAssociation(
         this,
         `${id}-custom-domain`,
@@ -448,6 +446,21 @@ export class SandboxStack extends Construct {
           enableWwwSubdomain: false,
         }
       );
+
+      // Route53 ALIAS A record at the zone apex pointing to App Runner.
+      // A CNAME is invalid at the zone apex (conflicts with SOA/NS), so we
+      // use a Route53 ALIAS which resolves this at the DNS level.
+      // The hosted zone ID is the App Runner hosted zone for us-east-1.
+      new Route53Record(this, `${id}-apprunner-alias`, {
+        zoneId: zone.zoneId,
+        name: domainName,
+        type: 'A',
+        alias: {
+          name: customDomainAssociation.dnsTarget,
+          zoneId: 'Z01915732ZBZKC8D32TPT', // App Runner us-east-1
+          evaluateTargetHealth: true,
+        },
+      });
 
       // Output the name servers for delegation
       new TerraformOutput(this, `${id}-nameservers`, {
