@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
-import { Fn } from 'cdktf';
+import { Fn, TerraformOutput } from 'cdktf';
 
 import { Vpc } from '../../../.gen/providers/aws/vpc';
 import { Subnet } from '../../../.gen/providers/aws/subnet';
@@ -19,9 +19,12 @@ import { IamRole } from '../../../.gen/providers/aws/iam-role';
 import { IamRolePolicy } from '../../../.gen/providers/aws/iam-role-policy';
 import { IamRolePolicyAttachment } from '../../../.gen/providers/aws/iam-role-policy-attachment';
 import { DataAwsAvailabilityZones } from '../../../.gen/providers/aws/data-aws-availability-zones';
+import { Route53Zone } from '../../../.gen/providers/aws/route53-zone';
+import { ApprunnerCustomDomainAssociation } from '../../../.gen/providers/aws/apprunner-custom-domain-association';
 
 interface SandboxStackConfig {
   environment: string;
+  customDomain?: string;
 }
 
 export class SandboxStack extends Construct {
@@ -365,7 +368,7 @@ export class SandboxStack extends Construct {
     );
 
     // App Runner Service
-    new ApprunnerService(this, `${id}-apprunner-service`, {
+    const appRunnerService = new ApprunnerService(this, `${id}-apprunner-service`, {
       serviceName: `${id}`,
       sourceConfiguration: {
         autoDeploymentsEnabled: true,
@@ -415,5 +418,55 @@ export class SandboxStack extends Construct {
         createBeforeDestroy: true,
       },
     });
+
+    // Custom domain and DNS configuration
+    if (config.customDomain) {
+      const domainName = config.customDomain;
+
+      // Route53 hosted zone for the custom domain
+      const zone = new Route53Zone(this, `${id}-zone`, {
+        name: domainName,
+        tags: {
+          Name: `${id}-zone`,
+          Environment: environment,
+        },
+        lifecycle: {
+          preventDestroy: true,
+        },
+      });
+
+      // Associate custom domain with App Runner service.
+      // App Runner handles traffic routing for the custom domain once the
+      // certificate validation records are in place — no separate CNAME/ALIAS
+      // record is needed (and a CNAME at the zone apex would be invalid).
+      const customDomainAssociation = new ApprunnerCustomDomainAssociation(
+        this,
+        `${id}-custom-domain`,
+        {
+          domainName: domainName,
+          serviceArn: appRunnerService.arn,
+          enableWwwSubdomain: false,
+        }
+      );
+
+      // Output the name servers for delegation
+      new TerraformOutput(this, `${id}-nameservers`, {
+        value: zone.nameServers,
+        description: `Name servers for ${domainName} - configure these in the parent zone (labs.flexion.us)`,
+      });
+
+      // Output certificate validation records for manual DNS configuration.
+      // After the first apply, create these CNAME records in the hosted zone
+      // to complete App Runner certificate validation.
+      new TerraformOutput(this, `${id}-cert-validation-records`, {
+        value: customDomainAssociation.certificateValidationRecords,
+        description: `Certificate validation CNAME records for ${domainName}`,
+      });
+
+      new TerraformOutput(this, `${id}-dns-target`, {
+        value: customDomainAssociation.dnsTarget,
+        description: `App Runner DNS target for ${domainName}`,
+      });
+    }
   }
 }
